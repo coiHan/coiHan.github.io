@@ -2,7 +2,7 @@
 
 ## Current illustrated scene
 
-The active homepage uses code-generated pastel maps, toon shading, geometric rings and a radial glow. These illustrated materials are created inside `solar.js`; it does not request the historical photographic maps below.
+The active homepage uses code-generated pastel maps, smooth physical shading, geometric rings, atmosphere shells and a radial glow. These illustrated materials are created inside `solar.js`; it does not request the historical photographic maps below.
 
 ## Historical planetary textures
 
