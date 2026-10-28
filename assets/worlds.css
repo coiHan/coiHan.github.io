@@ -384,3 +384,65 @@ body.page-credits .credits-copy a{color:#67527f}
   .planet-lab::before{border-width:3px}
   .project-scene{border-bottom-color:#a6b5cf35}
 }
+
+/* Warm cocoa skies, with the same readable type and planet navigation. */
+:root{color-scheme:dark;--bg:#302722;--ink:#f4e8db;--body:#d9c6b4;--muted:#bea995;--line:#d8b9912e;--accent:#dcc09a;--surface:#4b3a32c7;background:var(--bg);color:var(--ink)}
+body{background:radial-gradient(ellipse at 8% 5%,#76504542 0,transparent 48%),radial-gradient(ellipse at 94% 18%,#79604433 0,transparent 52%),radial-gradient(ellipse at 50% 90%,#5e463c35 0,transparent 58%),#302722;color:var(--ink)}
+.sky{opacity:.5;background-image:radial-gradient(circle at 27px 43px,#c2a681 .7px,transparent 1.3px),radial-gradient(circle at 104px 81px,#a58b72 .7px,transparent 1.4px),radial-gradient(circle at 79px 13px,#f6e9cd 1px,transparent 1.9px)}
+.page-about{--accent:#d8c4ab}.page-curiosity{--accent:#e7c18f}.page-interests{--accent:#bad1bd}.page-projects{--accent:#e0b19b}.page-research{--accent:#dfbf98}.page-lab{--accent:#e5ce9c}.page-growth{--accent:#b8d2cd}.page-contact{--accent:#bfcfe5}
+.back-link{color:#ccb8a4}.back-link:hover{color:#fff0db}
+.signature{color:#f4e5d5}.signature>span{color:var(--accent)}
+.world-nav{border-bottom-color:#d0b18b24;scrollbar-color:#b29a7759 transparent}
+.world-nav a{color:#d4c0ac}.world-nav a:hover,.world-nav a[aria-current=page]{color:#fff0db}
+.world-nav a[aria-current=page]::after{box-shadow:0 2px 10px #e6be8c35}
+.nav-planet{border-color:#f4dfc55c;box-shadow:inset -5px -5px 8px #45362a52,inset 3px 3px 7px #fff1d65e,0 5px 12px #160f0a33}
+.world-nav a[aria-current=page] .nav-planet{box-shadow:inset -5px -5px 8px #45362a52,inset 3px 3px 7px #fff1d65e,0 0 0 4px #e5c9a61f,0 0 19px #deb98138}
+.english-name{color:#d1b9a6}
+.identity-tags span{color:#ddcbb8;border-color:#d5b38f38;background:#6f534433;box-shadow:0 3px 9px #1e130e0d}
+.about-universe::before{background:radial-gradient(circle,#c4a07d30,transparent 66%)}
+.about-planet{box-shadow:inset -20px -16px 29px #64534c75,inset 6px 6px 15px #fff3df70,0 15px 37px #1b110d2e}
+.about-planet::after{border-color:#e7d8c753}
+.planet-orbit{border-color:#c5aa8a54}.orbit-tight{border-color:#bc9d7c35}
+.satellite{background:radial-gradient(circle at 30% 25%,#f5dfbd,#bd9c7b 60%,#736351 90%);box-shadow:0 0 17px #d7bbad20}
+.universe-coordinate{color:#bda78f}
+.next-world{border-top-color:var(--line);color:#bea995}.next-world>a{color:#e0cbb5}.next-world>a:hover{color:#fff0db}
+.interest-note,.project-card,.contact-panel,.question-card,.research-focus,.idea-space{border-color:#d9b88f2e;background:linear-gradient(130deg,#5a463da6,#3d312bd4);box-shadow:0 18px 42px -26px #160c086b,inset 0 0 0 1px #e0bf9620}
+.interest-note h2{color:var(--ink)}
+.photo-card{border-color:#d7b38e45;box-shadow:0 13px 32px #1b110d40;background:#4e3c31}
+.project-scene{background:radial-gradient(ellipse at 50% 45%,#93714e26,transparent 71%),linear-gradient(150deg,#5a443666,#3a2e285c);border-color:#d1af8a26}
+.project-scene::before{border-color:#cfac8420}
+.scene-caption,.scene-bottom{color:#c6ae94}
+.project-radar{filter:drop-shadow(0 0 13px #dbb2841a)}
+.project-radar path[stroke="#c5bdd8"]{stroke:#c8ae92;stroke-opacity:.35}
+.project-radar path[stroke="#e2c79a"]{stroke:#d7b48b;stroke-opacity:.8}
+.project-radar circle{fill:#e3bb95}.project-radar path[fill="#edcda1"]{fill:#b8d1c5}
+.project-copy h2{color:#f1decc}.project-copy h2>span{color:#d4a98f}
+.project-description,.project-detail{color:#dac4ae}
+.project-numbers>div{border-right-color:#d0ad872b}.project-numbers dt{color:#c5ac92}.project-numbers dd{color:#e4c9ae}
+.primary-link{color:#efdbc7;border-color:#dbb68e45;background:#a77a4e15;box-shadow:0 4px 12px #1d120c0f}
+.primary-link:hover{background:#bd946c27;border-color:#e1bd9380;box-shadow:0 7px 18px #160e0929}
+.email-address{color:#f0dcc8}.email-address:hover{color:#ffeacb}
+.contact-orbit,.contact-orbit::after{border-color:#d2af8620}.contact-orbit span{background:#b69a7599;box-shadow:0 0 18px #c2a17a29}
+.email-actions .primary-link{background:#a77a4e15;border-color:#dbb68e45}
+.copy-email{color:#d2bca5}.copy-email:hover{background:#b1906f17;color:#ffe8cc}
+.copy-status{color:#dfc5a3}
+.github-row{border-top-color:#d0ad872b}.github-row .tiny-label{color:#cfb997}.github-row p{color:#cfb9a1}
+.github-link{color:#e0c9b2}.github-link>span[aria-hidden]{color:#d1b18d}.github-link:hover{color:#ffead2}
+.card-number,.research-questions .card-number{color:#bca68f}
+.question-card:hover{border-color:#d1b08a58}
+.question-card h2,.research-focus>h2,.idea-space-copy>h2,.growth-copy h2,.next-stop .growth-copy h2{color:#f0dfce}
+.question-card p,.research-questions p,.research-focus>p,.idea-space-copy>p,.experiment-steps p,.growth-copy p,.next-stop .growth-copy p{color:#d8c1aa}
+.question-symbol{color:#d4b486}.alternate-symbol{color:#c2bba9}.experience-symbol{color:#ccb29f}
+.feedback-loop{color:#d2b592}.feedback-loop rect{fill:#4a3a30;stroke:#b49a7b}
+.idea-orbits{color:#d4bb94}.idea-orbits>span:first-child{border-color:#c5aa7e63}.idea-orbits>span:nth-child(2){border-color:#c8b08f3b}
+.idea-orbits>span:last-child{border-color:#d5b89140;background:radial-gradient(circle at 35% 25%,#75583d55,#413329);box-shadow:0 0 35px #d3ad7110;color:#dfc39a}
+.experiment-steps>li{border-bottom-color:#d0ad872b}.experiment-steps>li>span{color:#d1b28b}.experiment-steps h2{color:#ead3bc}
+.growth-path::before{background:linear-gradient(#c5ad8680,#b9987047,transparent)}
+.growth-dot{border-color:#cfba9c;background:#ac9273;box-shadow:0 0 0 6px #c7a77912,0 0 20px #b89d7d2b}
+.growth-phase>span,.next-stop .growth-phase>span{color:#d8c5a8}.growth-phase>small{color:#bfa98f}
+.growth-tags>span{color:#d9c6ad;border-color:#ceb28b3b;background:#97744d17}
+.next-stop .growth-dot{border-color:#b5a085;background:#3b2e27}
+body.page-credits .credits-copy,body.page-credits .credits-copy p{color:#d9c6b4}
+body.page-credits .credits-copy h2{color:#f0dfce}
+body.page-credits .credits-copy a{color:#e3c49b}
+@media(max-width:740px){.nav-planet{box-shadow:inset -4px -4px 7px #45362a52,inset 3px 3px 6px #fff1d65e,0 4px 8px #160f0a33}.project-scene{border-bottom-color:#d1af8a26}}
