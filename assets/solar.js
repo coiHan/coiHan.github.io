@@ -5,8 +5,8 @@
   const atlas='/assets/illustrations/solar-atlas-handdrawn.webp';
   const sprites={sun:[0,0,450,465],mercury:[455,65,370,380],venus:[855,65,390,385],earth:[25,460,405,405],mars:[445,465,390,395],jupiter:[830,465,415,405],saturn:[0,880,515,335],uranus:[505,870,330,370],neptune:[860,870,385,375]};
   const worlds=[
-    {id:'about',title:'关于我',description:'认识这个正在学习的人',href:'/worlds/about.html',sprite:'mercury',size:84,narrow:64,x:.25,y:.29},
-    {id:'interests',title:'日常片段',description:'一些走过、看过、留下来的瞬间',href:'/worlds/interests.html',sprite:'venus',size:108,narrow:88,x:.32,y:.68},
+    {id:'about',title:'关于我的',description:'认识这个正在学习的人',href:'/worlds/about.html',sprite:'mercury',size:84,narrow:64,x:.25,y:.29},
+    {id:'interests',title:'日常生活',description:'一些走过、看过、留下来的瞬间',href:'/worlds/interests.html',sprite:'venus',size:108,narrow:88,x:.32,y:.68},
     {id:'projects',title:'一些项目',description:'让一个想法，变成可以体验的东西',href:'/worlds/projects.html',sprite:'earth',size:126,narrow:104,x:.41,y:.32},
     {id:'contact',title:'取得联系',description:'邮件或GitHub，都可以找到我',href:'/worlds/contact.html',sprite:'mars',size:104,narrow:82,x:.49,y:.72},
     {id:'jupiter',title:'',description:'',href:'/#jupiter',sprite:'jupiter',size:162,narrow:132,x:.60,y:.27},
