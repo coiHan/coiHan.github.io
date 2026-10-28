@@ -2,7 +2,7 @@
 
 通过 64 道日常情境题，把回答整理成八条思想坐标，再寻找与你相近的思想家。项目由 Codex 辅助开发，可用于人工智能基础课的应用展示。
 
-部署目标：[在线体验](https://coihan.github.io/philosophy-portrait/)（发布后验证）。
+在线体验：[philome](https://coihan.github.io/philosophy-portrait/)。
 
 ## 功能与运行
 
