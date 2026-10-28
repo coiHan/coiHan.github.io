@@ -1,0 +1,941 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f1eb">
+  <meta name="description" content="philome · 从 64 道日常选择出发，描绘你的八维思想图谱，遇见与你共鸣的思想家。">
+  <title>philome · 遇见你的思想轮廓</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='17' fill='%2375668d'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-size='43' font-family='Georgia' fill='white'%3E%CE%A6%3C/text%3E%3C/svg%3E">
+  <style>
+    :root{--ink:#343044;--body:#686273;--muted:#8b8490;--line:#dfd9df;--paper:#fffcf8;--bg:#f5f1eb;--teal:#75668d;--teal-dark:#59496e;--teal-soft:#eee8f3;--coral:#c98f7c;--coral-soft:#f7e8e0;--gold:#d4ad6e;--violet:#75668d;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--bg);font-synthesis:none}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;font-size:16px;line-height:1.65;background:var(--bg);overflow-x:hidden}button{font:inherit}button,a{-webkit-tap-highlight-color:transparent}button:focus-visible,summary:focus-visible{outline:2px solid var(--teal);outline-offset:6px}.hidden{display:none!important}::selection{background:#ded3e9;color:var(--ink)}
+    .ambient{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}.ambient::before{content:"";position:absolute;width:64vw;height:64vw;min-width:650px;min-height:650px;right:-24vw;top:-30vw;background:radial-gradient(circle,#e5ddec 0,transparent 64%);opacity:.75;animation:breathe 18s ease-in-out infinite alternate}.ambient::after{content:"";position:absolute;width:65vw;height:65vw;left:-34vw;bottom:-32vw;background:radial-gradient(circle,#e8cfbf 0,transparent 65%);opacity:.7;animation:breathe 23s ease-in-out infinite alternate-reverse}.ambient-line{position:absolute;width:900px;height:900px;border:1px solid #8b7b9320;border-radius:50%;right:-680px;top:200px}.ambient-line:nth-child(2){width:1100px;height:1100px;right:-780px;top:100px}.ambient-line:nth-child(3){width:1300px;height:1300px;right:-880px;top:0}
+    .site-header{position:relative;z-index:2;border-bottom:1px solid #8c81931e;background:#f8f5efb5;backdrop-filter:blur(18px)}.header-inner{height:82px;max-width:1200px;margin:auto;padding:0 34px;display:flex;align-items:center;justify-content:space-between;gap:24px}.brand{display:flex;align-items:center;gap:13px;color:var(--ink);line-height:1}.brand-symbol{width:35px;height:35px;color:var(--teal);flex-shrink:0}.brand-wordmark{font-family:Georgia,"Times New Roman",serif;font-size:36px;font-style:italic;font-weight:400;letter-spacing:-2px}.brand-wordmark i{color:var(--coral);font-style:normal}.header-meta{display:flex;align-items:center;gap:18px;font-size:12px;color:var(--muted);letter-spacing:.08em}.header-meta strong{font-weight:500;color:var(--body);letter-spacing:.08em}.header-spark{width:6px;height:6px;border-radius:50%;background:var(--coral);box-shadow:0 0 0 5px #c98f7c12}.header-divider{height:14px;width:1px;background:var(--line)}
+    .page{position:relative;z-index:1;max-width:1120px;margin:auto;padding:35px 34px 80px}.intro{position:relative;display:grid;grid-template-columns:1fr 225px;align-items:center;gap:24px;max-width:970px;margin:0 auto 32px;animation:rise-in .7s both}.eyebrow{color:var(--teal);font-size:10px;line-height:1.5;font-weight:700;letter-spacing:.22em}.intro h1{font-family:Georgia,"Songti SC","STSong",serif;font-size:clamp(31px,3.7vw,43px);line-height:1.4;letter-spacing:.015em;font-weight:500;margin:9px 0 10px}.intro h1 em{font-style:normal;color:var(--teal)}.intro p{margin:0;color:var(--body);font-size:13px;line-height:1.9;max-width:650px}.intro-details{display:flex;align-items:center;gap:17px;margin-top:14px;color:var(--muted);font-size:11px}.intro-details b{font-family:Georgia,serif;font-weight:400;font-size:17px;color:var(--ink);margin-right:4px}.intro-details span+span{padding-left:17px;border-left:1px solid #aaa0ad40}
+    .mind-orbit{height:184px;position:relative;display:grid;place-items:center;user-select:none}.mind-orbit::before{content:"";position:absolute;width:142px;height:142px;background:radial-gradient(circle at 32% 25%,#fbf6f1,#ddd1e5 72%);border-radius:50%;box-shadow:inset -10px -12px 28px #8e79a32a,0 14px 30px #79648b13}.mind-orbit .phi{position:relative;font-family:Georgia,serif;font-size:92px;font-style:italic;line-height:1;color:#756587b5;transform:translate(-4px,-5px)}.orbit-ring{position:absolute;width:211px;height:124px;border:1px solid #9786a160;border-radius:50%;transform:rotate(-34deg)}.orbit-ring.second{width:195px;height:162px;transform:rotate(42deg);border-color:#bca08e55}.orbit-dot{position:absolute;width:211px;height:124px;transform:rotate(-34deg);animation:orbit 32s linear infinite}.orbit-dot::before{content:"";position:absolute;left:21px;top:12px;width:8px;height:8px;border-radius:50%;background:var(--coral);box-shadow:0 0 0 5px #c98f7c13}.orbit-caption{position:absolute;right:0;bottom:6px;color:#978b9c;font-size:8px;letter-spacing:.2em}.orbit-star{position:absolute;right:15px;top:8px;color:#af8b79;font-family:Georgia,serif;font-size:24px;animation:breathe 6s ease-in-out infinite alternate}
+    .progress-wrap{max-width:970px;margin:0 auto 23px;animation:rise-in .7s .08s both}.progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;font-size:11px;color:var(--muted)}.progress-top strong{font-size:12px;font-weight:500;color:var(--body);letter-spacing:.1em}.progress-top strong::before{content:"";display:inline-block;width:5px;height:5px;vertical-align:middle;border-radius:50%;background:var(--teal);margin-right:8px}.progress-track{height:3px;border-radius:9px;background:#ded7df;overflow:hidden}.progress-fill{height:100%;width:0;border-radius:9px;background:linear-gradient(90deg,#aa96bb,var(--teal));transition:width .4s cubic-bezier(.2,.7,.3,1)}.chapter-line{display:flex;justify-content:space-between;margin-top:8px;gap:10px}.chapter-line span{flex:1;height:2px;background:#c7becb45;border-radius:3px;transition:background .4s}.chapter-line span.active{background:#877395}.chapter-line span.done{background:#b7a5c2}
+    .quiz-stage{position:relative;max-width:970px;margin:auto;isolation:isolate;animation:rise-in .8s .15s both}.quiz-stage::before,.quiz-stage::after{content:"";position:absolute;inset:7px 10px -10px;border:1px solid #d9d0dd;border-radius:22px;background:#eae3eb;z-index:-2;transform:rotate(-1.1deg);transition:transform .5s}.quiz-stage::after{inset:4px 3px -5px;background:#f8f2ec;transform:rotate(.8deg);z-index:-1}.quiz-card{position:relative;min-height:330px;padding:27px clamp(25px,6vw,76px) 27px;background:linear-gradient(125deg,#fffdfa,#fffaf6);border:1px solid #ffffff;border-radius:20px;box-shadow:0 3px 6px #4c3b5510,0 26px 60px -27px #503e6550;text-align:center;display:flex;flex-direction:column;overflow:hidden}.quiz-card::after{content:'“';position:absolute;left:28px;top:2px;color:#b6a3c415;font-family:Georgia,serif;font-size:130px;line-height:1;pointer-events:none}.question-copy{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;flex:1}.chapter-badge{align-self:center;display:inline-flex;align-items:center;gap:8px;color:var(--teal);font-size:10px;letter-spacing:.15em;font-weight:500;padding:5px 12px;border:1px solid #d9cfe1;border-radius:99px;background:#f2edf52e}.chapter-badge::before{content:"✧";font-size:13px}.question-num{font-family:Georgia,serif;font-size:11px;color:#aaa0aa;letter-spacing:.16em;margin:13px 0 8px}.quiz-card h2{font-family:Georgia,"Songti SC","STSong",serif;font-size:clamp(24px,2.65vw,31px);font-weight:500;line-height:1.65;letter-spacing:.025em;margin:0 auto 12px;max-width:750px;text-wrap:pretty}.question-help{font-size:11px;color:var(--muted);margin:0 0 17px}.scale{position:relative;max-width:610px;margin:8px auto 0;width:100%;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));align-items:center;justify-items:center;gap:5px}.scale::before{content:"";position:absolute;height:1px;left:4%;right:4%;top:50%;background:linear-gradient(90deg,#baabc150,#d1c5be50);z-index:0}.scale-option{position:relative;width:100%;height:58px;padding:0;border:0;background:transparent;color:#fff;cursor:pointer;display:grid;place-items:center}.scale-option::before{content:"";display:block;width:min(var(--size),calc(100% - 4px));aspect-ratio:1;border:1.6px solid var(--color);border-radius:50%;background:#fffaf6;transition:transform .22s cubic-bezier(.2,.8,.2,1.4),background .2s,box-shadow .2s}.scale-option:hover::before{transform:translateY(-3px) scale(1.07);box-shadow:0 6px 14px #6e567a16}.scale-option.selected::before{background:var(--color);box-shadow:0 0 0 5px var(--ring),0 5px 14px #77678322;animation:select-pop .28s}.scale-option.selected::after{content:"✓";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:17px;font-weight:500}.scale-labels{max-width:610px;margin:9px auto 0;width:100%;display:flex;justify-content:space-between;gap:12px;font-size:11px;letter-spacing:.08em}.scale-labels span:first-child{color:var(--teal)}.scale-labels span:nth-child(2){color:#a298a3}.scale-labels span:last-child{color:#b57e6b}.quiz-actions{max-width:970px;margin:27px auto 0;display:flex;justify-content:space-between;align-items:center;gap:20px;animation:rise-in .7s .22s both}.secondary,.primary{border-radius:99px;padding:13px 24px;cursor:pointer;font-size:12px;line-height:1.5;letter-spacing:.09em;font-weight:500;transition:transform .2s,box-shadow .2s,background .2s,opacity .2s}.secondary{border:1px solid #cfc5d1;background:#faf7f2a3;color:var(--body)}.secondary::before{content:"←";margin-right:9px}.secondary:hover:not(:disabled){background:#fffcf9;transform:translateX(-2px)}.secondary:disabled{opacity:.35;cursor:not-allowed}.primary{min-width:146px;border:1px solid var(--teal-dark);background:var(--teal-dark);color:#fff;box-shadow:0 6px 14px #4b3b5c20}.primary::after{content:"↗";margin-left:15px}.primary:hover:not(:disabled){background:#4c3d60;box-shadow:0 9px 19px #4b3b5c30;transform:translateY(-2px)}.primary:disabled{opacity:.3;box-shadow:none;cursor:not-allowed}.quiz-footer{max-width:970px;margin:32px auto 0;display:flex;align-items:center;justify-content:center;gap:10px;color:#aaa0aa;font-size:8px;letter-spacing:.24em}.quiz-footer::before,.quiz-footer::after{content:"";height:1px;width:30px;background:#b9aebc65}
+    .result{max-width:1050px;margin:0 auto}.result-hero{position:relative;isolation:isolate;overflow:hidden;background:#343043;border:1px solid #5d5268;border-radius:24px;padding:44px 43px;display:grid;grid-template-columns:minmax(0,1fr) 240px;align-items:center;gap:35px;color:#fff9f1;box-shadow:0 25px 55px -30px #4e3a6970;animation:rise-in .8s both}.result-hero::before{content:"";position:absolute;inset:-50% -10% -50% 35%;background:radial-gradient(ellipse at 70% 40%,#aa88af48,transparent 60%);z-index:-1;animation:breathe 15s infinite alternate}.result-hero::after{content:"";position:absolute;height:530px;width:530px;border:1px solid #e1cddd1c;border-radius:50%;right:-40px;top:-170px;z-index:-1}.result-hero .eyebrow{color:#c2accc}.result-hero h1{font-family:Georgia,"Songti SC","STSong",serif;font-size:clamp(32px,3.6vw,46px);line-height:1.45;font-weight:500;letter-spacing:.03em;margin:13px 0 16px;text-wrap:balance}.result-hero p{font-size:13px;line-height:1.9;color:#d1c7d4;margin:0;max-width:590px}.hero-portrait{position:relative;height:240px;width:240px;border-radius:50%;background:radial-gradient(circle at 35% 25%,#e8dfdb,#bba8be);display:grid;place-items:center;padding:14px;box-shadow:0 0 0 10px #ffffff05,0 0 0 11px #ffffff16;animation:portrait-in 1s .15s both}.hero-portrait img{display:block;max-height:100%;max-width:100%;object-fit:contain;filter:drop-shadow(0 8px 10px #47365020)}.result-highlights{display:flex;flex-wrap:wrap;gap:8px;margin-top:21px}.result-highlights span{display:inline-flex;align-items:center;padding:5px 11px;border:1px solid #c4abc449;border-radius:99px;color:#ead9e4;background:#ffffff05;font-size:10px;letter-spacing:.06em}.result-highlights span::before{content:"✧";margin-right:6px;color:#d2ac93}.result-section{margin-top:39px;animation:rise-in .7s .14s both}.section-heading{display:flex;align-items:baseline;justify-content:space-between;gap:15px;margin-bottom:17px}.section-heading h2{font-family:Georgia,"Songti SC","STSong",serif;font-weight:500;font-size:23px;letter-spacing:.03em;margin:0}.section-heading span{font-size:10px;color:var(--muted);letter-spacing:.04em}.lead-card{background:#fffcf8b8;border:1px solid #e5dce4;border-radius:18px;padding:25px 28px;box-shadow:0 10px 30px -20px #62476b20}.lead-card>p{font-size:14px;color:var(--body);line-height:1.9;margin:0}.reflection{position:relative;margin-top:20px;padding:17px 20px;background:#ede6ef8a;border-left:2px solid #a58eb2;border-radius:0 11px 11px 0}.reflection strong{display:block;color:var(--teal);font-size:9px;font-weight:500;letter-spacing:.12em;margin-bottom:7px}.reflection p{font-family:Georgia,"Songti SC","STSong",serif;color:var(--ink);font-size:17px;line-height:1.8;margin:0}.match-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:19px}.match-card{position:relative;min-width:0;background:#fffcf8;border:1px solid #e4dbe3;border-radius:18px;padding:15px 16px 22px;box-shadow:0 6px 19px -16px #654d7040;transition:transform .3s,box-shadow .3s;animation:rise-in .7s both}.match-card:nth-child(1){animation-delay:.2s}.match-card:nth-child(2){animation-delay:.3s}.match-card:nth-child(3){animation-delay:.4s}.match-card:hover{transform:translateY(-5px);box-shadow:0 18px 35px -22px #654d7050}.match-card.featured{border-color:#b9a4c4}.match-image{position:relative;height:215px;border-radius:11px;background:var(--portrait-bg);display:flex;align-items:center;justify-content:center;padding:13px;overflow:hidden;margin-bottom:19px}.match-image::after{content:"";position:absolute;width:180px;height:180px;border:1px solid #ffffff90;border-radius:50%;right:-55px;bottom:-75px;pointer-events:none}.match-image img{display:block;max-height:100%;max-width:100%;object-fit:contain;transition:transform .5s cubic-bezier(.2,.7,.3,1)}.match-card:hover .match-image img{transform:scale(1.045)}.match-rank{font-size:9px;color:var(--teal);font-weight:600;letter-spacing:.14em}.match-card h3{font-family:Georgia,"Songti SC","STSong",serif;font-size:24px;font-weight:500;line-height:1.6;letter-spacing:.03em;margin:4px 0 1px}.match-card .era{font-size:9px;color:var(--muted);margin:0 0 12px}.match-card p{font-size:12px;color:var(--body);line-height:1.9;margin:0}.match-card .reason,.match-card .difference{border-top:1px solid #e7e0e6;padding-top:12px;margin-top:13px}.match-card .reason{color:#71617e}.match-card .reason strong,.match-card .difference strong{display:block;font-size:10px;font-weight:500;color:var(--ink);margin-bottom:3px}.axes-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.axis-card{background:#fffcf8b8;border:1px solid #e5dce4;border-radius:14px;padding:20px 23px;animation:rise-in .7s .25s both}.axis-head{display:flex;justify-content:space-between;align-items:center;gap:12px}.axis-head strong{font-family:Georgia,"Songti SC","STSong",serif;font-size:18px;font-weight:500}.axis-head span{font-family:Georgia,serif;font-size:10px;color:#a197a5;letter-spacing:.12em}.axis-ends{display:flex;justify-content:space-between;margin-top:16px;font-size:10px;color:var(--body)}.axis-track{position:relative;height:4px;border-radius:99px;margin:10px 3px 18px;background:linear-gradient(90deg,#ad98bc,#e2d9dc 50%,#d9aa95)}.axis-track::after{content:"";position:absolute;left:50%;top:-3px;height:10px;width:1px;background:#bcb0c3}.axis-dot{position:absolute;top:50%;left:var(--value);transform:translate(-50%,-50%);width:14px;height:14px;border:3px solid #fffaf6;border-radius:50%;background:var(--teal-dark);box-shadow:0 0 0 1px #7c66833a;animation:axis-arrive 1.2s cubic-bezier(.18,.7,.2,1) both}.axis-card p{font-size:12px;line-height:1.8;color:var(--body);margin:0}.method{margin-top:30px;border-top:1px solid #d8cddb;border-bottom:1px solid #d8cddb;padding:0 3px}.method summary{cursor:pointer;font-size:11px;letter-spacing:.06em;color:var(--body);padding:17px 0;list-style:none}.method summary::-webkit-details-marker{display:none}.method summary::after{content:"＋";float:right;font-size:15px;color:var(--teal)}.method[open] summary::after{content:"－"}.method p{font-size:12px;line-height:1.9;color:var(--body);margin:0 0 20px;max-width:880px}.result-foot{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:28px}.result-signature{font-family:Georgia,serif;font-style:italic;font-size:24px;letter-spacing:-1px;color:#b0a2b5}
+    @keyframes rise-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}@keyframes breathe{from{transform:translate3d(0,0,0) scale(1);opacity:.55}to{transform:translate3d(10px,-12px,0) scale(1.09);opacity:.85}}@keyframes orbit{from{transform:rotate(-34deg)}to{transform:rotate(326deg)}}@keyframes select-pop{0%{transform:scale(.85)}65%{transform:scale(1.12)}100%{transform:scale(1)}}@keyframes portrait-in{from{opacity:0;transform:translateY(12px) rotate(-5deg) scale(.95)}to{opacity:1;transform:translateY(0) rotate(0) scale(1)}}@keyframes axis-arrive{from{left:50%}to{left:var(--value)}}
+    @media(min-width:1500px){.page{padding-top:44px}.intro{margin-bottom:40px}.quiz-card{min-height:360px;padding-top:34px;padding-bottom:32px}.question-num{margin-top:17px}.question-help{margin-bottom:20px}}
+    @media(max-width:740px){.header-inner{height:71px;padding:0 22px}.brand-wordmark{font-size:32px}.brand-symbol{width:30px;height:30px}.header-meta{gap:11px;font-size:10px}.desktop-word,.header-divider{display:none}.page{padding:24px 20px 54px}.intro{grid-template-columns:1fr;gap:0;margin-bottom:28px}.intro h1{font-size:34px;line-height:1.45;margin-top:10px}.intro p{font-size:12px;max-width:550px}.intro-details{margin-top:14px;gap:13px;font-size:10px}.intro-details span+span{padding-left:13px}.intro-details b{font-size:15px}.mind-orbit{display:none}.eyebrow{font-size:8px}.progress-wrap{margin-bottom:20px}.progress-top{font-size:10px}.progress-top strong{font-size:11px}.quiz-stage::before,.quiz-stage::after{border-radius:18px;inset:5px 8px -7px}.quiz-stage::after{inset:3px 3px -3px}.quiz-card{min-height:355px;padding:24px 18px 23px;border-radius:16px}.quiz-card::after{font-size:110px;left:14px}.quiz-card h2{font-size:24px;line-height:1.65}.question-num{margin:16px 0 10px;font-size:10px}.chapter-badge{font-size:9px;padding:4px 10px}.question-help{font-size:10px;margin-bottom:20px}.scale{gap:1px;margin-top:10px}.scale-option{height:52px}.scale-option::before{border-width:1.4px;width:min(var(--size),calc(100% - 5px))}.scale-option.selected::after{font-size:14px}.scale-option.selected::before{box-shadow:0 0 0 3px var(--ring),0 4px 10px #77678320}.scale-labels{font-size:10px;margin-top:10px}.quiz-actions{margin-top:25px}.secondary,.primary{padding:12px 20px;font-size:11px}.primary{min-width:130px}.quiz-footer{margin-top:28px;font-size:7px}.result-hero{grid-template-columns:1fr;gap:27px;padding:28px 25px 34px;border-radius:19px}.result-hero h1{font-size:32px;margin-top:11px}.result-hero p{font-size:12px}.hero-portrait{height:205px;width:205px;justify-self:center;grid-row:1}.result-hero>.result-hero-copy{grid-row:2}.result-highlights{margin-top:16px}.result-section{margin-top:31px}.section-heading{display:block;margin-bottom:14px}.section-heading h2{font-size:22px}.section-heading span{display:block;margin-top:4px;font-size:9px}.lead-card{padding:22px}.lead-card>p{font-size:13px}.reflection{padding:14px 16px;margin-top:16px}.reflection p{font-size:16px}.match-grid,.axes-grid{grid-template-columns:1fr}.match-grid{gap:16px}.match-card{padding:15px 17px 22px}.match-image{height:230px;margin-bottom:17px}.match-card h3{font-size:25px}.match-card p{font-size:12px}.match-card .era{font-size:10px}.axis-card{padding:19px 21px}.method p{font-size:11px}.result-foot{margin-top:24px}.result-signature{font-size:23px}}
+    @media(max-width:360px){.page{padding-left:15px;padding-right:15px}.header-inner{padding:0 16px}.header-meta strong{font-size:9px}.intro h1{font-size:30px}.intro-details{gap:10px}.intro-details span+span{padding-left:10px}.quiz-card{padding:23px 13px}.quiz-card h2{font-size:22px}.scale-labels{font-size:9px}.result-hero{padding:25px 22px}.result-hero h1{font-size:29px}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+    .radar-section{margin-top:35px}.radar-section .section-heading{align-items:center}.radar-section .section-heading h2{font-size:27px}.radar-kicker{display:block;font:9px/1.5 Georgia,serif;letter-spacing:.23em;color:#9a87a8;margin-bottom:7px}
+    .radar-board{position:relative;overflow:hidden;padding:26px;background:linear-gradient(130deg,#fffdfa,#f8f2f7);border:1px solid #d8cadd;border-radius:24px;box-shadow:0 20px 60px -38px #54406465}.radar-board-top{position:relative;display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:21px}
+    .radar-legend{display:flex;flex-wrap:wrap;gap:15px;align-items:center;color:#756b7e;font-size:11px}.radar-legend span{display:inline-flex;align-items:center;gap:7px}.radar-legend i{display:inline-block;width:19px;height:3px;border-radius:3px;background:#9474af}.radar-legend .comparison-key{background:transparent;border-top:2px dashed #c98f7c;border-radius:0;height:0}.radar-legend .comparison-legend{opacity:.4;transition:opacity .25s}.show-comparison .comparison-legend{opacity:1}
+    .radar-toggle{position:relative;flex-shrink:0;border:1px solid #d0bfd8;border-radius:99px;padding:10px 15px;background:#fffcf8;color:#796583;font-size:11px;cursor:pointer;transition:all .2s}.radar-toggle::before{content:"＋";margin-right:7px}.radar-toggle[aria-pressed="true"]{color:#fff7f1;background:#6d597e;border-color:#6d597e;box-shadow:0 4px 12px #705a8020}.radar-toggle[aria-pressed="true"]::before{content:"✓"}
+    .radar-layout{position:relative;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(245px,.85fr);gap:26px;align-items:stretch}.radar-canvas{position:relative;display:grid;place-items:center;min-width:0;margin:0;border:1px solid #65536f;border-radius:19px;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#584563 0,#342f45 72%);box-shadow:inset 0 0 80px #201b3133}.radar-canvas::before{content:"";position:absolute;width:80%;aspect-ratio:1;border:1px solid #d9bfd017;border-radius:50%;pointer-events:none}.thought-radar{position:relative;display:block;width:100%;height:auto;overflow:visible;isolation:isolate}
+    .radar-grid{fill:none;stroke:#d6c5e020;stroke-width:1}.radar-grid.balance{stroke:#d9b78d9c;stroke-dasharray:5 6;stroke-width:1.3}.radar-spoke{stroke:#d6c5e024;stroke-width:1;transition:stroke .25s}.radar-spoke.is-active{stroke:#dec3eb8a;stroke-width:1.5}.radar-axis-label{font-family:Georgia,"Songti SC","STSong",serif;font-size:19px;fill:#cdbed7;letter-spacing:.04em;transition:fill .25s}.radar-axis-label.is-active{fill:#fff5ea}.radar-axis-poles{font-size:11px;fill:#b29dc0}.radar-balance-label{font-size:10px;fill:#d8b88d;letter-spacing:.12em}
+    .radar-personal{fill:url(#radar-personal-fill);stroke:#d6b9ee;stroke-width:2.7;stroke-linejoin:round;filter:drop-shadow(0 0 8px #c1a0dd40);transform-origin:300px 300px;animation:radar-unfold 1.25s cubic-bezier(.18,.7,.2,1) both}.radar-comparison{fill:#d5a18d10;stroke:#e2ab8e;stroke-width:2;stroke-dasharray:6 5;stroke-linejoin:round;opacity:0;transition:opacity .3s;pointer-events:none}.show-comparison .radar-comparison{opacity:1}.radar-hit{cursor:pointer;outline:none}.radar-hit .radar-point{fill:#c9a7e5;stroke:#4b3b5b;stroke-width:2.5;transition:r .2s,fill .2s,stroke .2s}.radar-hit.is-active .radar-point,.radar-hit:focus .radar-point{r:7;fill:#fff3df;stroke:#d2b0ec;stroke-width:3}.radar-hit:focus .radar-focus{stroke:#f0c99c;stroke-width:1.5;stroke-dasharray:3 3;fill:none}.radar-focus{fill:none;stroke:none}.radar-center{fill:#e4d0ed;opacity:.5}
+    .radar-side{display:flex;flex-direction:column;min-width:0}.radar-current{padding:3px 0 18px;border-bottom:1px solid #dfd2e2;min-height:135px}.radar-current-index{font:10px Georgia,serif;letter-spacing:.2em;color:#9a86a8}.radar-current h3{font-family:Georgia,"Songti SC","STSong",serif;font-size:25px;font-weight:500;margin:8px 0 9px;line-height:1.4}.radar-current p{font-size:12px;line-height:1.85;margin:0;color:#7b6c84}.radar-current .radar-comparison-copy{color:#ae7f6b;font-size:11px;margin-top:7px}
+    .radar-axis-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:16px}.radar-axis-row{padding:10px 11px;text-align:left;background:#fffcf8b8;border:1px solid #e8dfe9;border-radius:11px;cursor:pointer;color:#796c81;min-width:0;transition:background .2s,border-color .2s,transform .2s}.radar-axis-row:hover{border-color:#c6b0d1;transform:translateY(-1px)}.radar-axis-row[aria-pressed="true"]{border-color:#b9a0c8;background:#eee4f1;box-shadow:0 3px 10px #9676aa10}.radar-axis-row strong{display:block;font-size:12px;font-weight:500;color:#66516f;white-space:nowrap}.radar-axis-row small{display:flex;align-items:center;justify-content:space-between;gap:3px;margin-top:5px;font-size:9px;line-height:1.6;white-space:nowrap;color:#a18daa}.radar-axis-row .chosen-pole{color:#6e527f;font-weight:650}
+    .radar-reading{position:relative;display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding-top:18px;margin-top:21px;border-top:1px solid #dfd2e2;color:#8d7b96;font-size:10px;line-height:1.8}.radar-reading strong{font-weight:500;color:#796382}.axes-details{margin-top:17px;padding:0 3px}.axes-details>summary{font-size:11px;letter-spacing:.05em;color:#7d688a;cursor:pointer;list-style:none;padding:10px 0}.axes-details>summary::-webkit-details-marker{display:none}.axes-details>summary::before{content:"＋";display:inline-block;margin-right:9px}.axes-details[open]>summary::before{content:"－"}.axes-details .axes-grid{margin-top:9px}.axes-details .axis-card{box-shadow:none;padding:17px 20px}.axes-details .axis-head strong{font-size:16px}.axes-details .axis-card p{font-size:11px}.axes-details .axis-ends{font-size:10px}.axes-details .axis-track{margin-bottom:14px}
+    @keyframes radar-unfold{from{opacity:0;transform:scale(.25)}to{opacity:1;transform:scale(1)}}
+    @media(max-width:900px){.radar-board{padding:20px}.radar-layout{grid-template-columns:minmax(0,1.15fr) minmax(235px,.85fr);gap:20px}.radar-current h3{font-size:23px}.radar-axis-row{padding:9px 8px}.radar-axis-row strong{font-size:11px}.radar-axis-row small{font-size:8px}}
+    @media(max-width:740px){.radar-section{margin-top:29px}.radar-section .section-heading{display:block}.radar-section .section-heading h2{font-size:25px}.radar-board{padding:16px;border-radius:19px}.radar-board-top{align-items:flex-start;gap:10px;margin-bottom:15px}.radar-legend{font-size:10px;gap:8px;flex-direction:column;align-items:flex-start}.radar-toggle{font-size:10px;padding:9px 11px;max-width:58%;white-space:normal;text-align:center}.radar-layout{grid-template-columns:1fr;gap:20px}.radar-canvas{border-radius:14px}.radar-axis-label{font-size:20px}.radar-axis-poles{font-size:12px}.radar-current{padding:0 2px 16px;min-height:0}.radar-current h3{font-size:24px}.radar-current p{font-size:12px}.radar-axis-list{gap:8px;margin-top:15px}.radar-axis-row{padding:12px 13px}.radar-axis-row strong{font-size:12px}.radar-axis-row small{font-size:10px;margin-top:5px}.radar-reading{display:block;margin-top:17px;padding-top:15px;font-size:10px}.radar-reading strong{display:block;margin-bottom:4px}.axes-details{margin-top:13px}.axes-details .axis-card{padding:16px 18px}}
+    @media(prefers-reduced-motion:reduce){.radar-personal{animation:none}.radar-comparison,.radar-axis-row,.radar-spoke,.radar-axis-label,.radar-hit .radar-point{transition:none}}
+  </style>
+</head>
+<body>
+  <div class="ambient" aria-hidden="true"><span class="ambient-line"></span><span class="ambient-line"></span><span class="ambient-line"></span></div>
+  <header class="site-header"><div class="header-inner"><div class="brand" aria-label="philome"><svg class="brand-symbol" viewBox="0 0 40 40" fill="none" aria-hidden="true"><ellipse cx="20" cy="20" rx="17" ry="9" transform="rotate(-35 20 20)" stroke="currentColor" stroke-width="1"/><ellipse cx="20" cy="20" rx="17" ry="9" transform="rotate(35 20 20)" stroke="currentColor" stroke-width="1"/><circle cx="20" cy="20" r="3" fill="currentColor"/><circle cx="33.6" cy="10.6" r="2.2" fill="#c98f7c"/></svg><span class="brand-wordmark">philome<i>.</i></span></div><div class="header-meta"><span class="desktop-word">A PORTRAIT OF YOUR MIND</span><span class="header-divider"></span><span class="header-spark"></span><strong>认识自己，从一个选择开始</strong></div></div></header>
+  <main class="page">
+    <section id="quiz" aria-live="polite">
+      <div class="intro"><div class="intro-copy"><div class="eyebrow">A LITTLE CLOSER TO YOURSELF</div><h1>你的思想，<br><em>自成一片宇宙。</em></h1><p>从日常的微小选择出发，遇见与你共鸣的思想家。</p><div class="intro-details"><span><b>64</b> 道情境</span><span><b>08</b> 条坐标</span><span><b id="thinker-count">16</b> 位思想家</span><span>约 10 分钟</span></div></div><div class="mind-orbit" aria-hidden="true"><span class="phi">φ</span><span class="orbit-ring"></span><span class="orbit-ring second"></span><span class="orbit-dot"></span><span class="orbit-star">✧</span><span class="orbit-caption">THE MIND ATLAS · 01</span></div></div>
+      <div class="progress-wrap"><div class="progress-top"><strong id="chapter-name">认识世界</strong><span id="progress-text">第 1 题 / 共 64 题</span></div><div class="progress-track" role="progressbar" aria-label="测试进度" aria-valuemin="0" aria-valuemax="64" aria-valuenow="0" id="progress-track"><div class="progress-fill" id="progress-fill"></div></div><div class="chapter-line" aria-hidden="true" id="chapter-line"></div></div>
+      <div class="quiz-stage"><div class="quiz-card"><div class="question-copy"><div class="chapter-badge" id="chapter-badge">01 · 认识世界</div><p class="question-num" id="question-num">问题 01</p><h2 id="question-title"></h2><p class="question-help">这句话，与你平时的想法有多接近？</p></div><div id="scale" class="scale" role="group" aria-label="同意程度"></div><div class="scale-labels"><span>同意</span><span>中立</span><span>不同意</span></div></div></div>
+      <div class="quiz-actions"><button class="secondary" id="prev" type="button">上一题</button><button class="primary" id="next" type="button" disabled>下一题</button></div><div class="quiz-footer" aria-hidden="true">EVERY CHOICE IS A LITTLE PIECE OF YOU</div>
+    </section>
+    <section id="result" class="result hidden" aria-live="polite"></section>
+  </main>
+  <script>
+    const dimensions=[
+  {
+    "key": "reason",
+    "name": "认识世界",
+    "left": "经验观察",
+    "right": "概念推演",
+    "descriptions": [
+      "你更愿意从观察、尝试和亲身经历中检验观点。",
+      "你让实际观察与概念推演彼此校准。",
+      "你更愿意先澄清概念，再从基本前提逐步推演。"
+    ]
+  },
+  {
+    "key": "freedom",
+    "name": "面对规则",
+    "left": "共同规范",
+    "right": "自主选择",
+    "descriptions": [
+      "你看重经过共同认可的规范，愿意为它保留稳定的边界。",
+      "你在共同约定与自主选择之间寻找平衡。",
+      "你更看重自己作决定的空间，也愿意重新审视既有惯例。"
+    ]
+  },
+  {
+    "key": "self",
+    "name": "人与他人",
+    "left": "共同体",
+    "right": "个体",
+    "descriptions": [
+      "你倾向于从关系与责任中理解自我。",
+      "你在归属与独立之间寻找平衡。",
+      "你格外看重个人定义人生的空间。"
+    ]
+  },
+  {
+    "key": "certainty",
+    "name": "面对未知",
+    "left": "怀疑",
+    "right": "确信",
+    "descriptions": [
+      "你愿意保留疑问，让思考继续开放。",
+      "你会形成判断，也愿意修正它。",
+      "你希望找到值得捍卫的稳定信念。"
+    ]
+  },
+  {
+    "key": "ethics",
+    "name": "判断对错",
+    "left": "原则",
+    "right": "结果",
+    "descriptions": [
+      "你首先在意行为能否遵守一致的原则。",
+      "你会同时考虑原则和实际影响。",
+      "你更重视行为带来的具体结果。"
+    ]
+  },
+  {
+    "key": "meaning",
+    "name": "寻找意义",
+    "left": "发现",
+    "right": "创造",
+    "descriptions": [
+      "你相信意义可以在传统与世界中被发现。",
+      "你从既有智慧与个人选择中寻找意义。",
+      "你相信意义由人的选择和行动创造。"
+    ]
+  },
+  {
+    "key": "inner",
+    "name": "理解自己",
+    "left": "明确理由",
+    "right": "隐含动机",
+    "descriptions": [
+      "解释行为时，你更信赖当事人能明确说明的理由和处境。",
+      "你同时留意明确的理由与不容易察觉的动机。",
+      "你会追问情绪、习惯和未说出口的愿望怎样推动选择。"
+    ]
+  },
+  {
+    "key": "expression",
+    "name": "表达真相",
+    "left": "直接论证",
+    "right": "故事想象",
+    "descriptions": [
+      "你倾向于把观点直接讲清楚并给出理由。",
+      "你会视场合使用论证或故事。",
+      "你喜欢借故事、人物和想象看见复杂的真实。"
+    ]
+  }
+];
+    const reflectionQuestions=[
+      '当亲身经历与一套严密的推理相冲突时，你会先重新检查哪一边？',
+      '一条规则保护了多数人，却限制了少数人的选择时，你会如何判断它该不该改？',
+      '当自己的选择让亲近的人失望时，你愿意承担怎样的责任？',
+      '你最坚定的一个想法，值得再追问一次“为什么”吗？',
+      '如果守住规则与减少伤害不能两全，你会先守住什么？',
+      '如果没有现成的人生答案，你愿意把时间投入哪件事？',
+      '你最近一次“明知不想这样却还是这样做”，背后可能有什么感受？',
+      '有没有一个故事让你理解了原本不同意的人？'
+    ];
+    const questions=[
+  {
+    "d": 0,
+    "p": -1,
+    "t": "朋友推荐一种学习方法时，我更想先亲自试几天，再判断它有没有用。"
+  },
+  {
+    "d": 0,
+    "p": 1,
+    "t": "遇到一个新问题，我通常先搭起清楚的概念框架，而不是马上收集具体案例。"
+  },
+  {
+    "d": 0,
+    "p": 1,
+    "t": "小组争论“怎样才算公平”时，我更想先把公平的定义和推理讲清楚。"
+  },
+  {
+    "d": 0,
+    "p": -1,
+    "t": "一套建议听起来逻辑完整，却帮不了我眼前的难题，我会优先相信亲身感受。"
+  },
+  {
+    "d": 0,
+    "p": -1,
+    "t": "挑选新的作息习惯时，我愿意实际试一周，再决定是否长期坚持。"
+  },
+  {
+    "d": 0,
+    "p": 1,
+    "t": "面对一个难题，一套前提清楚、层层相扣的解释，往往比一连串成功经验更能说服我。"
+  },
+  {
+    "d": 0,
+    "p": -1,
+    "t": "理解一个抽象道理时，具体见闻和实际例子通常比概念定义更能说服我。"
+  },
+  {
+    "d": 0,
+    "p": 1,
+    "t": "两位专家结论相反时，我会先比较各自的前提和推理过程。"
+  },
+  {
+    "d": 1,
+    "p": 1,
+    "t": "公司沿用多年的打卡规定妨碍弹性工作时，我会支持重新讨论这条规定。"
+  },
+  {
+    "d": 1,
+    "p": -1,
+    "t": "在大家认可的共同规则下生活，比每个人都随时自行决定，更让我安心。"
+  },
+  {
+    "d": 1,
+    "p": 1,
+    "t": "家人希望我选稳定的专业，但我更喜欢另一个方向，我会认真争取自己的选择。"
+  },
+  {
+    "d": 1,
+    "p": -1,
+    "t": "一个新制度看起来更自由，但细节尚不清楚时，我倾向于先沿用旧办法。"
+  },
+  {
+    "d": 1,
+    "p": 1,
+    "t": "聚会总按同一套规矩安排，我会主动提议换一种更适合大家的方式。"
+  },
+  {
+    "d": 1,
+    "p": -1,
+    "t": "如果一项约定经过大家平等讨论，我愿意接受它，即使它限制了我的某些个人选择。"
+  },
+  {
+    "d": 1,
+    "p": 1,
+    "t": "朋友因穿着不符合单位惯例被批评，我会先质疑这条惯例是否合理。"
+  },
+  {
+    "d": 1,
+    "p": -1,
+    "t": "当个人安排与一项公平的集体约定冲突时，我通常愿意先服从约定。"
+  },
+  {
+    "d": 2,
+    "p": -1,
+    "t": "当个人发展与共同目标冲突时，我更愿意从对群体的责任出发作决定。"
+  },
+  {
+    "d": 2,
+    "p": 1,
+    "t": "一份工作很体面，却把我的生活完全变成别人期待的样子，我会考虑离开。"
+  },
+  {
+    "d": 2,
+    "p": -1,
+    "t": "原本想独自休息的周末，家人突然需要帮忙，我通常会调整计划。"
+  },
+  {
+    "d": 2,
+    "p": 1,
+    "t": "即使朋友不理解我的爱好，我也愿意继续投入，而不是换成大家都喜欢的事。"
+  },
+  {
+    "d": 2,
+    "p": -1,
+    "t": "理解“我是谁”时，我会先想到自己与家人、朋友和社会的关系。"
+  },
+  {
+    "d": 2,
+    "p": 1,
+    "t": "一群人都说某条人生路线最稳妥时，我仍希望保留自己试错的空间。"
+  },
+  {
+    "d": 2,
+    "p": -1,
+    "t": "朋友犯了错时，我更愿意陪他一起面对后果，而不是说“这是他自己的事”。"
+  },
+  {
+    "d": 2,
+    "p": 1,
+    "t": "为人生安排优先次序时，我倾向于从自己的目标出发，再考虑他人的期待。"
+  },
+  {
+    "d": 3,
+    "p": -1,
+    "t": "听到“成功就该有房有车”时，我会先问为什么要用这些东西定义成功。"
+  },
+  {
+    "d": 3,
+    "p": 1,
+    "t": "遇到相反观点时，我更想找出一套能长期站住脚的判断依据。"
+  },
+  {
+    "d": 3,
+    "p": -1,
+    "t": "聊到人死后会怎样时，我可以坦然说“我现在不知道”。"
+  },
+  {
+    "d": 3,
+    "p": 1,
+    "t": "即使要花很长时间，我也希望给重要问题找到一个足够确定的答案。"
+  },
+  {
+    "d": 3,
+    "p": -1,
+    "t": "一条新闻只给出一种解释时，我通常会再看看有没有其他可能。"
+  },
+  {
+    "d": 3,
+    "p": 1,
+    "t": "比起不断打开新的可能，我更看重为自己的判断建立稳固的基础。"
+  },
+  {
+    "d": 3,
+    "p": -1,
+    "t": "朋友说“这件事肯定是某人的错”，在证据不全时我会暂缓判断。"
+  },
+  {
+    "d": 3,
+    "p": 1,
+    "t": "面对根本性的问题，我相信经过充分思考，能够找到值得确信的结论。"
+  },
+  {
+    "d": 4,
+    "p": -1,
+    "t": "如果一句善意的谎话能减少眼前的伤害，我仍会先问：能否把这种做法当作人人适用的准则？"
+  },
+  {
+    "d": 4,
+    "p": 1,
+    "t": "为避免更多人受伤，临时违反一条普通规定，我觉得有时是可以接受的。"
+  },
+  {
+    "d": 4,
+    "p": -1,
+    "t": "公开某人的隐私能让大家得到提醒时，我仍会先考虑是否侵犯了他。"
+  },
+  {
+    "d": 4,
+    "p": 1,
+    "t": "评价一个决定时，我会先看它实际帮助了谁、伤害了谁。"
+  },
+  {
+    "d": 4,
+    "p": -1,
+    "t": "即使破例能给更多人带来好处，我也倾向于守住同样适用于每个人的底线。"
+  },
+  {
+    "d": 4,
+    "p": 1,
+    "t": "如果严格照规则分配资源会让最困难的人更吃亏，我支持作出调整。"
+  },
+  {
+    "d": 4,
+    "p": -1,
+    "t": "做出承诺之后，即使改口会带来更好的整体结果，我仍认为守约本身有重要价值。"
+  },
+  {
+    "d": 4,
+    "p": 1,
+    "t": "比较两种做法时，只要能明显减轻更多人的痛苦，我愿意选择在原则上不那么整齐的一种。"
+  },
+  {
+    "d": 5,
+    "p": -1,
+    "t": "当生活失去方向时，我更相信有些值得追求的东西本来就在那里，只是还没被我发现。"
+  },
+  {
+    "d": 5,
+    "p": 1,
+    "t": "一份工作起初没有“使命感”，我相信自己可以通过投入让它变得有意义。"
+  },
+  {
+    "d": 5,
+    "p": -1,
+    "t": "比起为生活发明一个目标，我更愿意从自然、人性或已有的智慧中发现它。"
+  },
+  {
+    "d": 5,
+    "p": 1,
+    "t": "即使没有一个预设的人生目标，我也能在自己的选择里找到方向。"
+  },
+  {
+    "d": 5,
+    "p": -1,
+    "t": "我觉得好的生活有一些不由个人喜好决定的价值，需要我们去体会和发现。"
+  },
+  {
+    "d": 5,
+    "p": 1,
+    "t": "如果原本的计划被打乱，我会尝试给新局面创造新的目标。"
+  },
+  {
+    "d": 5,
+    "p": -1,
+    "t": "面对“为什么要努力”，我倾向于寻找一种超出个人选择、值得共同追求的意义。"
+  },
+  {
+    "d": 5,
+    "p": 1,
+    "t": "别人说我选的路“没有意义”时，我仍相信投入本身能让它有意义。"
+  },
+  {
+    "d": 6,
+    "p": 1,
+    "t": "朋友明明想休息，却总把日程排满，我会好奇他是不是在回避某种感受。"
+  },
+  {
+    "d": 6,
+    "p": -1,
+    "t": "回想一次重要选择，我更相信自己当时明确说出的理由，而不是事后追索隐藏动机。"
+  },
+  {
+    "d": 6,
+    "p": 1,
+    "t": "我对某人突然很生气时，会想想这份情绪是否和眼前的事之外的经历有关。"
+  },
+  {
+    "d": 6,
+    "p": -1,
+    "t": "选工作时，我更信赖自己能说清的条件和理由，而不是模糊的感觉。"
+  },
+  {
+    "d": 6,
+    "p": 1,
+    "t": "我一再拖延同一件事时，会问自己是否有没承认的担心。"
+  },
+  {
+    "d": 6,
+    "p": -1,
+    "t": "解释一个反复出现的行为时，我会先从当事人能清楚说明的理由和眼前处境入手。"
+  },
+  {
+    "d": 6,
+    "p": 1,
+    "t": "一句普通的话让我反应很大时，我会留意它是否碰到了旧的记忆。"
+  },
+  {
+    "d": 6,
+    "p": -1,
+    "t": "回看自己一次冲动决定时，我更想找出当时能观察到的原因。"
+  },
+  {
+    "d": 7,
+    "p": 1,
+    "t": "要说明朋友为什么难过时，我觉得讲出他经历的一小段故事，比列三条原因更有效。"
+  },
+  {
+    "d": 7,
+    "p": -1,
+    "t": "解释一个复杂观点时，我会先给出明确结论和理由，再举例子。"
+  },
+  {
+    "d": 7,
+    "p": 1,
+    "t": "要理解一种与自己完全不同的生活，我更信赖一个人物的完整故事，而不只是几条概括。"
+  },
+  {
+    "d": 7,
+    "p": -1,
+    "t": "参加讨论时，我更喜欢对方直接说观点，而不是绕一个很长的故事。"
+  },
+  {
+    "d": 7,
+    "p": 1,
+    "t": "讨论公平时，我更愿意先讲一个人的遭遇，而不是从通用定义展开。"
+  },
+  {
+    "d": 7,
+    "p": -1,
+    "t": "写一篇表达立场的文章时，我会先整理证据和推理顺序。"
+  },
+  {
+    "d": 7,
+    "p": 1,
+    "t": "面对难以说清的心情，我更愿意借电影、诗句或比喻来表达。"
+  },
+  {
+    "d": 7,
+    "p": -1,
+    "t": "朋友讲完亲身经历后，我仍想知道他希望我接受的具体结论是什么。"
+  }
+];
+    const philosophers=[
+  {
+    "name": "苏格拉底",
+    "latin": "Socrates",
+    "era": "哲学 · 古希腊",
+    "image": "socrates.webp",
+    "bg": "#e7f1f4",
+    "v": [
+      0.35,
+      0.12,
+      0.05,
+      -0.9,
+      -0.4,
+      -0.55,
+      -0.4,
+      -0.65
+    ],
+    "blurb": "他不断追问“我真的知道吗”，把反省当作好生活的起点。"
+  },
+  {
+    "name": "庄子",
+    "latin": "Zhuangzi",
+    "era": "哲学 · 战国时期",
+    "image": "zhuangzi.webp",
+    "bg": "#e8f5ed",
+    "v": [
+      -0.6,
+      0.85,
+      0.1,
+      -0.95,
+      0,
+      -0.25,
+      0.2,
+      0.95
+    ],
+    "blurb": "他借寓言松动固定的是非与视角，在变化的处境里探索自然、自得的生活。"
+  },
+  {
+    "name": "孔子",
+    "latin": "Confucius",
+    "era": "哲学 · 春秋时期",
+    "image": "confucius.webp",
+    "bg": "#fff1df",
+    "v": [
+      -0.3,
+      -0.72,
+      -0.95,
+      0.55,
+      -0.25,
+      -0.75,
+      -0.2,
+      -0.55
+    ],
+    "blurb": "他从人与人的关系出发，重视责任、礼与日常实践。"
+  },
+  {
+    "name": "康德",
+    "latin": "Immanuel Kant",
+    "era": "哲学 · 启蒙时代",
+    "image": "kant.webp",
+    "bg": "#eeeafd",
+    "v": [
+      0.95,
+      0.45,
+      0.25,
+      0.82,
+      -1,
+      -0.4,
+      -0.75,
+      -0.85
+    ],
+    "blurb": "他让理性为自己立法，坚持可普遍遵守的原则，并把每个人视为目的。"
+  },
+  {
+    "name": "尼采",
+    "latin": "Friedrich Nietzsche",
+    "era": "哲学 · 19 世纪",
+    "image": "nietzsche.webp",
+    "bg": "#fff0e7",
+    "v": [
+      0.15,
+      0.9,
+      0.95,
+      -0.35,
+      0.32,
+      1,
+      0.35,
+      0.55
+    ],
+    "blurb": "他质疑既定价值，鼓励人勇敢创造自己的方向。"
+  },
+  {
+    "name": "萨特",
+    "latin": "Jean-Paul Sartre",
+    "era": "哲学 · 20 世纪",
+    "image": "sartre.webp",
+    "bg": "#e9eefb",
+    "v": [
+      0.2,
+      1,
+      0.9,
+      -0.05,
+      0.2,
+      1,
+      0.05,
+      0.15
+    ],
+    "blurb": "他把自由与责任放在一起：我们通过行动成为自己。"
+  },
+  {
+    "name": "亚里士多德",
+    "latin": "Aristotle",
+    "era": "哲学 · 古希腊",
+    "image": "aristotle.webp",
+    "bg": "#fff3db",
+    "v": [
+      -0.25,
+      -0.35,
+      -0.55,
+      0.45,
+      0.05,
+      -0.55,
+      -0.35,
+      -0.6
+    ],
+    "blurb": "他从具体生活与观察出发，在共同生活中培养德性，并运用实践判断寻找合宜。"
+  },
+  {
+    "name": "加缪",
+    "latin": "Albert Camus",
+    "era": "哲学与文学 · 20 世纪",
+    "image": "camus.webp",
+    "bg": "#e9f5f4",
+    "v": [
+      -0.65,
+      0.65,
+      -0.3,
+      -0.75,
+      -0.45,
+      0.15,
+      -0.15,
+      0.65
+    ],
+    "blurb": "他直面荒诞，在反抗中守住人的尊严、行动的限度，以及人与人的团结。"
+  },
+  {
+    "name": "弗洛伊德",
+    "latin": "Sigmund Freud",
+    "era": "心理学 · 20 世纪",
+    "image": "freud.webp",
+    "bg": "#f3e9e5",
+    "v": [
+      -0.35,
+      -0.15,
+      0.15,
+      -0.25,
+      0.25,
+      0.2,
+      1,
+      -0.15
+    ],
+    "blurb": "他的思想提醒人留意梦、情绪与未察觉的愿望如何影响行为。"
+  },
+  {
+    "name": "阿伦特",
+    "latin": "Hannah Arendt",
+    "era": "政治思想 · 20 世纪",
+    "image": "arendt.webp",
+    "bg": "#e6f0f7",
+    "v": [
+      0.35,
+      0.65,
+      -0.75,
+      -0.25,
+      -0.45,
+      0.15,
+      -0.3,
+      -0.65
+    ],
+    "blurb": "她关注人们如何在公共生活中共同思考、发言与行动。"
+  },
+  {
+    "name": "波伏娃",
+    "latin": "Simone de Beauvoir",
+    "era": "哲学与文学 · 20 世纪",
+    "image": "beauvoir.webp",
+    "bg": "#f7e9ef",
+    "v": [
+      0.1,
+      0.85,
+      -0.25,
+      -0.35,
+      -0.25,
+      0.85,
+      0.2,
+      0.5
+    ],
+    "blurb": "她从具体处境出发理解自由，强调自己的自由也要以他人的自由为条件。"
+  },
+  {
+    "name": "斯宾诺莎",
+    "latin": "Baruch Spinoza",
+    "era": "哲学 · 17 世纪",
+    "image": "spinoza.webp",
+    "bg": "#e8edfa",
+    "v": [
+      0.95,
+      0.2,
+      -0.35,
+      0.8,
+      -0.3,
+      -0.45,
+      -0.65,
+      -0.8
+    ],
+    "blurb": "他试图理解情绪的成因，相信更清楚的认识能带来更大的自由。"
+  },
+  {
+    "name": "陀思妥耶夫斯基",
+    "latin": "Fyodor Dostoevsky",
+    "era": "文学 · 19 世纪",
+    "image": "dostoevsky.webp",
+    "bg": "#f4eae6",
+    "v": [
+      -0.45,
+      -0.1,
+      -0.2,
+      -0.65,
+      -0.65,
+      -0.55,
+      0.85,
+      0.75
+    ],
+    "blurb": "他的小说让罪责、信仰、自由与人心的矛盾彼此交锋。"
+  },
+  {
+    "name": "伍尔夫",
+    "latin": "Virginia Woolf",
+    "era": "文学 · 20 世纪",
+    "image": "woolf.webp",
+    "bg": "#e9eafa",
+    "v": [
+      -0.45,
+      0.55,
+      0.3,
+      -0.45,
+      0.1,
+      0.55,
+      0.65,
+      0.95
+    ],
+    "blurb": "她用细腻的内心描写，捕捉日常里难以直说的感受与变化。"
+  },
+  {
+    "name": "鲁迅",
+    "latin": "Lu Xun",
+    "era": "文学 · 20 世纪",
+    "image": "luxun.webp",
+    "bg": "#f8eee1",
+    "v": [
+      -0.55,
+      0.65,
+      -0.35,
+      -0.55,
+      0.35,
+      0.4,
+      0.35,
+      0.75
+    ],
+    "blurb": "他以文学唤醒对日常苦难的感受，质疑麻木与旧观念，也追问改变的可能。"
+  },
+  {
+    "name": "博尔赫斯",
+    "latin": "Jorge Luis Borges",
+    "era": "文学 · 20 世纪",
+    "image": "borges.webp",
+    "bg": "#e9f3ef",
+    "v": [
+      0.15,
+      0.5,
+      0.55,
+      -0.95,
+      0.15,
+      0.65,
+      0.2,
+      1
+    ],
+    "blurb": "他用迷宫般的故事探索时间、身份和想象的边界。"
+  },
+  {
+    "name": "卢梭",
+    "latin": "Jean-Jacques Rousseau",
+    "era": "哲学与文学 · 18 世纪",
+    "image": "rousseau.webp",
+    "bg": "#e8efe1",
+    "v": [
+      -0.35,
+      0.2,
+      -0.85,
+      0.4,
+      -0.55,
+      -0.5,
+      0.35,
+      0.3
+    ],
+    "blurb": "他追问人怎样在共同生活中仍然自由，让平等公民共同制定规则，而非听命于强者。"
+  },
+  {
+    "name": "笛卡尔",
+    "latin": "René Descartes",
+    "era": "哲学 · 17 世纪",
+    "image": "descartes.webp",
+    "bg": "#e8e9f8",
+    "v": [
+      1,
+      0.1,
+      0.6,
+      1,
+      -0.1,
+      -0.65,
+      -0.9,
+      -1
+    ],
+    "blurb": "他把怀疑当作方法，试图从清楚、不可动摇的起点重建可靠的知识。"
+  },
+  {
+    "name": "休谟",
+    "latin": "David Hume",
+    "era": "哲学 · 18 世纪",
+    "image": "hume.webp",
+    "bg": "#f6e9df",
+    "v": [
+      -1,
+      -0.2,
+      -0.15,
+      -0.85,
+      0.45,
+      -0.25,
+      0.55,
+      -0.55
+    ],
+    "blurb": "他从经验、习惯与情感理解人，提醒我们为推断保留分寸，也重视人与人的同感。"
+  },
+  {
+    "name": "卡夫卡",
+    "latin": "Franz Kafka",
+    "era": "文学 · 20 世纪",
+    "image": "kafka.webp",
+    "bg": "#e9e6ed",
+    "v": [
+      -0.35,
+      0.1,
+      0.35,
+      -0.9,
+      -0.15,
+      0.05,
+      0.8,
+      1
+    ],
+    "blurb": "他把陌生的秩序、隐秘的焦虑与难以解释的遭遇写成故事，让日常显露出荒诞。"
+  }
+];
+    const scaleLabels=['非常同意','同意','有点同意','中立','有点不同意','不同意','非常不同意'];
+    const scaleSizes=[52,46,39,32,39,46,52];
+    const answers=Array(questions.length).fill(null);let current=0,finished=false;
+    const progressKey='philosophy-portrait-progress-64';
+    const progressVersion=2;
+    try{
+      const saved=JSON.parse(localStorage.getItem(progressKey));
+      if(saved&&saved.version===progressVersion&&Array.isArray(saved.answers)&&saved.answers.length===questions.length){
+        saved.answers.forEach((value,i)=>{if(value===null||Number.isInteger(value)&&value>=0&&value<=6)answers[i]=value});
+        if(Number.isInteger(saved.current)&&saved.current>=0&&saved.current<questions.length)current=saved.current;
+        finished=saved.finished===true&&answers.every(value=>value!==null);
+      }
+    }catch{}
+    function saveProgress(){try{localStorage.setItem(progressKey,JSON.stringify({version:progressVersion,answers,current,finished}))}catch{}}
+    const $=id=>document.getElementById(id);
+    let lastRenderedQuestion=-1;
+    function renderQuestion(){
+      const q=questions[current],d=dimensions[q.d],answered=answers.filter(n=>n!==null).length;
+      if(current!==lastRenderedQuestion){const copy=document.querySelector('.question-copy');if(copy.animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches)copy.animate([{opacity:0,transform:'translateY(9px)'},{opacity:1,transform:'translateY(0)'}],{duration:380,easing:'cubic-bezier(.2,.7,.3,1)'});lastRenderedQuestion=current;}
+      $('chapter-name').textContent=d.name;$('progress-text').textContent=`第 ${current+1} 题 / 共 ${questions.length} 题`;
+      $('progress-fill').style.width=`${answered/questions.length*100}%`;
+      $('progress-track').setAttribute('aria-valuenow',answered);
+      $('chapter-line').innerHTML=dimensions.map((_,i)=>`<span class="${i<q.d?'done':i===q.d?'active':''}"></span>`).join('');
+      $('chapter-badge').textContent=`${String(q.d+1).padStart(2,'0')} · ${d.name}`;
+      $('question-num').textContent=`问题 ${String(current+1).padStart(2,'0')}`;$('question-title').textContent=q.t;
+      $('scale').innerHTML=scaleLabels.map((label,i)=>{const side=i<3?'agree':i>3?'disagree':'neutral';const color=side==='agree'?'var(--teal)':side==='disagree'?'var(--coral)':'#b3a8b5';const ring=side==='agree'?'#eee7f2':side==='disagree'?'#f5e5dc':'#eee8ed';return `<button type="button" class="scale-option ${answers[current]===i?'selected':''}" data-index="${i}" aria-label="${label}" aria-pressed="${answers[current]===i}" style="--size:${scaleSizes[i]}px;--color:${color};--ring:${ring}"></button>`}).join('');
+      $('scale').querySelectorAll('button').forEach(button=>button.addEventListener('click',()=>choose(Number(button.dataset.index))));
+      $('prev').disabled=current===0;$('next').disabled=answers[current]===null;$('next').textContent=current===questions.length-1?'展开我的图谱':'下一题';
+    }
+    let autoAdvanceTimer=null;
+    function cancelAutoAdvance(){if(autoAdvanceTimer!==null){clearTimeout(autoAdvanceTimer);autoAdvanceTimer=null}}
+    function nextQuestion(){cancelAutoAdvance();if(answers[current]===null)return;if(current<questions.length-1){current++;saveProgress();renderQuestion()}else renderResult()}
+    function choose(i){cancelAutoAdvance();answers[current]=i;finished=false;saveProgress();renderQuestion();$('scale').querySelector(`[data-index="${i}"]`).focus();autoAdvanceTimer=setTimeout(nextQuestion,320)}
+    function scores(){const sum=Array(dimensions.length).fill(0),count=Array(dimensions.length).fill(0);questions.forEach((q,i)=>{sum[q.d]+=(3-answers[i])*q.p;count[q.d]++});const vector=sum.map((n,i)=>n/(count[i]*3));const ranked=philosophers.map(p=>({...p,distance:Math.sqrt(p.v.reduce((total,n,i)=>total+(n-vector[i])**2,0))})).sort((a,b)=>a.distance-b.distance);return {vector,ranked}}
+    function description(d,value){return d.descriptions[value<-.34?0:value>.34?2:1]}
+    function matchReason(p,vector){const nearest=dimensions.map((d,i)=>({name:d.name,difference:Math.abs(vector[i]-p.v[i])})).sort((a,b)=>a.difference-b.difference).slice(0,2);return `你们在“${nearest[0].name}”和“${nearest[1].name}”上的倾向较接近。`}
+    function matchDifference(p,vector){
+      const farthest=dimensions.map((d,i)=>({d,i,difference:Math.abs(vector[i]-p.v[i])})).sort((a,b)=>b.difference-a.difference)[0];
+      if(farthest.difference<.28)return `最细微的区别在“${farthest.d.name}”上，整体仍很接近。`;
+      const side=value=>value<-.25?farthest.d.left:value>.25?farthest.d.right:'中间位置';
+      const yours=side(vector[farthest.i]),theirs=side(p.v[farthest.i]);
+      if(yours===theirs)return `在“${farthest.d.name}”上，你们都靠近${yours}，但倾向程度不同。`;
+      return `在“${farthest.d.name}”上，你更靠近${yours}；${p.name}的简化画像更靠近${theirs}。`;
+    }
+    function radarRadius(value,radius=198){return (Math.max(-1,Math.min(1,value))+1)*radius/2}
+    function radarPoint(index,value,radius=198){const angle=-Math.PI/2+index*Math.PI*2/dimensions.length;const r=radarRadius(value,radius);return {x:300+Math.cos(angle)*r,y:300+Math.sin(angle)*r}}
+    function radarPolygon(vector){return vector.map((value,i)=>{const p=radarPoint(i,value);return `${p.x.toFixed(2)},${p.y.toFixed(2)}`}).join(' ')}
+    function radarPosition(d,value){return value<-.2?`更靠近${d.left}`:value>.2?`更靠近${d.right}`:'在两端之间较为平衡'}
+    function renderRadar(vector,best){
+      const rings=[.25,.5,.75,1].map(level=>`<polygon class="radar-grid ${level===.5?'balance':''}" points="${radarPolygon(dimensions.map(()=>level*2-1))}"/>`).join('');
+      const spokes=dimensions.map((d,i)=>{const end=radarPoint(i,1),label=radarPoint(i,1,i===2||i===6?238:250);return `<line class="radar-spoke" data-radar-spoke="${i}" x1="300" y1="300" x2="${end.x}" y2="${end.y}"/><text class="radar-axis-label" data-radar-label="${i}" x="${label.x}" y="${label.y-4}" text-anchor="middle">${d.name}</text><text class="radar-axis-poles" x="${label.x}" y="${label.y+16}" text-anchor="middle">${d.left} · ${d.right}</text>`}).join('');
+      const points=dimensions.map((d,i)=>{const point=radarPoint(i,vector[i]);return `<g class="radar-hit" data-radar-axis="${i}" role="button" tabindex="0" aria-label="${d.name}，${radarPosition(d,vector[i])}"><title>${d.name}：${radarPosition(d,vector[i])}</title><circle cx="${point.x}" cy="${point.y}" r="15" fill="transparent"/><circle class="radar-focus" cx="${point.x}" cy="${point.y}" r="12"/><circle class="radar-point" cx="${point.x}" cy="${point.y}" r="4.5"/></g>`}).join('');
+      const rows=dimensions.map((d,i)=>`<button class="radar-axis-row" type="button" data-radar-axis="${i}" aria-pressed="false"><strong>${String(i+1).padStart(2,'0')} &nbsp;${d.name}</strong><small><span class="${vector[i]<-.2?'chosen-pole':''}">${d.left}</span><span aria-hidden="true">↔</span><span class="${vector[i]>.2?'chosen-pole':''}">${d.right}</span></small></button>`).join('');
+      return `<section class="result-section radar-section" aria-labelledby="radar-heading"><div class="section-heading"><h2 id="radar-heading"><small class="radar-kicker">THE SHAPE OF YOUR THOUGHTS</small>你的八维思想图谱</h2><span>把不同的倾向，连成你的轮廓</span></div><div class="radar-board" id="radar-board"><div class="radar-board-top"><div class="radar-legend"><span><i></i>我的图谱</span><span class="comparison-legend"><i class="comparison-key"></i>${best.name}</span></div><button class="radar-toggle" type="button" id="radar-compare" aria-pressed="false">对照${best.name}</button></div><div class="radar-layout"><figure class="radar-canvas"><svg class="thought-radar" viewBox="0 0 600 600" role="group" aria-labelledby="radar-svg-title radar-svg-desc"><title id="radar-svg-title">你的八维思想雷达图</title><desc id="radar-svg-desc">每条轴从内到外，分别对应该维度的左侧与右侧立场。金色虚线环表示中间位置。可聚焦或点击各个点，查看该维度的解释。</desc><defs><linearGradient id="radar-personal-fill" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#dfb9f5" stop-opacity=".6"/><stop offset="100%" stop-color="#9e70c4" stop-opacity=".18"/></linearGradient></defs>${rings}${spokes}<text class="radar-balance-label" x="405" y="292">平衡环</text><polygon class="radar-comparison" points="${radarPolygon(best.v)}"/><polygon class="radar-personal" points="${radarPolygon(vector)}"/><circle class="radar-center" cx="300" cy="300" r="2.5"/>${points}</svg></figure><aside class="radar-side" aria-label="逐项查看思想倾向"><div class="radar-current" aria-live="polite"><span class="radar-current-index" id="radar-active-index"></span><h3 id="radar-active-name"></h3><p id="radar-active-copy"></p><p class="radar-comparison-copy hidden" id="radar-comparison-copy"></p></div><div class="radar-axis-list">${rows}</div></aside></div><div class="radar-reading"><strong>内侧 ← 左侧词语 &nbsp;·&nbsp; 平衡环 &nbsp;·&nbsp; 右侧词语 → 外侧</strong><span>沿每条轴看倾向，半径不代表能力高低。</span></div></div><details class="axes-details"><summary>展开八个维度的具体解释</summary><div class="axes-grid">${dimensions.map((d,i)=>`<article class="axis-card"><div class="axis-head"><strong>${d.name}</strong><span>${String(i+1).padStart(2,'0')} / 08</span></div><div class="axis-ends"><span>${d.left}</span><span>${d.right}</span></div><div class="axis-track" role="img" aria-label="${d.name}：${radarPosition(d,vector[i])}"><span class="axis-dot" style="--value:${50+vector[i]*45}%"></span></div><p>${description(d,vector[i])}</p></article>`).join('')}</div></details></section>`;
+    }
+    function bindRadar(vector,best){
+      let active=vector.reduce((chosen,value,i)=>Math.abs(value)>Math.abs(vector[chosen])?i:chosen,0),compare=false;
+      function selectAxis(index){
+        active=index;const d=dimensions[index];
+        document.querySelectorAll('[data-radar-axis]').forEach(el=>{const selected=Number(el.dataset.radarAxis)===index;el.classList.toggle('is-active',selected);if(el.matches('button'))el.setAttribute('aria-pressed',selected)});
+        document.querySelectorAll('[data-radar-spoke]').forEach(el=>el.classList.toggle('is-active',Number(el.dataset.radarSpoke)===index));
+        document.querySelectorAll('[data-radar-label]').forEach(el=>el.classList.toggle('is-active',Number(el.dataset.radarLabel)===index));
+        $('radar-active-index').textContent=`DIMENSION ${String(index+1).padStart(2,'0')} / 08`;$('radar-active-name').textContent=d.name;
+        $('radar-active-copy').textContent=description(d,vector[index]);
+        $('radar-comparison-copy').textContent=`${best.name}：${radarPosition(d,best.v[index])}`;
+        $('radar-comparison-copy').classList.toggle('hidden',!compare);
+      }
+      document.querySelectorAll('[data-radar-axis]').forEach(el=>{
+        const index=Number(el.dataset.radarAxis);el.addEventListener('mouseenter',()=>selectAxis(index));el.addEventListener('focus',()=>selectAxis(index));el.addEventListener('click',()=>selectAxis(index));
+        if(el.matches('g'))el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectAxis(index)}else if(['ArrowRight','ArrowDown','ArrowLeft','ArrowUp'].includes(e.key)){e.preventDefault();const next=(index+(['ArrowRight','ArrowDown'].includes(e.key)?1:-1)+dimensions.length)%dimensions.length;document.querySelector(`.radar-hit[data-radar-axis="${next}"]`).focus()}});
+      });
+      $('radar-compare').addEventListener('click',()=>{compare=!compare;$('radar-compare').setAttribute('aria-pressed',compare);$('radar-board').classList.toggle('show-comparison',compare);selectAxis(active)});
+      selectAxis(active);
+    }
+    function renderResult(){
+      const {vector,ranked}=scores(),best=ranked[0];
+      const signal=vector.reduce((total,n)=>total+Math.abs(n),0)/vector.length;
+      const neutral=signal<.17&&Math.max(...vector.map(n=>Math.abs(n)))<.35;
+      const heroCopy=neutral?'你的回答在不同立场之间保持着平衡，也让几位思想家与你站在相近的位置。顺着这些共鸣，看看你的思想如何展开。':`在这些日常选择里，你与${best.name}呈现出相近的思考方式。沿着下面的线索，继续认识自己的思想。`;
+      const prominent=dimensions.map((d,i)=>({index:i,strength:Math.abs(vector[i]),text:description(d,vector[i])})).sort((a,b)=>b.strength-a.strength).slice(0,2);
+      const highlights=dimensions.map((d,i)=>({strength:Math.abs(vector[i]),label:vector[i]<0?d.left:d.right})).sort((a,b)=>b.strength-a.strength).filter(item=>item.strength>.2).slice(0,2);
+      finished=true;saveProgress();$('quiz').classList.add('hidden');$('result').classList.remove('hidden');
+      $('result').innerHTML=`<div class="result-hero"><div class="result-hero-copy"><div class="eyebrow">YOUR MIND, MAPPED.</div><h1>${neutral?'暂时接近':'你的思想邻居'}：${best.name}</h1><p>${heroCopy}</p><div class="result-highlights" aria-label="你的主要思想倾向">${highlights.length?highlights.map(item=>`<span>更偏${item.label}</span>`).join(''):'<span>八维倾向比较均衡</span>'}</div></div><div class="hero-portrait"><img src="portraits/${best.image}" alt="${best.name}的风格化卡通形象"></div></div>
+        ${renderRadar(vector,best)}
+        <section class="result-section"><div class="section-heading"><h2>你的思考线索</h2><span>从回答中提炼</span></div><div class="lead-card"><p>${prominent[0].text} ${prominent[1].text}</p><div class="reflection"><strong>留给自己的一个问题</strong><p>${reflectionQuestions[prominent[0].index]}</p></div></div></section>
+        <section class="result-section"><div class="section-heading"><h2>与你相近的思想家</h2><span>基于八条坐标的相对距离</span></div><div class="match-grid">${ranked.slice(0,3).map((p,i)=>`<article class="match-card ${i===0?'featured':''}" style="--portrait-bg:${p.bg}"><div class="match-image"><img src="portraits/${p.image}" alt="${p.name}的风格化卡通形象" loading="lazy"></div><div class="match-rank">${i===0?'最接近':`相近 0${i+1}`}</div><h3>${p.name}</h3><p class="era">${p.latin} · ${p.era}</p><p>${p.blurb}</p><p class="reason"><strong>共鸣处</strong>${matchReason(p,vector)}</p><p class="difference"><strong>一个不同点</strong>${matchDifference(p,vector)}</p></article>`).join('')}</div></section>
+        <details class="method"><summary>读懂这份思想图谱</summary><p>八条思想坐标各由八道题组成，每条都有正向和反向表述。系统根据你的选择得到八个位置，再与 ${philosophers.length} 位哲学、心理学及文学思想人物的简化画像比较。排名只表示这 ${philosophers.length} 位之间的相对接近程度，不是精确的相似百分比。文学人物的坐标侧重其作品主题与表达方式。</p></details>
+        <div class="result-foot"><span class="result-signature" aria-hidden="true">philome.</span><button class="primary" id="restart" type="button">重新测试</button></div>`;
+      bindRadar(vector,best);$('restart').addEventListener('click',restart);window.scrollTo({top:0,behavior:'smooth'});
+    }
+    function restart(){cancelAutoAdvance();answers.fill(null);current=0;finished=false;try{localStorage.removeItem(progressKey)}catch{}$('result').classList.add('hidden');$('quiz').classList.remove('hidden');renderQuestion();window.scrollTo({top:0,behavior:'smooth'})}
+    $('prev').addEventListener('click',()=>{cancelAutoAdvance();if(current>0){current--;saveProgress();renderQuestion()}});
+    $('next').addEventListener('click',nextQuestion);
+    document.addEventListener('keydown',e=>{if(e.repeat||$('quiz').classList.contains('hidden')||e.altKey||e.ctrlKey||e.metaKey||['INPUT','TEXTAREA'].includes(document.activeElement.tagName))return;if(/^[1-7]$/.test(e.key))choose(Number(e.key)-1)});
+    $('thinker-count').textContent=philosophers.length;
+    if(finished)renderResult();else renderQuestion();
+    if(document.modelContext?.registerTool){
+      const register=tool=>{try{Promise.resolve(document.modelContext.registerTool(tool)).catch(()=>{})}catch{}};
+      register({name:'read_philosophy_questions',title:'读取philome 题目',description:'读取 64 道philome 陈述题及其七档同意程度，不改变页面状态。',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true,untrustedContentHint:false},execute(){return {questions:questions.map((q,i)=>({number:i+1,dimension:dimensions[q.d].name,statement:q.t})),scale:scaleLabels}}});
+      register({name:'submit_philosophy_answers',title:'提交philome 答案',description:'一次提交全部 64 道题的选项序号（1 表示非常同意，7 表示非常不同意），并显示思想图谱。',inputSchema:{type:'object',properties:{choices:{type:'array',minItems:64,maxItems:64,items:{type:'integer',minimum:1,maximum:7}}},required:['choices'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute(input){if(!input||!Array.isArray(input.choices)||input.choices.length!==64||input.choices.some(n=>!Number.isInteger(n)||n<1||n>7))throw new Error('请提供 64 个介于 1 到 7 的选项序号。');input.choices.forEach((n,i)=>answers[i]=n-1);renderResult();const {ranked}=scores();return {closestThinkers:ranked.slice(0,3).map(p=>p.name)}}});
+    }
+  </script>
+</body>
+</html>
