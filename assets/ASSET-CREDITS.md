@@ -2,7 +2,7 @@
 
 ## Current illustrated scene
 
-The active homepage uses code-generated pastel maps, smooth physical shading, geometric rings, atmosphere shells and a radial glow. These illustrated materials are created inside `solar.js`; it does not request the historical photographic maps below.
+The active homepage uses AI-generated hand-drawn gouache / colored-pencil sprites, a separate East-Asia-facing Earth and a hand-painted sun with softened rays. They were generated with the built-in imagegen tool and converted to transparent WebP. The thinking-sheep avatar was created by the same tool for the owner's requested cartoon profile picture. Selected files live in `illustrations/`; their prompts and source records are retained there. CSS and a static star canvas provide motion and atmosphere. No Three.js or historical planetary photographic maps are requested by the current homepage.
 
 ## Historical planetary textures
 

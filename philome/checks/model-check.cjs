@@ -1,69 +1,62 @@
-const fs = require('node:fs');
-const path = require('node:path');
-const vm = require('node:vm');
-const assert = require('node:assert/strict');
-
-const project = path.resolve(__dirname, '..');
-const html = fs.readFileSync(path.join(project, 'index.html'), 'utf8');
-const script = html.split('<script>')[1].split('</script>')[0];
-const data = script.slice(0, script.indexOf('const scaleLabels='));
-const scoring = script.slice(script.indexOf('function scores()'), script.indexOf('function description('));
-const context = vm.createContext({});
-vm.runInContext(data + '\nconst answers=Array(questions.length).fill(3);\n' + scoring, context);
-const state = vm.runInContext('({dimensions,questions,philosophers,answers,scores})', context);
-const { dimensions, questions, philosophers, answers, scores } = state;
-
-assert.equal(dimensions.length, 8);
-assert.equal(questions.length, 64);
-assert.equal(philosophers.length, 20);
-assert.equal(new Set(philosophers.map(person => person.name)).size, philosophers.length);
-dimensions.forEach((dimension, index) => {
-  const group = questions.filter(question => question.d === index);
-  assert.equal(group.length, 8, dimension.name);
-  assert.equal(group.filter(question => question.p === 1).length, 4, dimension.name);
-  assert.equal(group.filter(question => question.p === -1).length, 4, dimension.name);
+const fs=require('node:fs');
+const path=require('node:path');
+const assert=require('node:assert/strict');
+const {createModel,version}=require('../model-v3.js');
+const project=path.resolve(__dirname,'..');
+const questions=JSON.parse(fs.readFileSync(path.join(project,'data/questions-v3.json'),'utf8'));
+const thinkers=JSON.parse(fs.readFileSync(path.join(project,'data/thinkers-v3.json'),'utf8'));
+const model=createModel(questions,thinkers);
+assert.equal(version,3);
+assert.equal(questions.length,32);
+assert.equal(model.dimensions.length,8);
+assert.equal(model.philosophers.length,20);
+assert.equal(new Set(questions.map(q=>q.id)).size,32);
+assert.equal(new Set(questions.flatMap(q=>q.options.map(option=>option.id))).size,128);
+const mainPositions=Array.from({length:8},()=>Array(4).fill(0));
+const supportPositions=Array.from({length:8},()=>Array(4).fill(0));
+questions.forEach(q=>{
+ assert(q.title.length>10&&q.title.length<70,q.id);
+ assert.equal(q.options.length,4);
+ assert.equal(new Set(q.options.flatMap(option=>[option.main,option.support])).size,8);
+ q.options.forEach((option,index)=>{
+  assert(option.text.length>=16&&option.text.length<=65,option.id);
+  assert.notEqual(option.main,option.support);
+  mainPositions[option.main][index]++;
+  supportPositions[option.support][index]++;
+ });
 });
-philosophers.forEach(person => {
-  assert.equal(person.v.length, 8, person.name);
-  assert(person.v.every(value => Number.isFinite(value) && value >= -1 && value <= 1), person.name);
-  assert(fs.existsSync(path.join(project, 'portraits', person.image)), person.image);
+model.coverage.forEach(axis=>assert.deepEqual(axis,{main:16,support:16}));
+model.maxima.forEach(max=>assert.equal(max,48));
+mainPositions.forEach(row=>assert.deepEqual(row,[4,4,4,4]));
+supportPositions.forEach(row=>assert.deepEqual(row,[4,4,4,4]));
+function checkScore(responses){
+ const {raw,vector}=model.scoreResponses(responses);
+ assert.equal(raw.reduce((a,b)=>a+b,0),96);
+ assert(Math.abs(vector.reduce((a,b)=>a+b,0)-2)<1e-10);
+ assert(vector.every(value=>Number.isFinite(value)&&value>=0&&value<=1));
+ return {raw,vector};
+}
+for(let letter=0;letter<4;letter++){
+ const result=checkScore(questions.map(q=>q.options[letter].id));
+ assert.deepEqual(result.raw,Array(8).fill(12),'Constant letter positions must not create a directional profile.');
+}
+for(let axis=0;axis<8;axis++){
+ const maximize=questions.map(q=>q.options.find(option=>option.main===axis||option.support===axis).id);
+ const minimize=questions.map(q=>q.options.find(option=>option.main!==axis&&option.support!==axis).id);
+ assert.equal(checkScore(maximize).vector[axis],1,model.dimensions[axis].name+' must reach its fixed upper bound.');
+ assert.equal(checkScore(minimize).vector[axis],0,model.dimensions[axis].name+' must reach zero.');
+}
+assert.throws(()=>model.scoreResponses(Array(32).fill(null)));
+assert.throws(()=>model.scoreResponses(Array(31).fill('bad')));
+const seenVectors=new Set();
+model.philosophers.forEach(person=>{
+ assert.equal(person.referenceAnswers.length,32);
+ const result=checkScore(person.referenceAnswers);
+ assert.deepEqual(result.vector,person.v,'Prototypes must use the actual scoring rule.');
+ const key=result.raw.join(',');assert(!seenVectors.has(key),'Duplicate thinker vector: '+person.name);seenVectors.add(key);
+ const ranked=model.rank(result.vector);assert.equal(ranked[0].name,person.name,person.name+' must be reachable through their valid reference choices.');
+ assert.equal(ranked[0].distance,0);
+ assert(fs.existsSync(path.join(project,'portraits',person.image)),person.image);
 });
-
-const vector = () => Array.from(scores().vector);
-answers.fill(3);
-assert.deepEqual(vector(), Array(8).fill(0), 'Neutral choices must stay at the midpoint');
-answers.fill(0);
-assert.deepEqual(vector(), Array(8).fill(0), 'Balanced directions must cancel uniform agreement');
-questions.forEach((question, index) => { answers[index] = question.p === 1 ? 0 : 6; });
-assert.deepEqual(vector(), Array(8).fill(1), 'All right-pole choices must reach +1');
-questions.forEach((question, index) => { answers[index] = question.p === 1 ? 6 : 0; });
-assert.deepEqual(vector(), Array(8).fill(-1), 'All left-pole choices must reach -1');
-answers.fill(3);
-answers[0] = 2;
-vector().forEach((value, index) => {
-  assert.equal(value, index === questions[0].d ? questions[0].p / 24 : 0);
-});
-
-// A profile must be reachable through valid answers, not shadowed by a duplicate.
-// This checks the mapping arithmetic; it is not evidence of psychological validity.
-const reachable = philosophers.map(person => {
-  dimensions.forEach((_, dimension) => {
-    const indices = questions.map((question, index) => question.d === dimension ? index : -1).filter(index => index >= 0);
-    const target = Math.round(person.v[dimension] * 24);
-    const base = Math.trunc(target / 8);
-    const remainder = target - base * 8;
-    indices.forEach((index, offset) => {
-      const contribution = base + (offset < Math.abs(remainder) ? Math.sign(remainder) : 0);
-      answers[index] = 3 - contribution * questions[index].p;
-      assert(Number.isInteger(answers[index]) && answers[index] >= 0 && answers[index] <= 6);
-    });
-  });
-  assert.equal(scores().ranked[0].name, person.name, person.name + ' must be reachable');
-  return person.name;
-});
-const pairs = [];
-philosophers.forEach((first, index) => philosophers.slice(index + 1).forEach(second => {
-  pairs.push({ first: first.name, second: second.name, distance: Math.hypot(...first.v.map((value, axis) => value - second.v[axis])) });
-}));
-pairs.sort((a, b) => a.distance - b.distance);
-console.log(JSON.stringify({ questions: questions.length, dimensions: dimensions.length, thinkers: philosophers.length, reachable: reachable.length, balancedDirections: true, endpointsAndMidpoint: true, closestPairs: pairs.slice(0, 5) }, null, 2));
+const pairs=[];model.philosophers.forEach((first,i)=>model.philosophers.slice(i+1).forEach(second=>pairs.push({first:first.name,second:second.name,distance:Math.hypot(...first.v.map((value,axis)=>value-second.v[axis]))})));pairs.sort((a,b)=>a.distance-b.distance);
+console.log(JSON.stringify({version,questions:questions.length,dimensions:8,thinkers:20,reachable:seenVectors.size,equalMainAndSupportCoverage:true,balancedLetterPositions:true,constantLettersHaveEqualAttention:true,allAxesReachZeroAndHundred:true,closestPairs:pairs.slice(0,5)},null,2));
