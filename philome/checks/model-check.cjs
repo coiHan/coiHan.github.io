@@ -1,62 +1,16 @@
-const fs=require('node:fs');
-const path=require('node:path');
-const assert=require('node:assert/strict');
-const {createModel,version}=require('../model-v3.js');
-const project=path.resolve(__dirname,'..');
-const questions=JSON.parse(fs.readFileSync(path.join(project,'data/questions-v3.json'),'utf8'));
-const thinkers=JSON.parse(fs.readFileSync(path.join(project,'data/thinkers-v3.json'),'utf8'));
-const model=createModel(questions,thinkers);
-assert.equal(version,3);
-assert.equal(questions.length,32);
-assert.equal(model.dimensions.length,8);
-assert.equal(model.philosophers.length,20);
-assert.equal(new Set(questions.map(q=>q.id)).size,32);
-assert.equal(new Set(questions.flatMap(q=>q.options.map(option=>option.id))).size,128);
-const mainPositions=Array.from({length:8},()=>Array(4).fill(0));
-const supportPositions=Array.from({length:8},()=>Array(4).fill(0));
-questions.forEach(q=>{
- assert(q.title.length>10&&q.title.length<70,q.id);
- assert.equal(q.options.length,4);
- assert.equal(new Set(q.options.flatMap(option=>[option.main,option.support])).size,8);
- q.options.forEach((option,index)=>{
-  assert(option.text.length>=16&&option.text.length<=65,option.id);
-  assert.notEqual(option.main,option.support);
-  mainPositions[option.main][index]++;
-  supportPositions[option.support][index]++;
- });
-});
-model.coverage.forEach(axis=>assert.deepEqual(axis,{main:16,support:16}));
-model.maxima.forEach(max=>assert.equal(max,48));
-mainPositions.forEach(row=>assert.deepEqual(row,[4,4,4,4]));
-supportPositions.forEach(row=>assert.deepEqual(row,[4,4,4,4]));
-function checkScore(responses){
- const {raw,vector}=model.scoreResponses(responses);
- assert.equal(raw.reduce((a,b)=>a+b,0),96);
- assert(Math.abs(vector.reduce((a,b)=>a+b,0)-2)<1e-10);
- assert(vector.every(value=>Number.isFinite(value)&&value>=0&&value<=1));
- return {raw,vector};
-}
-for(let letter=0;letter<4;letter++){
- const result=checkScore(questions.map(q=>q.options[letter].id));
- assert.deepEqual(result.raw,Array(8).fill(12),'Constant letter positions must not create a directional profile.');
-}
-for(let axis=0;axis<8;axis++){
- const maximize=questions.map(q=>q.options.find(option=>option.main===axis||option.support===axis).id);
- const minimize=questions.map(q=>q.options.find(option=>option.main!==axis&&option.support!==axis).id);
- assert.equal(checkScore(maximize).vector[axis],1,model.dimensions[axis].name+' must reach its fixed upper bound.');
- assert.equal(checkScore(minimize).vector[axis],0,model.dimensions[axis].name+' must reach zero.');
-}
-assert.throws(()=>model.scoreResponses(Array(32).fill(null)));
-assert.throws(()=>model.scoreResponses(Array(31).fill('bad')));
-const seenVectors=new Set();
-model.philosophers.forEach(person=>{
- assert.equal(person.referenceAnswers.length,32);
- const result=checkScore(person.referenceAnswers);
- assert.deepEqual(result.vector,person.v,'Prototypes must use the actual scoring rule.');
- const key=result.raw.join(',');assert(!seenVectors.has(key),'Duplicate thinker vector: '+person.name);seenVectors.add(key);
- const ranked=model.rank(result.vector);assert.equal(ranked[0].name,person.name,person.name+' must be reachable through their valid reference choices.');
- assert.equal(ranked[0].distance,0);
- assert(fs.existsSync(path.join(project,'portraits',person.image)),person.image);
-});
-const pairs=[];model.philosophers.forEach((first,i)=>model.philosophers.slice(i+1).forEach(second=>pairs.push({first:first.name,second:second.name,distance:Math.hypot(...first.v.map((value,axis)=>value-second.v[axis]))})));pairs.sort((a,b)=>a.distance-b.distance);
-console.log(JSON.stringify({version,questions:questions.length,dimensions:8,thinkers:20,reachable:seenVectors.size,equalMainAndSupportCoverage:true,balancedLetterPositions:true,constantLettersHaveEqualAttention:true,allAxesReachZeroAndHundred:true,closestPairs:pairs.slice(0,5)},null,2));
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+const {createModel,version}=require('../model-v4.js');
+const project=path.resolve(__dirname,'..'),questions=require('../data/questions-v4.json'),thinkers=require('../data/thinkers-v4.json'),model=createModel(questions,thinkers);
+assert.equal(version,4);assert.equal(questions.length,32);assert.equal(model.dimensions.length,8);assert.equal(model.philosophers.length,20);assert.equal(new Set(questions.map(q=>q.id)).size,32);
+model.coverage.forEach(axis=>assert.deepEqual(axis,{positive:2,negative:2,total:4}));
+model.maxima.forEach(value=>assert.equal(value,24));
+questions.forEach(q=>assert(q.text.length>=14&&q.text.length<=24,q.id+' must stay short.'));
+for(let group=0;group<4;group++)assert.equal(new Set(questions.slice(group*8,group*8+8).map(q=>q.d)).size,8,'Every pass must visit all eight axes.');
+const score=answers=>{const result=model.scoreResponses(answers);assert(result.vector.every(v=>Number.isFinite(v)&&v>=0&&v<=1));return result};
+for(const answer of [0,3,6])assert.deepEqual(score(Array(32).fill(answer)).vector,Array(8).fill(.5),'Balanced wording must not turn uniform assent into high endorsement.');
+const maximum=questions.map(q=>q.p===1?6:0),minimum=questions.map(q=>q.p===1?0:6);
+assert.deepEqual(score(maximum).vector,Array(8).fill(1),'All axes may be high together.');assert.deepEqual(score(minimum).vector,Array(8).fill(0),'All axes may be low together.');
+for(let axis=0;axis<8;axis++){const high=questions.map(q=>q.d===axis?(q.p===1?6:0):3),low=questions.map(q=>q.d===axis?(q.p===1?0:6):3);assert.equal(score(high).vector[axis],1);assert.equal(score(low).vector[axis],0);score(high).vector.forEach((v,i)=>assert.equal(v,i===axis?1:.5))}
+assert.throws(()=>model.scoreResponses(Array(32).fill(null)));assert.throws(()=>model.scoreResponses(Array(32).fill(7)));assert.throws(()=>model.scoreResponses(Array(32).fill('q01-a')));
+const seen=new Set();model.philosophers.forEach(person=>{assert.equal(person.referenceAnswers.length,32);assert(person.referenceAnswers.every(value=>Number.isInteger(value)&&value>=0&&value<=6));const scored=score(person.referenceAnswers),key=scored.raw.join(',');assert(!seen.has(key),'Duplicate prototype: '+person.name);seen.add(key);assert.deepEqual(scored.vector,person.v);assert.equal(model.rank(scored.vector)[0].name,person.name);assert.equal(model.rank(scored.vector)[0].distance,0);assert(fs.existsSync(path.join(project,'portraits',person.image)))});
+console.log(JSON.stringify({version,questions:32,dimensions:8,thinkers:20,reachable:seen.size,characters:[Math.min(...questions.map(q=>q.text.length)),Math.max(...questions.map(q=>q.text.length))],twoPositiveTwoNegative:true,interleavedAxes:true,allAxesCanBeHighOrLow:true,validReferenceAnswers:true},null,2));
