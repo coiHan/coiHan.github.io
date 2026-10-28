@@ -1,12 +1,16 @@
 # Solar system asset credits
 
-## Planetary textures
+## Current illustrated scene
+
+The active homepage uses code-generated pastel maps, toon shading, geometric rings and a radial glow. These illustrated materials are created inside `solar.js`; it does not request the historical photographic maps below.
+
+## Historical planetary textures
 
 **Solar System Scope / INOVE** provides the original planetary texture maps at [Solar Textures](https://www.solarsystemscope.com/textures/), distributed under [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
 
 The provider describes these maps as based on NASA elevation and imagery data, with colors adjusted against spacecraft and telescope images. The pack includes enhanced saturation and filled gaps where planetary surfaces remain unmapped. They are curated visualization maps, rather than unmodified spacecraft photographs. Venus uses the provider's **atmosphere** map.
 
-The maps were downloaded from the provider's linked 2K files on 2026-10-28. Color maps and cloud data were mechanically converted to WebP at quality 88, retaining their 2048 × 1024 equirectangular layout and colors. The Earth normal map was converted from TIFF to WebP at quality 92. The Saturn ring PNG was copied without alteration, retaining its original 2048 × 125 layout and alpha channel. No generated or procedural replacement textures were used.
+The maps were downloaded from the provider's linked 2K files on 2026-10-28. Color maps and cloud data were mechanically converted to WebP at quality 88, retaining their 2048 × 1024 equirectangular layout and colors. The Earth normal map was converted from TIFF to WebP at quality 92. The Saturn ring PNG was copied without alteration, retaining its original 2048 × 125 layout and alpha channel. This conversion description applies only to the historical map files. The active illustrated scene now uses separate procedural materials.
 
 | Local asset | Original source |
 | --- | --- |
