@@ -1,12 +1,21 @@
-import { mountDesktop } from './desktop.js';
+import { mountDesktop } from './desktop.js?v=room-2';
 
 const $ = (q) => document.querySelector(q);
 const shell = $('#desktop-shell');
 const canvas = $('#room-canvas');
+const controls = $('#computer-controls');
+const furniture = ['walnut','atelier','bauhaus'].includes(new URLSearchParams(location.search).get('furniture')) ? new URLSearchParams(location.search).get('furniture') : 'walnut';
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 let room = null, desktop = null, inside = false, busy = false, sound = false, night = false, audio = null;
 let enterSource = null;
+let pendingNavigation = null;
 const wait = (ms) => new Promise(resolve => setTimeout(resolve, reducedMotion ? 0 : ms));
+function reconcileNavigation() {
+  if (busy || !pendingNavigation) return;
+  const next = pendingNavigation; pendingNavigation = null;
+  if (next.inside && !inside) openComputer(next.app, { historyMode: 'none' });
+  else if (!next.inside && inside) leaveComputer();
+}
 function remember(key, value) { try { localStorage.setItem(key, value); } catch {} }
 try { night = localStorage.getItem('coihan-room-night') === 'true'; } catch {}
 
@@ -35,10 +44,14 @@ function updateLight() {
 }
 updateLight();
 
-function screenTransform() {
+function placeScreen() {
   const rect = room?.getScreenRect?.();
-  if (!rect || rect.width < 10 || rect.height < 10) return 'translate(0px, 0px) scale(.96)';
-  return `translate(${rect.x}px,${rect.y}px) scale(${rect.width / innerWidth},${rect.height / innerHeight})`;
+  const width = rect?.width > 10 ? rect.width - 3 : Math.min(920, innerWidth - 32);
+  const height = rect?.height > 10 ? rect.height - 3 : Math.min(640, innerHeight - 144);
+  shell.style.left = `${rect?.width > 10 ? rect.x + 1.5 : (innerWidth - width) / 2}px`;
+  shell.style.top = `${rect?.height > 10 ? rect.y + 1.5 : (innerHeight - height) / 2 + 12}px`;
+  shell.style.width = `${width}px`; shell.style.height = `${height}px`;
+  desktop?.resize?.();
 }
 
 async function openComputer(app = 'desktop', { historyMode = 'push' } = {}) {
@@ -50,24 +63,22 @@ async function openComputer(app = 'desktop', { historyMode = 'push' } = {}) {
   playSound('enter');
   document.body.classList.add('in-computer');
   try { await room?.enter?.(); } catch {}
+  placeScreen();
+  shell.hidden = false;
   if (!desktop) desktop = mountDesktop(shell, { onExit: requestExit, onSound: () => playSound() });
   desktop.openApp(app);
-  shell.classList.remove('desktop-exiting', 'desktop-entering');
-  shell.style.transform = screenTransform();
-  shell.style.opacity = '0'; shell.style.borderRadius = '20px';
-  shell.hidden = false;
   $('#room').inert = true;
-  shell.getBoundingClientRect();
+  controls.hidden = false;
   await new Promise(requestAnimationFrame);
-  shell.classList.add('desktop-entering');
-  shell.style.transform = 'translate(0px,0px) scale(1)';
-  shell.style.opacity = '1'; shell.style.borderRadius = '0';
-  await wait(850);
+  shell.classList.add('screen-ready');
+  desktop.resize?.();
+  await wait(320);
   room?.setActive?.(false);
   inside = true; busy = false;
   desktop.focus?.();
-  if (historyMode !== 'none') history[historyMode === 'replace' ? 'replaceState' : 'pushState']({ app, roomEntry: historyMode === 'push' }, '', `${location.pathname}${location.search}#computer`);
+  if (historyMode !== 'none' && !pendingNavigation) history[historyMode === 'replace' ? 'replaceState' : 'pushState']({ app, roomEntry: historyMode === 'push' }, '', `${location.pathname}${location.search}#computer`);
   $('#enter-computer').disabled = false;
+  reconcileNavigation();
 }
 
 function requestExit() {
@@ -79,23 +90,26 @@ function requestExit() {
 async function leaveComputer({ updateHistory = false } = {}) {
   if (busy || !inside) return;
   busy = true; playSound();
-  shell.classList.remove('desktop-entering'); shell.classList.add('desktop-exiting');
-  shell.style.transform = screenTransform(); shell.style.opacity = '0'; shell.style.borderRadius = '18px';
-  await wait(560);
+  desktop?.dismissOverlays?.();
+  shell.classList.remove('screen-ready');
+  controls.hidden = true;
+  await wait(300);
   shell.hidden = true; inside = false;
   try { await room?.exit?.(); } catch {}
   document.body.classList.remove('in-computer');
   $('#room').inert = false;
-  if (updateHistory) {
+  if (updateHistory && !pendingNavigation) {
     const roomUrl = new URL(location.href); roomUrl.searchParams.delete('app'); roomUrl.hash = '';
     history.replaceState(null, '', roomUrl.pathname + roomUrl.search);
   }
   busy = false;
   const target = enterSource && document.contains(enterSource) ? enterSource : $('#enter-computer');
   target.focus({ preventScroll: true });
+  reconcileNavigation();
 }
 
 $('#enter-computer').addEventListener('click', () => openComputer());
+$('#leave-computer').addEventListener('click', requestExit);
 document.querySelectorAll('[data-app]').forEach(el => el.addEventListener('click', () => openComputer(el.dataset.app)));
 canvas.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openComputer(); } });
 $('#sound-toggle').addEventListener('click', () => {
@@ -123,9 +137,10 @@ function showLightweight() {
 
 const startAt = performance.now();
 try {
-  const { createRoom } = await import('./room-scene.js');
+  const { createRoom } = await import('./room-scene.js?v=room-2');
   room = await createRoom({
     canvas,
+    furniture,
     onOpen: app => openComputer(app || 'desktop'),
     onHover: label => { $('#object-hint').textContent = label || '点击电脑，或看看桌上的小东西。'; },
     onProgress: value => { $('#boot-progress').style.width = `${Math.max(8,Math.min(94,value * 100))}%`; },
@@ -144,6 +159,15 @@ if (initialApp && ['about','projects','photos','contact','notebook','philome','d
 window.addEventListener('pagehide', () => { if (audio?.state === 'running') audio.suspend(); });
 document.addEventListener('visibilitychange', () => { if (document.hidden && audio?.state === 'running') audio.suspend(); });
 window.addEventListener('popstate', () => {
-  if (inside && location.hash !== '#computer') leaveComputer();
-  else if (!inside && !busy && location.hash === '#computer') openComputer('desktop', { historyMode: 'none' });
+  pendingNavigation = { inside: location.hash === '#computer', app: history.state?.app || 'desktop' };
+  reconcileNavigation();
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && inside && !shell.contains(event.target)) { event.preventDefault(); requestExit(); }
+});
+let screenResizeFrame = 0;
+window.addEventListener('resize', () => {
+  if (shell.hidden) return;
+  cancelAnimationFrame(screenResizeFrame);
+  screenResizeFrame = requestAnimationFrame(placeScreen);
 });

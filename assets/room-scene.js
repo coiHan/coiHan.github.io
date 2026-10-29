@@ -1,7 +1,7 @@
 import * as THREE from './vendor/three.module.js';
 
 // This little room is built entirely from code: no borrowed models or textures.
-export async function createRoom({ canvas, onReady = () => {}, onOpen = () => {}, onHover = () => {}, onProgress = () => {} }) {
+export async function createRoom({ canvas, onReady = () => {}, onOpen = () => {}, onHover = () => {}, onProgress = () => {}, furniture = 'walnut' }) {
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: 'high-performance' });
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.7));
@@ -33,6 +33,8 @@ export async function createRoom({ canvas, onReady = () => {}, onOpen = () => {}
   const pointer = new THREE.Vector2(0, 0);
   const raycaster = new THREE.Raycaster();
   const lookTarget = new THREE.Vector3();
+  const orbitSpherical = new THREE.Spherical();
+  const orbitOffset = new THREE.Vector3();
 
   const material = (color, roughness = .8, extra = {}) => new THREE.MeshStandardMaterial({ color, roughness, ...extra });
   const mats = {
@@ -150,36 +152,154 @@ export async function createRoom({ canvas, onReady = () => {}, onOpen = () => {}
   const fill = new THREE.DirectionalLight('#dce6eb', .65);
   fill.position.set(5, 6, -4); scene.add(fill);
 
-  // Walnut grain is deliberately subtle, like a well-used writing desk.
-  const woodTexture = canvasTexture(1024, 256, (ctx, w, h) => {
-    ctx.fillStyle = '#997b59'; ctx.fillRect(0,0,w,h);
-    for(let i=0;i<105;i++) {
-      const y = i*h/105;
-      ctx.strokeStyle = `rgba(${i%3 ? '74,47,24' : '241,213,167'},${.025+(i%7)*.007})`;
-      ctx.lineWidth = .6+(i%4)*.35;
-      ctx.beginPath(); ctx.moveTo(0,y);
-      for(let x=0;x<=w;x+=64) ctx.lineTo(x,y+Math.sin(x*.004+i*2)*2.2);
-      ctx.stroke();
-    }
-  });
-  const tabletopMat = mats.wood.clone(); tabletopMat.map = woodTexture; tabletopMat.roughness = .85;
-  const deskTop = box(7.5, .24, 3.65, [0,2.25,0], tabletopMat, room, .065);
-  box(7.28,.12,3.48,[0,2.105,0],mats.woodEdge);
-  for (const x of [-3.22,3.22]) {
-    for(const z of [-1.36,1.36]) {
-      const leg = box(.16,2.08,.16,[x,1.06,z],mats.metal,room,.025);
-      leg.rotation.z = x > 0 ? -.028 : .028;
-      cylinder(.11,.11,.05,[x,.04,z],mats.black,room,16);
-    }
-    box(.13,.15,2.9,[x,.24,0],mats.metal);
+  // Furniture is a separate little collection: the desktop stays at the same
+  // height so the personal objects and the computer never jump between editions.
+  const furnitureRoot = new THREE.Group(); room.add(furnitureRoot);
+  const furnitureGroups = new Map();
+  const walnutWood = material('#8b6244', .84);
+  const walnutEdge = material('#76513a', .86);
+  const oakWood = material('#c9b591', .89);
+  const oakEdge = material('#b5a380', .9);
+  const ivoryTop = material('#e8e5d9', .65);
+  const chrome = material('#a3aaa7', .3, { metalness: .6 });
+  const creamFabric = material('#d8d2bc', .99);
+  const sageFabric = material('#7e8c76', .97);
+  const saddleLeather = material('#555249', .77);
+  function woodGrain(base, ink) {
+    return canvasTexture(1024, 256, (ctx,w,h) => {
+      ctx.fillStyle = base; ctx.fillRect(0,0,w,h);
+      for (let i=0;i<96;i++) {
+        ctx.strokeStyle = ink;ctx.globalAlpha=.035+(i%6)*.008;
+        ctx.lineWidth=.55+(i%4)*.3;ctx.beginPath();ctx.moveTo(0,i*h/96);
+        for(let x=0;x<=w;x+=48)ctx.lineTo(x,i*h/96+Math.sin(x*.004+i*1.7)*1.7);
+        ctx.stroke();
+      }
+      ctx.globalAlpha=1;
+    });
   }
-  box(6.3,.16,.16,[0,1.94,-1.36],mats.woodEdge);
-  const drawer = box(1.6,.46,1.9,[2.28,1.89,-.26],mats.woodEdge,room,.045);
-  box(1.51,.4,.09,[2.28,1.88,.74],mats.wood);
-  box(.52,.055,.08,[2.28,1.93,.815],mats.brass);
+  const walnutTop=material('#ffffff',.84,{map:woodGrain('#987353','#503826')});
+  const oakTop=material('#ffffff',.88,{map:woodGrain('#cdbb99','#8e7e63')});
+  function strut(from,to,r,mat,parent,rBottom=r) {
+    const a=new THREE.Vector3(...from),b=new THREE.Vector3(...to),delta=b.clone().sub(a);
+    const part=mesh(new THREE.CylinderGeometry(r,rBottom,delta.length(),20),mat,parent);
+    part.position.copy(a.add(b).multiplyScalar(.5));
+    part.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),delta.normalize());
+    return part;
+  }
+  function curvedBack(w,h,d,pos,mat,parent,curve=-.16) {
+    const m=box(w,h,d,pos,mat,parent,.09),a=m.geometry.attributes.position;
+    for(let i=0;i<a.count;i++) {const x=a.getX(i)/(w/2);a.setZ(i,a.getZ(i)+curve*x*x);}
+    m.geometry.computeVertexNormals();m.rotation.x=-.1;return m;
+  }
+  function furnitureGroup(id) {const group=new THREE.Group();group.name='furniture-'+id;furnitureRoot.add(group);furnitureGroups.set(id,group);return group;}
+  function chairGroup(parent,rotation=-.2){const c=new THREE.Group();c.position.set(2.22,0,2.72);c.rotation.y=rotation;parent.add(c);return c;}
+
+  // The original swivel-chair silhouette, now with tailored upholstery,
+  // a gas-lift column and proper paired rubber casters.
+  function makeOfficeChair(parent) {
+    const c=new THREE.Group();c.position.set(2.45,0,2.75);c.rotation.y=-.24;parent.add(c);
+    const fabric=material('#a27354',.99);
+    const seatBase=material('#50483f',.85);
+    const post=material('#8c928d',.4,{metalness:.48});
+    const seam=canvasTexture(512,512,(ctx,w,h)=>{
+      ctx.clearRect(0,0,w,h);ctx.strokeStyle='rgba(227,192,155,.52)';ctx.lineWidth=2.2;ctx.setLineDash([6,5]);
+      ctx.beginPath();ctx.roundRect(20,20,w-40,h-40,34);ctx.stroke();
+    });
+    const seamMat=new THREE.MeshStandardMaterial({map:seam,transparent:true,depthWrite:false,roughness:1});
+    cylinder(.18,.18,.065,[0,.28,0],mats.metal,c,24);
+    cylinder(.12,.15,.3,[0,.46,0],mats.dark,c,24);
+    cylinder(.074,.096,1.02,[0,1.05,0],post,c,24);
+    cylinder(.1,.115,.24,[0,.71,0],mats.metal,c,24);
+    box(.55,.13,.63,[0,1.5,0],seatBase,c,.035);
+    for(let i=0;i<5;i++){
+      const angle=i*Math.PI*2/5;
+      const ex=Math.cos(angle)*.73,ez=Math.sin(angle)*.73;
+      strut([0,.3,0],[ex,.19,ez],.062,mats.metal,c,.041);
+      const caster=new THREE.Group();caster.position.set(ex,.115,ez);caster.rotation.y=-angle+Math.PI/2;c.add(caster);
+      box(.065,.16,.12,[0,.105,0],mats.metal,caster,.012);
+      for(const side of [-1,1]){
+        const tire=cylinder(.104,.104,.06,[side*.046,0,0],mats.black,caster,24);tire.rotation.z=Math.PI/2;
+        const hub=cylinder(.041,.041,.008,[side*.08,0,0],post,caster,20);hub.rotation.z=Math.PI/2;
+      }
+    }
+    const seat=box(1.48,.23,1.45,[0,1.68,0],fabric,c,.09);
+    const seatSeam=mesh(new THREE.PlaneGeometry(1.34,1.31),seamMat,seat,false);seatSeam.rotation.x=-Math.PI/2;seatSeam.position.y=.121;
+    for(const x of [-.51,.51]){
+      lineTube([[x,1.55,.4],[x,2.18,.65],[x,2.95,.65]],.036,mats.metal,c);
+      const bolt=cylinder(.032,.032,.035,[x,1.61,.4],post,c,16);bolt.rotation.x=Math.PI/2;
+    }
+    const back=box(1.4,1.12,.23,[0,2.67,.67],fabric,c,.095);back.rotation.x=-.075;
+    const backSeam=mesh(new THREE.PlaneGeometry(1.27,.99),seamMat,back,false);backSeam.position.z=.123;
+    // A discreet adjustment lever under the seat.
+    lineTube([[.2,1.49,.1],[.62,1.44,.18],[.76,1.44,.18]],.021,mats.metal,c);
+    box(.19,.055,.09,[.77,1.44,.18],mats.black,c,.012);
+    return c;
+  }
+  // Edition A: warm walnut, splayed tapered legs and a soft cream lounge chair.
+  {
+    const g=furnitureGroup('walnut');
+    box(7.5,.24,3.65,[0,2.65,0],walnutTop,g,.075);
+    box(7.16,.25,3.26,[0,2.42,0],walnutEdge,g,.045);
+    for(const x of [-3.12,3.12])for(const z of [-1.27,1.27]) {
+      strut([x+Math.sign(x)*.17,.07,z+Math.sign(z)*.15],[x,2.48,z],.135,walnutWood,g,.085);
+      cylinder(.09,.09,.045,[x+Math.sign(x)*.17,.035,z+Math.sign(z)*.15],mats.dark,g,20);
+    }
+    box(1.56,.33,.08,[2.18,2.41,1.67],walnutWood,g,.018);
+    box(.48,.035,.06,[2.18,2.41,1.728],mats.brass,g,.005);
+    makeOfficeChair(g);
+  }
+  // Edition B: pale oak and a quiet sculptural sage chair for a bright studio.
+  {
+    const g=furnitureGroup('atelier');
+    box(7.5,.22,3.65,[0,2.65,0],oakTop,g,.06);
+    for(const x of [-3.03,3.03]){
+      for(const z of [-1.18,1.18])strut([x+Math.sign(x)*.22,.04,z*1.13],[x,2.54,z],.105,oakWood,g,.078);
+      box(.16,.18,2.9,[x,.6,0],oakEdge,g,.025);
+      box(.18,.3,3.02,[x,2.34,0],oakWood,g,.035);
+    }
+    box(5.9,.1,.1,[0,.63,-.88],oakEdge,g,.018);
+    box(7.0,.14,.12,[0,2.42,-1.48],oakWood,g,.025);
+    const c=chairGroup(g,-.28);
+    for(const x of [-.47,.47])for(const z of [-.41,.41])strut([x*1.21,.045,z*1.25],[x,1.23,z],.063,oakWood,c,.042);
+    box(1.45,.13,1.32,[0,1.26,0],oakWood,c,.06);
+    box(1.34,.12,1.22,[0,1.365,-.02],sageFabric,c,.055);
+    for(const x of [-.49,.49])strut([x,1.2,.46],[x,2.39,.63],.035,oakWood,c);
+    curvedBack(1.42,.71,.13,[0,2.12,.57],sageFabric,c,-.21);
+    for(const x of [-.52,.52])lineTube([[x,1.37,-.37],[x*1.13,1.64,-.12],[x*1.13,1.64,.5]],.04,oakWood,c);
+  }
+  // Edition C: ivory planes and continuous chrome tubing, with a cantilever chair.
+  {
+    const g=furnitureGroup('bauhaus');
+    box(7.5,.19,3.65,[0,2.66,0],ivoryTop,g,.065);
+    box(7.24,.06,3.4,[0,2.535,0],chrome,g,.025);
+    for(const x of [-3.16,3.16]){
+      lineTube([[x,.09,1.34],[x,.09,-1.34],[x,.28,-1.52],[x,2.33,-1.52],[x,2.46,-1.34],[x,2.46,1.34],[x,2.33,1.49],[x,.1,1.49]],.065,chrome,g);
+      for(const z of [-1.32,1.32])box(.28,.035,.22,[x,.035,z],mats.dark,g,.008);
+    }
+    strut([-3.12,2.24,-1.47],[3.12,2.24,-1.47],.05,chrome,g);
+    const c=chairGroup(g,-.21);
+    for(const x of [-.57,.57]){
+      lineTube([[x,.08,.7],[x,.08,-.49],[x,.21,-.65],[x,1.19,-.65],[x,1.3,-.49],[x,1.3,.49],[x,1.5,.65],[x,2.27,.65]],.049,chrome,c);
+      lineTube([[x,1.33,-.32],[x,1.64,-.15],[x,1.64,.58]],.043,chrome,c);
+    }
+    strut([-.57,.08,.7],[.57,.08,.7],.049,chrome,c);
+    box(1.27,.15,1.18,[0,1.33,0],saddleLeather,c,.055);
+    curvedBack(1.26,.79,.12,[0,2.02,.6],saddleLeather,c,-.11);
+    for(const x of [-.57,.57])box(.12,.075,.55,[x,1.67,.11],saddleLeather,c,.025);
+  }
+  function setFurniture(id) {
+    const selected=furnitureGroups.has(id)?id:'walnut';
+    for(const [name,group] of furnitureGroups)group.visible=name===selected;
+    renderer.shadowMap.needsUpdate=true;
+    if(!activeRequested&&!disposed.value)renderer.render(scene,camera);
+    else requestRender();
+    return selected;
+  }
+  setFurniture(furniture);
   onProgress(.22);
 
   // Computer. The monitor is a thick shell, with a softly bulging CRT face.
+  const surfaceStart = room.children.length;
   const monitor = new THREE.Group(); monitor.position.set(-.55,0,-.62); room.add(monitor);
   clickable(monitor,'desktop','打开电脑');
   box(2.55,.46,1.87,[0,2.61,.14],mats.cream,monitor,.075);
@@ -372,46 +492,39 @@ export async function createRoom({ canvas, onReady = () => {}, onOpen = () => {}
   const bulbMat=new THREE.MeshBasicMaterial({color:'#fff0c7',toneMapped:false});
   const bulb=cylinder(.28,.28,.015,[.72,1.265,.22],bulbMat,lamp,32);bulb.rotation.z=-.24;
   const lampLight=new THREE.PointLight('#ffd390',0,6,2);lampLight.position.set(-2.28,3.62,-1.1);scene.add(lampLight);
+  // The desk is taller by 0.4; every object and its light follows the surface.
+  for(const object of room.children.slice(surfaceStart))object.position.y+=.4;
+  screenGlow.position.y+=.4;lampLight.position.y+=.4;
   onProgress(.78);
 
-  // A chair pulled back just enough to invite a visitor to sit down.
-  const chair=new THREE.Group();chair.position.set(2.45,0,2.75);chair.rotation.y=-.24;room.add(chair);
-  cylinder(.075,.11,1.15,[0,.75,0],mats.metal,chair,20);
-  for(let i=0;i<5;i++){
-    const a=i*Math.PI*2/5;
-    lineTube([[0,.24,0],[Math.cos(a)*.64,.13,Math.sin(a)*.64]],.047,mats.metal,chair);
-    const wheel=cylinder(.105,.105,.07,[Math.cos(a)*.65,.09,Math.sin(a)*.65],mats.black,chair,16);wheel.rotation.z=Math.PI/2;wheel.rotation.y=a;
-  }
-  box(1.48,.21,1.45,[0,1.43,0],mats.rust,chair,.085);
-  lineTube([[-.51,1.38,.4],[-.52,2.0,.65],[-.5,2.65,.65]],.04,mats.metal,chair);
-  lineTube([[.51,1.38,.4],[.52,2,.65],[.5,2.65,.65]],.04,mats.metal,chair);
-  const back=box(1.4,1.12,.2,[0,2.42,.67],mats.rust,chair,.09);back.rotation.x=-.075;
-
   // Simple cable routing avoids objects appearing to float unconnected.
-  lineTube([[-.52,2.4,-1.55],[-.62,2.32,-1.79],[-.64,1.44,-1.84],[-.8,.05,-1.84],[.5,.02,-1.9]],.023,mats.dark);
+  lineTube([[-.52,2.8,-1.55],[-.62,2.72,-1.79],[-.64,1.84,-1.84],[-.8,.05,-1.84],[.5,.02,-1.9]],.023,mats.dark);
 
   const homePosition = new THREE.Vector3();
   const homeTarget = new THREE.Vector3(0,2.15,.35);
   const enterPosition = new THREE.Vector3();
-  const enterTarget = new THREE.Vector3(-.55,4.17,.137);
+  const enterTarget = new THREE.Vector3(-.55,4.57,.137);
   function setCameraPresets(){
     const aspect=innerWidth/innerHeight;
     if(aspect<.8){
-      homePosition.set(8.05,9.25,21.5);homeTarget.set(0,2.35,.55);
-      enterPosition.set(-.55,4.17,6.4);camera.fov=46;
+      homePosition.set(8.05,9.63,21.5);homeTarget.set(0,2.73,.55);camera.fov=46;
     }else if(aspect<1.2){
-      homePosition.set(7.0,6.7,12.3);homeTarget.set(0,2.2,.35);
-      enterPosition.set(-.55,4.17,4.7);camera.fov=40;
+      homePosition.set(7.0,6.9,12.3);homeTarget.set(0,2.4,.35);camera.fov=40;
     }else{
-      homePosition.set(10.44,6.87,13.97);homeTarget.set(0,1.65,.35);
-      enterPosition.set(-.55,4.17,4.35);camera.fov=35;
+      homePosition.set(10.44,7.07,13.97);homeTarget.set(0,1.85,.35);camera.fov=35;
     }
+    const tangent=Math.tan(THREE.MathUtils.degToRad(camera.fov/2));
+    const widthFraction=innerWidth<600?.80:.84;
+    const distance=Math.max(screenHeight/(2*tangent*.79),screenWidth/(2*tangent*aspect*widthFraction));
+    enterPosition.set(enterTarget.x,enterTarget.y,enterTarget.z+distance);
   }
   function resize(){
     if(disposed.value)return;
     renderer.setSize(innerWidth,innerHeight,false);camera.aspect=innerWidth/innerHeight;
     setCameraPresets();camera.updateProjectionMatrix();
     if(!tween){camera.position.copy(entered?enterPosition:homePosition);cameraTarget.copy(entered?enterTarget:homeTarget);camera.lookAt(cameraTarget);}
+    if(!activeRequested)renderer.render(scene,camera);
+    else requestRender();
   }
   resize();
   let tweenResolve=null;
@@ -426,10 +539,15 @@ export async function createRoom({ canvas, onReady = () => {}, onOpen = () => {}
       tween={started:performance.now(),duration:reduceMotion?0:1250,from:camera.position.clone(),to:(isEntered?enterPosition:homePosition).clone(),lookFrom:cameraTarget.clone(),lookTo:(isEntered?enterTarget:homeTarget).clone()};
     });
   }
-  function getScreenRect(){
+  function getScreenQuad(){
     camera.updateMatrixWorld();screen.updateWorldMatrix(true,false);
-    const corners=[[-screenWidth/2,screenHeight/2,0],[screenWidth/2,screenHeight/2,0],[-screenWidth/2,-screenHeight/2,0],[screenWidth/2,-screenHeight/2,0]].map(([x,y,z])=>new THREE.Vector3(x,y,z).applyMatrix4(screen.matrixWorld).project(camera));
-    const xs=corners.map(p=>(p.x+1)*innerWidth/2),ys=corners.map(p=>(1-p.y)*innerHeight/2);
+    return [[-screenWidth/2,screenHeight/2,0],[screenWidth/2,screenHeight/2,0],[screenWidth/2,-screenHeight/2,0],[-screenWidth/2,-screenHeight/2,0]]
+      .map(([x,y,z])=>new THREE.Vector3(x,y,z).applyMatrix4(screen.matrixWorld).project(camera))
+      .map(p=>({x:(p.x+1)*innerWidth/2,y:(1-p.y)*innerHeight/2}));
+  }
+  function getScreenRect(){
+    const corners=getScreenQuad();
+    const xs=corners.map(p=>p.x),ys=corners.map(p=>p.y);
     const x=Math.min(...xs),y=Math.min(...ys),width=Math.max(...xs)-x,height=Math.max(...ys)-y;
     return {x,y,width,height,left:x,top:y,right:x+width,bottom:y+height};
   }
@@ -445,11 +563,12 @@ export async function createRoom({ canvas, onReady = () => {}, onOpen = () => {}
     return obj;
   }
   function pointerMove(event){
-    pointer.x=(event.clientX/innerWidth-.5)*2;pointer.y=(event.clientY/innerHeight-.5)*2;
+    if(event.pointerType!=='touch'){pointer.x=(event.clientX/innerWidth-.5)*2;pointer.y=(event.clientY/innerHeight-.5)*2;}
     const hit=findHit(event);
     if(hit!==hover){hover=hit;onHover(hit?.userData.label||'');canvas.style.cursor=hit?'pointer':'';}
+    requestRender();
   }
-  function pointerLeave(){pointer.set(0,0);hover=null;onHover('');canvas.style.cursor='';}
+  function pointerLeave(){pointer.set(0,0);hover=null;onHover('');canvas.style.cursor='';requestRender();}
   function pointerStart(e){pointerDown={x:e.clientX,y:e.clientY};}
   function pointerEnd(e){
     if(!pointerDown||Math.hypot(pointerDown.x-e.clientX,pointerDown.y-e.clientY)>10){pointerDown=null;return;}
@@ -468,6 +587,7 @@ export async function createRoom({ canvas, onReady = () => {}, onOpen = () => {}
     if(disposed.value||!activeRequested||document.hidden){frame=0;return;}
     frame=requestAnimationFrame(render);
     const dt=Math.min((now-lastTime)/1000,.05);lastTime=now;
+    const hadTween=Boolean(tween);
     nightMix+=(nightTarget-nightMix)*Math.min(1,dt*2.6);
     scene.background.copy(dayColor).lerp(nightColor,nightMix);scene.fog.color.copy(scene.background);
     floor.material.color.copy(dayFloor).lerp(nightFloor,nightMix);
@@ -480,18 +600,27 @@ export async function createRoom({ canvas, onReady = () => {}, onOpen = () => {}
       camera.position.lerpVectors(tween.from,tween.to,e);cameraTarget.lerpVectors(tween.lookFrom,tween.lookTo,e);
       if(p===1){tween=null;const done=tweenResolve;tweenResolve=null;done?.();}
     }else if(!entered){
-      const px=reduceMotion?0:pointer.x*.16,py=reduceMotion?0:pointer.y*.08;
-      lookTarget.copy(homePosition);lookTarget.x+=px;lookTarget.y-=py;
-      camera.position.lerp(lookTarget,Math.min(1,dt*3));
+      orbitOffset.copy(homePosition).sub(homeTarget);
+      orbitSpherical.setFromVector3(orbitOffset);
+      orbitSpherical.theta+=(reduceMotion?0:pointer.x)*THREE.MathUtils.degToRad(10);
+      orbitSpherical.phi+=(reduceMotion?0:pointer.y)*THREE.MathUtils.degToRad(3.2);
+      orbitSpherical.makeSafe();
+      lookTarget.setFromSpherical(orbitSpherical).add(homeTarget);
+      camera.position.lerp(lookTarget,1-Math.exp(-dt*4));
       cameraTarget.copy(homeTarget);
     }
     camera.lookAt(cameraTarget);
     renderer.render(scene,camera);
+    const orbitMoving=!entered&&!reduceMotion&&camera.position.distanceToSquared(lookTarget)>.00001;
+    if(!tween&&!hadTween&&!orbitMoving&&Math.abs(nightTarget-nightMix)<.001){cancelAnimationFrame(frame);frame=0;}
+  }
+  function requestRender(){
+    if(!frame&&activeRequested&&!document.hidden&&!disposed.value){lastTime=performance.now();frame=requestAnimationFrame(render);}
   }
   function setActive(value){
     activeRequested=Boolean(value);
     if(!activeRequested||document.hidden){cancelAnimationFrame(frame);frame=0;return;}
-    if(!frame&&!disposed.value){lastTime=performance.now();frame=requestAnimationFrame(render);}
+    requestRender();
   }
   function visibilityChanged(){
     if(document.hidden){cancelAnimationFrame(frame);frame=0;}
@@ -502,7 +631,7 @@ export async function createRoom({ canvas, onReady = () => {}, onOpen = () => {}
   // Geometry and light positions stay fixed; camera motion needs no shadow redraw.
   renderer.shadowMap.autoUpdate=false;
   onProgress(1);
-  frame=requestAnimationFrame(render);
+  requestRender();
   // Let the first frame reach the canvas before the loading curtain disappears.
   await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
   onReady();
@@ -510,9 +639,11 @@ export async function createRoom({ canvas, onReady = () => {}, onOpen = () => {}
     available:true,
     enter:()=>animateTo(true),
     exit:()=>animateTo(false),
-    setNight:(value)=>{nightTarget=value?1:0;},
+    setNight:(value)=>{nightTarget=value?1:0;requestRender();},
     setActive,
     getScreenRect,
+    getScreenQuad,
+    setFurniture,
     resize,
     dispose(){
       disposed.value=true;cancelAnimationFrame(frame);tweenResolve?.();
