@@ -5,35 +5,33 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#e8e6e0">
   <meta name="description" content="韩广路 / coiHan 的个人工作台。走近一张书桌，打开电脑，看看项目、生活与正在探索的想法。">
-  <meta property="og:title" content="coiHan — Stay curious.">
+  <meta property="og:title" content="coiHan — 私人工作台">
   <meta property="og:description" content="欢迎坐一会儿。这是我的个人工作台。">
   <title>coiHan — 私人工作台</title>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
   <link rel="canonical" href="https://coihan.github.io/">
-  <link rel="stylesheet" href="./assets/room.css?v=room-3">
-  <link rel="stylesheet" href="./assets/desktop.css?v=room-3">
+  <link rel="stylesheet" href="./assets/room.css?v=room-4">
+  <link rel="stylesheet" href="./assets/desktop.css?v=room-4">
   <link rel="modulepreload" href="./assets/vendor/three.module.js" crossorigin>
-  <script type="module" src="./assets/app.js?v=room-3"></script>
+  <script type="module" src="./assets/app.js?v=room-4"></script>
 </head>
-<body>
+<body class="has-sound">
   <a class="skip-link" href="#room-canvas">跳到书桌</a>
   <div class="boot" id="boot" aria-live="polite">
-    <div class="boot-inner"><span class="boot-mark" aria-hidden="true">coiHan<span>.</span></span><p>PERSONAL COMPUTER</p><div class="boot-rule"><span id="boot-progress"></span></div><small id="boot-copy">正在整理工作台…</small></div>
+    <div class="boot-inner"><span class="boot-mark" aria-hidden="true">coiHan</span><p>PERSONAL COMPUTER</p><div class="boot-rule"><span id="boot-progress"></span></div><small id="boot-copy">正在整理工作台…</small></div>
   </div>
   <main id="room" aria-label="coiHan 的个人工作台">
+    <h1 class="sr-only">coiHan 的个人工作台</h1>
     <canvas id="room-canvas" tabindex="0" role="button" aria-label="打开个人电脑。按回车或空格进入，也可以用鼠标点击桌面物件探索。"></canvas>
     <div class="room-grain" aria-hidden="true"></div>
     <header class="room-header room-chrome">
-      <a class="wordmark" href="./" aria-label="coiHan 工作台首页">coiHan<span class="wordmark-dot">.</span></a>
+      <a class="wordmark" href="./" aria-label="coiHan 工作台首页">coiHan</a>
       <div class="room-tools">
-        <button id="sound-toggle" type="button" aria-label="开启声音" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path class="sound-waves" d="M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/><path class="sound-slash" d="m16 9 6 6m0-6-6 6"/></svg><span id="sound-label">静音</span></button>
+        <button id="sound-toggle" type="button" aria-label="关闭声音" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path class="sound-waves" d="M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/><path class="sound-slash" d="m16 9 6 6m0-6-6 6"/></svg><span id="sound-label">声音</span></button>
         <button id="light-toggle" type="button" aria-label="切换为夜晚" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg><span id="light-label">日光</span></button>
         <button id="info-toggle" class="info-toggle" type="button" aria-label="关于这个空间"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v1"/></svg></button>
       </div>
     </header>
-    <section class="room-caption room-chrome" aria-label="欢迎">
-      <h1>Stay curious.</h1>
-    </section>
     <div class="room-footer room-chrome">
       <p class="room-instruction" id="object-hint">点击桌面上物品试试</p>
       <time class="room-clock" id="local-time" aria-label="北京时间">—</time>

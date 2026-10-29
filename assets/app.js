@@ -1,4 +1,4 @@
-import { mountDesktop } from './desktop.js?v=room-3';
+import { mountDesktop } from './desktop.js?v=room-4';
 
 // Visitor-facing URLs stay clean; cache versions are kept on static resources only.
 function normalizeAddress() {
@@ -14,7 +14,7 @@ const shell = $('#desktop-shell');
 const canvas = $('#room-canvas');
 const furniture = ['walnut','atelier','bauhaus'].includes(new URLSearchParams(location.search).get('furniture')) ? new URLSearchParams(location.search).get('furniture') : 'walnut';
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-let room = null, desktop = null, inside = false, busy = false, sound = false, night = false, audio = null;
+let room = null, desktop = null, inside = false, busy = false, sound = true, night = false, audio = null;
 let enterSource = null;
 let pendingNavigation = null;
 const wait = (ms) => new Promise(resolve => setTimeout(resolve, reducedMotion ? 0 : ms));
@@ -25,7 +25,18 @@ function reconcileNavigation() {
   else if (!next.inside && inside) leaveComputer();
 }
 function remember(key, value) { try { localStorage.setItem(key, value); } catch {} }
-try { night = localStorage.getItem('coihan-room-night') === 'true'; } catch {}
+try {
+  night = localStorage.getItem('coihan-room-night') === 'true';
+  sound = localStorage.getItem('coihan-room-sound') !== 'false';
+} catch {}
+
+function updateSound() {
+  document.body.classList.toggle('has-sound', sound);
+  $('#sound-toggle').setAttribute('aria-pressed', String(sound));
+  $('#sound-toggle').setAttribute('aria-label', sound ? '关闭声音' : '开启声音');
+  $('#sound-label').textContent = sound ? '声音' : '静音';
+}
+updateSound();
 
 function playSound(kind = 'click') {
   if (!sound) return;
@@ -116,10 +127,7 @@ document.querySelectorAll('[data-app]').forEach(el => el.addEventListener('click
 $('.skip-link').addEventListener('click', event => { event.preventDefault(); canvas.focus({ preventScroll: true }); });
 canvas.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openComputer(); } });
 $('#sound-toggle').addEventListener('click', () => {
-  sound = !sound; document.body.classList.toggle('has-sound', sound);
-  $('#sound-toggle').setAttribute('aria-pressed', String(sound));
-  $('#sound-toggle').setAttribute('aria-label', sound ? '关闭声音' : '开启声音');
-  $('#sound-label').textContent = sound ? '声音' : '静音'; playSound();
+  sound = !sound; updateSound(); remember('coihan-room-sound', String(sound)); playSound();
 });
 $('#light-toggle').addEventListener('click', () => { night = !night; updateLight(); remember('coihan-room-night', String(night)); playSound(); });
 $('#info-toggle').addEventListener('click', () => $('#space-info').showModal());
@@ -145,7 +153,7 @@ function showLightweight() {
 
 const startAt = performance.now();
 try {
-  const { createRoom } = await import('./room-scene.js?v=room-3');
+  const { createRoom } = await import('./room-scene.js?v=room-4');
   room = await createRoom({
     canvas,
     furniture,

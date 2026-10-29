@@ -156,8 +156,8 @@ export async function createRoom({ canvas, onReady = () => {}, onOpen = () => {}
   // height so the personal objects and the computer never jump between editions.
   const furnitureRoot = new THREE.Group(); room.add(furnitureRoot);
   const furnitureGroups = new Map();
-  const walnutWood = material('#8b6244', .84);
-  const walnutEdge = material('#76513a', .86);
+  const walnutWood = material('#9a7855', .84);
+  const walnutEdge = material('#89694a', .86);
   const oakWood = material('#c9b591', .89);
   const oakEdge = material('#b5a380', .9);
   const ivoryTop = material('#e8e5d9', .65);
@@ -177,7 +177,7 @@ export async function createRoom({ canvas, onReady = () => {}, onOpen = () => {}
       ctx.globalAlpha=1;
     });
   }
-  const walnutTop=material('#ffffff',.84,{map:woodGrain('#987353','#503826')});
+  const walnutTop=material('#ffffff',.84,{map:woodGrain('#b09371','#685039')});
   const oakTop=material('#ffffff',.88,{map:woodGrain('#cdbb99','#8e7e63')});
   function strut(from,to,r,mat,parent,rBottom=r) {
     const a=new THREE.Vector3(...from),b=new THREE.Vector3(...to),delta=b.clone().sub(a);
@@ -513,6 +513,11 @@ export async function createRoom({ canvas, onReady = () => {}, onOpen = () => {}
     }else{
       homePosition.set(10.44,7.07,13.97);homeTarget.set(0,1.85,.35);camera.fov=35;
     }
+    // Pan the home view without changing its angle, so the desk's visible bounds
+    // sit around the viewport centre rather than drifting to the right.
+    const framingOffset=new THREE.Vector3(homePosition.z-homeTarget.z,0,-(homePosition.x-homeTarget.x));
+    framingOffset.normalize().multiplyScalar(aspect<.8?.14:aspect<1.2?.25:.4);
+    homePosition.add(framingOffset);homeTarget.add(framingOffset);
     const tangent=Math.tan(THREE.MathUtils.degToRad(camera.fov/2));
     const widthFraction=innerWidth<600?.80:.84;
     const distance=Math.max(screenHeight/(2*tangent*.79),screenWidth/(2*tangent*aspect*widthFraction));
@@ -583,6 +588,7 @@ export async function createRoom({ canvas, onReady = () => {}, onOpen = () => {}
 
   const dayColor=new THREE.Color('#e7e4dd'),nightColor=new THREE.Color('#353b3e');
   const dayFloor=new THREE.Color('#d6d3cb'),nightFloor=new THREE.Color('#40413e');
+  const dayFill=new THREE.Color('#dce6eb'),nightFill=new THREE.Color('#f3dfc1');
   function render(now){
     if(disposed.value||!activeRequested||document.hidden){frame=0;return;}
     frame=requestAnimationFrame(render);
@@ -591,8 +597,11 @@ export async function createRoom({ canvas, onReady = () => {}, onOpen = () => {}
     nightMix+=(nightTarget-nightMix)*Math.min(1,dt*2.6);
     scene.background.copy(dayColor).lerp(nightColor,nightMix);scene.fog.color.copy(scene.background);
     floor.material.color.copy(dayFloor).lerp(nightFloor,nightMix);
-    hemi.intensity=1.55-nightMix*1.1;key.intensity=2.4-nightMix*2.15;fill.intensity=.65-nightMix*.32;
-    lampLight.intensity=nightMix*7.5;screenGlow.intensity=.14+nightMix*.6;
+    // A broad warm fill keeps the wood legible at night, while the room itself
+    // stays dark and the desk lamp retains its small pool of light.
+    hemi.intensity=1.55-nightMix*.85;key.intensity=2.4-nightMix*1.9;fill.intensity=.65-nightMix*.18;
+    fill.color.copy(dayFill).lerp(nightFill,nightMix);
+    lampLight.intensity=nightMix*6.5;screenGlow.intensity=.14+nightMix*.6;
     bulbMat.color.set(nightMix>.1?'#ffe5ac':'#e3dfcc');
     if(tween){
       const p=tween.duration?Math.min(1,(now-tween.started)/tween.duration):1;
