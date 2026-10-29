@@ -8,3 +8,7 @@ All four selected assets were created with the built-in imagegen tool and saved 
 - `thinking-sheep.webp`: temporary thinking cartoon avatar requested by the owner. Complete prompt: [avatar-source.txt](avatar-source.txt). PNG was converted to WebP at quality 86 for the website; transparency retained.
 
 The earlier realistic atlas and smooth cartoon sun were rejected drafts and are not deployed. Source PNGs are retained locally for editing. Atlas windows are selected by CSS; artwork pixels were not redrawn by code.
+
+## 2026-10-29 reference refinements
+
+`thinking-sheep-reference.webp` now replaces the former avatar, following the user-supplied classic animation still. `sun-handdrawn-broad.webp` replaces the prior Sun, following the user's second image for the eight broad rays with concave joins while preserving the colored-pencil disk. Both are transparent edits made with the built-in imagegen tool. Complete prompts, reference paths and output records: [reference-assets-source.md](reference-assets-source.md).
