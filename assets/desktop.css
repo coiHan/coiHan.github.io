@@ -8,12 +8,17 @@
 #desktop-shell button:disabled{cursor:default;opacity:.5}
 #desktop-shell .os-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 #desktop-shell .os-icon{width:var(--os-icon-size,32px);height:var(--os-icon-size,32px);flex-shrink:0;image-rendering:pixelated;display:block;overflow:visible;fill:none;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter}
-#desktop-shell .os-wallpaper{position:absolute;inset:0 0 var(--os-taskbar-height,var(--os-taskbar-base));background:radial-gradient(ellipse at 75% 25%,#94aaa02b,transparent 65%),linear-gradient(140deg,#78938a 0,#65847c 45%,#52746f 100%);pointer-events:none}
+#desktop-shell .os-wallpaper{position:absolute;inset:0 0 var(--os-taskbar-height,var(--os-taskbar-base));z-index:0;background:radial-gradient(ellipse at 75% 25%,#94aaa02b,transparent 65%),linear-gradient(140deg,#78938a 0,#65847c 45%,#52746f 100%);pointer-events:none;user-select:none}
 #desktop-shell .os-wallpaper::after{content:"";position:absolute;inset:0;opacity:.13;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' opacity='.3' filter='url(%23n)' d='M0 0h180v180H0z'/%3E%3C/svg%3E")}
-#desktop-shell .os-wallpaper-mark{position:absolute;right:5.5%;top:6%;color:#dbe6da8a;font-family:Georgia,"Songti SC",serif;font-style:italic;font-size:clamp(34px,5vw,72px);line-height:1;letter-spacing:-3px}
-#desktop-shell .os-wallpaper-mark span{display:block;margin-top:13px;font:10px/1.4 ui-monospace,SFMono-Regular,monospace;letter-spacing:3px;text-align:right}
-#desktop-shell .os-wallpaper-note{position:absolute;right:5.5%;bottom:8%;font:italic clamp(24px,3vw,40px)/1.5 Georgia,serif;color:#dae5d5a1}
-#desktop-shell .os-wallpaper-note span{display:block;font:12px/1.5 system-ui,sans-serif;letter-spacing:3px;margin-top:8px}
+#desktop-shell .os-wallpaper-program{position:absolute;right:7%;top:48%;transform:translateY(-50%);width:max-content;max-width:calc(100% - 160px);color:#e0e8da9c}
+#desktop-shell .os-wallpaper-filename{margin-bottom:25px;font:11px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:2px;color:#dfe9d77a}
+#desktop-shell .os-wallpaper-code{margin:0;font:500 clamp(18px,2.45vw,35px)/1.7 ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;letter-spacing:-.04em;white-space:pre;text-shadow:0 1px 1px #24433c14}
+#desktop-shell .os-wallpaper-code code{font:inherit}
+#desktop-shell .os-code-directive{color:#c3dcd5b8}
+#desktop-shell .os-code-keyword{color:#e0debaab}
+#desktop-shell .os-code-function{color:#e9efdbbd}
+#desktop-shell .os-code-string{color:#d3e5c3b8}
+#desktop-shell .os-code-number{color:#ead7a9b3}
 #desktop-shell .os-desktop-icons{position:absolute;top:32px;left:24px;display:grid;grid-template-rows:repeat(6,88px);width:92px;gap:9px;z-index:2}
 #desktop-shell .os-desktop-icon{appearance:none;border:1px solid transparent;background:none;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:7px;min-height:84px;min-width:80px;padding:5px;text-align:center;text-decoration:none;color:#fffdec;text-shadow:1px 1px #344f48;font-size:12px;line-height:1.45}
 #desktop-shell .os-desktop-icon:hover{background:#d5e1d117;border:1px dotted #dfe8d29c}
@@ -158,8 +163,9 @@
 @media(max-width:900px){#desktop-shell .os-desktop-icons{left:14px;top:24px;width:80px;gap:5px}#desktop-shell .os-window{max-width:calc(100% - 30px)}#desktop-shell .os-profile,#desktop-shell .os-projects-page,#desktop-shell .os-photos-page,#desktop-shell .os-contact-page,#desktop-shell .os-notebook-page{padding:24px 26px}#desktop-shell .os-profile-intro{font-size:27px}#desktop-shell .os-project-feature{gap:22px}}
 @media(max-width:679px){
   #desktop-shell{font-size:13px;--os-taskbar-base:51px}
-  #desktop-shell .os-wallpaper-mark{top:auto;bottom:18%;right:8%;font-size:53px}
-  #desktop-shell .os-wallpaper-note{display:none}
+  #desktop-shell .os-wallpaper-program{top:auto;right:8%;bottom:clamp(28px,7vh,60px);transform:none;max-width:84%}
+  #desktop-shell .os-wallpaper-filename{font-size:10px;margin-bottom:17px}
+  #desktop-shell .os-wallpaper-code{font-size:clamp(12px,3.8vw,20px);line-height:1.8}
   #desktop-shell .os-desktop-icons{left:14px;right:14px;top:25px;width:auto;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,105px);gap:14px}
   #desktop-shell .os-desktop-icon{font-size:12px;min-height:95px;gap:10px;padding:10px 4px}
   #desktop-shell .os-desktop-icon>.os-icon{width:42px;height:42px}

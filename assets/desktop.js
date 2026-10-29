@@ -78,7 +78,12 @@ export function mountDesktop(root, {onExit=()=>{}, onSound=()=>{}} = {}) {
 
   root.classList.add('os-desktop');
   root.setAttribute('aria-label','coiHan 的个人电脑桌面');
-  root.innerHTML = `<div class="os-wallpaper" aria-hidden="true"><div class="os-wallpaper-mark">coiHan<span>PERSONAL COMPUTER</span></div><div class="os-wallpaper-note">stay curious.<span>一张书桌，一点好奇。</span></div></div>
+  root.innerHTML = `<div class="os-wallpaper" aria-hidden="true"><div class="os-wallpaper-program"><div class="os-wallpaper-filename">hello.c</div><pre class="os-wallpaper-code"><code><span class="os-code-directive">#include &lt;stdio.h&gt;</span>
+
+<span class="os-code-keyword">int</span> <span class="os-code-function">main</span>(<span class="os-code-keyword">void</span>) {
+    <span class="os-code-function">printf</span>(<span class="os-code-string">"Hello, world!\\n"</span>);
+    <span class="os-code-keyword">return</span> <span class="os-code-number">0</span>;
+}</code></pre></div></div>
     <nav class="os-desktop-icons" aria-label="桌面应用">${APP_LIST.map(app=>`<button type="button" class="os-desktop-icon" data-open="${app.id}" aria-label="打开${app.name}">${icon(app.icon,38)}<span>${app.label}</span></button>`).join('')}<a class="os-desktop-icon" href="/philome/" target="_blank" rel="noopener noreferrer" aria-label="在新标签页启动 philome">${icon('philome',38)}<span>philome <span aria-hidden="true">↗</span></span></a></nav>
     <div class="os-windows" aria-label="应用窗口"></div>
     <div class="os-start-menu" hidden><div class="os-start-brand" aria-hidden="true">coiHan <span>OS</span></div><nav aria-label="开始菜单">${APP_LIST.map(app=>`<button type="button" data-open="${app.id}" class="os-menu-item">${icon(app.icon,25)}<span>${app.label}</span><span class="os-menu-arrow" aria-hidden="true">›</span></button>`).join('')}<div class="os-menu-separator"></div><button type="button" class="os-menu-item" data-exit>${icon('power',23)}<span>回到工作台</span></button></nav></div>
