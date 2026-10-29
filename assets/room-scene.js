@@ -104,6 +104,15 @@ export async function createRoom({ canvas, onReady = () => {}, onOpen = () => {}
     const curve = new THREE.CatmullRomCurve3(points.map(p => new THREE.Vector3(...p)));
     return mesh(new THREE.TubeGeometry(curve, 38, radius, 7, false), mat, parent);
   }
+  // Explicit Bezier handles keep cables inside their planned clearances.
+  // Interpolating a sparse route can dip through the tabletop or floor.
+  function cable(name, segments, radius, mat) {
+    const path = new THREE.CurvePath();
+    for (const points of segments) path.add(new THREE.CubicBezierCurve3(...points.map(p => new THREE.Vector3(...p))));
+    const cord = mesh(new THREE.TubeGeometry(path, 96, radius, 8, false), mat);
+    cord.name = name;
+    return cord;
+  }
   function clickable(object, appId, label) {
     object.userData.appId = appId; object.userData.label = label;
     clickTargets.push(object); return object;
@@ -366,7 +375,7 @@ export async function createRoom({ canvas, onReady = () => {}, onOpen = () => {}
   sphere(.017,[.98,3.215,.701],powerLight,monitor);
   const screenGlow=new THREE.PointLight('#a1d7c1',.14,3,2);screenGlow.position.set(-.55,4.05,.44);scene.add(screenGlow);
 
-  // A 75% keyboard, complete with sculpted key rows and a coiled cable.
+  // A 75% keyboard, complete with sculpted key rows.
   const keyboard = new THREE.Group(); keyboard.position.set(-.57,2.45,1.24); keyboard.rotation.x=.075;room.add(keyboard);
   clickable(keyboard,'desktop','坐下来，打开电脑');
   box(2.75,.16,.96,[0,0,0],mats.cream,keyboard,.045);
@@ -391,13 +400,17 @@ export async function createRoom({ canvas, onReady = () => {}, onOpen = () => {}
   });
   box(1.17,.09,.13,[-.12,.145,.41],mats.light,keyboard,.012);
   for(const x of [-1.1,-.88,.68,.91,1.14])box(.18,.09,.13,[x,.145,.41],mats.light,keyboard,.012);
-  lineTube([[-.5,2.38,.76],[-.9,2.38,.43],[-1.1,2.38,-.03],[-1.11,2.38,-.54]],.018,mats.cream);
   const mouse = new THREE.Group();mouse.position.set(1.29,2.44,1.1);mouse.rotation.y=-.14;room.add(mouse);
   box(.76,.018,.95,[0,-.055,.02],mats.sage,mouse,.015);
   const mouseBody=sphere(.27,[0,.04,0],mats.light,mouse,[.8,.5,1.22]);
   box(.012,.013,.25,[0,.172,-.12],mats.edge,mouse,.003);
   cylinder(.024,.024,.075,[0,.175,-.11],mats.dark,mouse,12).rotation.x=Math.PI/2;
-  lineTube([[1.3,2.43,.77],[1.3,2.4,.39],[1.05,2.4,.13],[.88,2.4,-.24]],.015,mats.cream);
+  // A molded black power lead connects the CRT to the rear of its desktop base.
+  // Peripheral cables are omitted to keep the miniature's silhouette quiet.
+  box(.18,.16,.025,[.4,3.62,-1.584],mats.black,monitor,.012);
+  box(.13,.11,.14,[.4,3.62,-1.655],mats.dark,monitor,.018);
+  box(.14,.17,.025,[.03,2.59,-.803],mats.black,monitor,.009);
+  box(.095,.11,.13,[.03,2.59,-.87],mats.dark,monitor,.014);
   onProgress(.48);
 
   // A few personal objects. Each is also a real navigation target.
@@ -497,8 +510,14 @@ export async function createRoom({ canvas, onReady = () => {}, onOpen = () => {}
   screenGlow.position.y+=.4;lampLight.position.y+=.4;
   onProgress(.78);
 
-  // Simple cable routing avoids objects appearing to float unconnected.
-  lineTube([[-.52,2.8,-1.55],[-.62,2.72,-1.79],[-.64,1.84,-1.84],[-.8,.05,-1.84],[.5,.02,-1.9]],.023,mats.dark);
+  // Route from the rear connector tips after all tabletop objects are raised.
+  // The short loop clears the CRT shell and never drops below the desktop.
+  room.updateMatrixWorld(true);
+  const tip = (object, point) => object.localToWorld(new THREE.Vector3(...point)).toArray();
+  cable('crt-power-cable',[
+    [tip(monitor,[.4,3.62,-1.725]),[-.15,4.02,-2.54],[-.12,3.53,-2.57],[-.22,3.37,-2.4]],
+    [[-.22,3.37,-2.4],[-.32,3.21,-2.23],[-.52,2.99,-1.94],tip(monitor,[.03,2.59,-.935])],
+  ],.023,mats.dark);
 
   const homePosition = new THREE.Vector3();
   const homeTarget = new THREE.Vector3(0,2.15,.35);

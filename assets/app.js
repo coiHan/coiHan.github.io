@@ -158,7 +158,7 @@ function showLightweight() {
 
 const startAt = performance.now();
 try {
-  const { createRoom } = await import('./room-scene.js?v=room-5');
+  const { createRoom } = await import('./room-scene.js?v=room-6');
   room = await createRoom({
     canvas,
     furniture,
