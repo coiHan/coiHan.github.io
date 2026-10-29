@@ -1,4 +1,4 @@
-import { mountDesktop } from './desktop.js?v=room-9';
+import { mountDesktop } from './desktop.js?v=room-10';
 
 // Visitor-facing URLs stay clean; cache versions are kept on static resources only.
 function normalizeAddress() {

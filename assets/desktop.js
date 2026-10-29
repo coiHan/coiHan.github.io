@@ -27,7 +27,6 @@ function icon(type, size=32) {
     mail:'<path d="M3 8h27v20H3z" fill="#e6e0cd" stroke="#3d443e" stroke-width="1.5"/><path d="M3 8l13 11L30 8M3 28l10-11m17 11L20 17" stroke="#788679" stroke-width="1.5"/><path d="M5 10l11 9L28 10" stroke="#fff9e9"/>',
     computer:'<path d="M3 3h26v20H3z" fill="#c8c7ba" stroke="#303b34" stroke-width="1.5"/><path d="M6 6h20v13H6z" fill="#3c5e51"/><path d="M12 23h8v4h7v3H5v-3h7z" fill="#dfdccb" stroke="#303b34" stroke-width="1.5"/><path d="M9 10l3 3-3 3m6 0h7" stroke="#dbe8cb" stroke-width="1.5"/>',
     power:'<path d="M15 3v13M8 8a11 11 0 1 0 16 0" stroke="currentColor" stroke-width="3" stroke-linecap="square"/>',
-    philome:'<path d="M5 3h22v26H5z" fill="#d3d1be" stroke="#444c40" stroke-width="1.5"/><path d="M9 4h14v8H9z" fill="#748670"/><path d="M10 19a6 6 0 1 0 12 0 6 6 0 0 0-12 0" fill="#efe7d0" stroke="#626f59"/><path d="M16 13v12m-6-6h12" stroke="#626f59"/>',
   };
   return `<svg ${common}>${shapes[type] || shapes.document}</svg>`;
 }
@@ -54,10 +53,12 @@ function aboutContent() {
     <section class="os-profile-section" aria-labelledby="os-profile-interests-title">
       <div class="os-profile-section-heading"><span>03</span><h2 id="os-profile-interests-title">兴趣爱好</h2></div>
       <div class="os-interest-grid">
-        <article class="os-interest-card"><h3>影像与音乐</h3><p>喜欢看纪录片，也常听中文 R&amp;B。</p><p class="os-interest-artists">陶喆、王力宏、周杰伦、方大同等</p></article>
         <article class="os-interest-card"><h3>技术</h3><p>关注 AI 等新技术，喜欢了解，也喜欢动手尝试。</p></article>
+        <article class="os-interest-card"><h3>音乐</h3><p>喜欢听中文 R&amp;B，常听陶喆、王力宏、周杰伦、方大同等。</p></article>
+        <article class="os-interest-card"><h3>影像</h3><p>喜欢看一些纪录片、电影、动漫、美剧等。</p></article>
         <article class="os-interest-card"><h3>游戏</h3><p>平时玩 Steam 游戏，手机上玩金铲铲之战、王者荣耀。</p></article>
         <article class="os-interest-card"><h3>日常</h3><p>喜欢吃、逛、玩，随处走走，探索生活里的新鲜事。</p></article>
+        <article class="os-interest-card"><h3>创作</h3><p>尝试把小想法做成网页和互动作品，边做边完善。</p></article>
       </div>
     </section>
     <div class="os-profile-footer"><p>把问题想清楚，也把想法做出来。</p><button type="button" class="os-link-button" data-open="projects">看看我的项目 <span aria-hidden="true">↗</span></button></div>
@@ -68,7 +69,6 @@ function projectsContent() {
   return `<div class="os-projects-page"><div class="os-page-kicker"><span>C:\\JACK\\PROJECTS</span><span>把好奇变成可以体验的东西。</span></div>
     <div class="os-project-feature"><div class="os-project-art" aria-hidden="true"><div class="os-orbit os-orbit-one"></div><div class="os-orbit os-orbit-two"></div><div class="os-orbit os-orbit-three"></div><span class="os-art-center">p.</span><span class="os-art-caption">a small inquiry into yourself</span></div>
       <div class="os-project-description"><p class="os-small-label">INTERACTIVE EXPLORATION</p><h1>philome<span>探索你的思想偏好</span></h1><p>从简短描述出发，看看自己的思考更常走向哪里。</p><p>一次关于观念与自我的互动探索，也是一份保持好奇的邀请。</p><a class="os-raised-button os-primary-button" href="/philome/" target="_blank" rel="noopener noreferrer">启动 philome <span aria-hidden="true">↗</span><span class="os-sr-only">（在新标签页打开）</span></a><small class="os-project-note">用于自我探索与交流。</small></div></div>
-    <div class="os-project-feature"><div class="os-project-art" aria-hidden="true"><div class="os-orbit os-orbit-one"></div><div class="os-orbit os-orbit-two"></div><span class="os-art-center">f.</span><span class="os-art-caption">the rhythm of a city</span></div><div class="os-project-description"><p class="os-small-label">DATA ANALYSIS · FINAL PROJECT</p><h1>FlowLab<span>智能流量分析与预测</span></h1><p>从济南 148 个区域的真实移动网络数据中，读懂城市的时间节律与空间模式。</p><p>探索时空变化、区域聚类，调整参数并对比 12 种预测算法。</p><a class="os-raised-button os-primary-button" href="/traffic-lab/" target="_blank" rel="noopener noreferrer">启动 FlowLab <span aria-hidden="true">↗</span><span class="os-sr-only">（在新标签页打开）</span></a><small class="os-project-note">智能流量分析课程期末项目。</small></div></div>
     <div class="os-project-tail"><span class="os-pixel-dot" aria-hidden="true"></span><p>这里会慢慢放下更多做出来的想法。</p><a href="https://github.com/coiHan" target="_blank" rel="noopener noreferrer">在 GitHub 上找到我 ↗</a></div>
   </div>`;
 }
@@ -107,7 +107,7 @@ export function mountDesktop(root, {onExit=()=>{}, onSound=()=>{}} = {}) {
     <span class="os-code-function">printf</span>(<span class="os-code-string">"Hello, world!\\n"</span>);
     <span class="os-code-keyword">return</span> <span class="os-code-number">0</span>;
 }</code></pre></div></div>
-    <nav class="os-desktop-icons" aria-label="桌面应用">${APP_LIST.map(app=>`<button type="button" class="os-desktop-icon" data-open="${app.id}" aria-label="打开${app.name}">${icon(app.icon,38)}<span>${app.label}</span></button>`).join('')}<a class="os-desktop-icon" href="/philome/" target="_blank" rel="noopener noreferrer" aria-label="在新标签页启动 philome">${icon('philome',38)}<span>philome <span aria-hidden="true">↗</span></span></a></nav>
+    <nav class="os-desktop-icons" aria-label="桌面应用">${APP_LIST.map(app=>`<button type="button" class="os-desktop-icon" data-open="${app.id}" aria-label="打开${app.name}">${icon(app.icon,38)}<span>${app.label}</span></button>`).join('')}</nav>
     <div class="os-windows" aria-label="应用窗口"></div>
     <div class="os-start-menu" hidden><div class="os-start-brand" aria-hidden="true">coiHan <span>OS</span></div><nav aria-label="开始菜单">${APP_LIST.map(app=>`<button type="button" data-open="${app.id}" class="os-menu-item">${icon(app.icon,25)}<span>${app.label}</span><span class="os-menu-arrow" aria-hidden="true">›</span></button>`).join('')}<div class="os-menu-separator"></div><button type="button" class="os-menu-item" data-exit>${icon('power',23)}<span>回到工作台</span></button></nav></div>
     <footer class="os-taskbar"><button class="os-start-button os-raised-button" type="button" aria-expanded="false" aria-label="打开开始菜单">${icon('computer',22)}<span>开始</span></button><div class="os-task-divider" aria-hidden="true"></div><div class="os-tasks" aria-label="已打开的窗口"></div><button type="button" class="os-room-button" data-exit title="回到工作台" aria-label="回到工作台">${icon('power',17)}<span>工作台</span></button><div class="os-clock" aria-label="北京时间"><time></time></div></footer>
@@ -217,7 +217,7 @@ export function mountDesktop(root, {onExit=()=>{}, onSound=()=>{}} = {}) {
     const el=document.createElement('section');
     el.className=`os-window os-window-${id}`;el.dataset.app=id;el.tabIndex=-1;
     el.setAttribute('role','region');el.setAttribute('aria-labelledby',`os-title-${id}`);
-    el.innerHTML=`<header class="os-titlebar"><span class="os-titlebar-label">${icon(appIcon(id),17)}<span id="os-title-${id}">${appTitle(id)}</span></span><div class="os-window-controls"><button type="button" data-window-action="minimize" aria-label="最小化窗口" title="最小化"><span class="os-control-min" aria-hidden="true"></span></button><button type="button" data-window-action="maximize" aria-label="最大化窗口" title="最大化"><span class="os-control-max" aria-hidden="true"></span></button><button type="button" data-window-action="close" aria-label="关闭${appTitle(id)}" title="关闭"><span class="os-control-close" aria-hidden="true">×</span></button></div></header><div class="os-window-toolbar"><span>${id==='notebook'?'记事本':'个人电脑'}</span><span class="os-toolbar-path">${id==='about'?'C:\\JACK\\README.TXT':id==='photos'?'C:\\JACK\\PHOTOS':`C:\\JACK\\${id.toUpperCase()}`}</span><button type="button" data-window-action="menu" class="os-toolbar-home" aria-label="打开应用菜单" title="应用菜单">⋮</button></div><div class="os-window-body">${APP_CONTENT[id]()}</div><div class="os-window-status"><span>${id==='photos'?`${PHOTOS.length} 张照片`:id==='projects'?'2 个正在探索的项目':'coiHan · personal computer'}</span><span class="os-status-right">${id==='notebook'?'保持好奇。':'就绪'}</span><span class="os-resize-grip" aria-hidden="true"></span></div>`;
+    el.innerHTML=`<header class="os-titlebar"><span class="os-titlebar-label">${icon(appIcon(id),17)}<span id="os-title-${id}">${appTitle(id)}</span></span><div class="os-window-controls"><button type="button" data-window-action="minimize" aria-label="最小化窗口" title="最小化"><span class="os-control-min" aria-hidden="true"></span></button><button type="button" data-window-action="maximize" aria-label="最大化窗口" title="最大化"><span class="os-control-max" aria-hidden="true"></span></button><button type="button" data-window-action="close" aria-label="关闭${appTitle(id)}" title="关闭"><span class="os-control-close" aria-hidden="true">×</span></button></div></header><div class="os-window-toolbar"><span>${id==='notebook'?'记事本':'个人电脑'}</span><span class="os-toolbar-path">${id==='about'?'C:\\JACK\\README.TXT':id==='photos'?'C:\\JACK\\PHOTOS':`C:\\JACK\\${id.toUpperCase()}`}</span><button type="button" data-window-action="menu" class="os-toolbar-home" aria-label="打开应用菜单" title="应用菜单">⋮</button></div><div class="os-window-body">${APP_CONTENT[id]()}</div><div class="os-window-status"><span>${id==='photos'?`${PHOTOS.length} 张照片`:id==='projects'?'1 个正在探索的项目':'coiHan · personal computer'}</span><span class="os-status-right">${id==='notebook'?'保持好奇。':'就绪'}</span><span class="os-resize-grip" aria-hidden="true"></span></div>`;
     const task=document.createElement('button');task.type='button';task.className='os-task-button';task.dataset.task=id;
     task.innerHTML=`${icon(appIcon(id),18)}<span>${appTitle(id)}</span>`;
     layer.append(el);taskList.append(task);
