@@ -51,7 +51,26 @@
         return {...p,axis,axisDistance,evidenceDistance,comparisonKind:hasMeans?'two-sided':'contrast-only',sameSide};
       }).sort((a,b)=>Number(b.sameSide)-Number(a.sameSide)||(a.evidenceDistance??a.axisDistance)-(b.evidenceDistance??b.axisDistance));
     }
-    return {version,dimensions,questionCount,questionsPerDimension,questions,coverage,maxima,chapterSize,chapters,profiles,philosophers:profiles,readingEchoes,allPeople,scoreResponses,scoreEvidence,rank,forAxis,getAxisCandidates:forAxis};
+    function neighbors(vector,evidence){
+      validateVector(vector);
+      if(!Array.isArray(evidence)||evidence.length!==dimensionCount||evidence.some((e,i)=>!e||![e.leftMean,e.rightMean].every(x=>Number.isFinite(x)&&x>=0&&x<=1)||Math.abs(e.rightMean-e.leftMean-vector[i])>1e-8))throw new Error('请提供四组完整的两侧认同。');
+      // Every completed answer set gets relative reading neighbours. Missing reference axes stay unknown.
+      const candidates=profiles.filter(p=>p.coverage>0).map(p=>{
+        const axisDistances=p.matchedDimensions.map(i=>({i,distance:Math.hypot(evidence[i].leftMean-p.referenceEvidence[i].leftMean,evidence[i].rightMean-p.referenceEvidence[i].rightMean)/Math.SQRT2}));
+        const distance=Math.sqrt(axisDistances.reduce((sum,a)=>sum+a.distance*a.distance,0)/p.coverage),sortDistance=distance+.035*(dimensionCount-p.coverage);
+        axisDistances.sort((a,b)=>a.distance-b.distance||Math.abs(vector[b.i])-Math.abs(vector[a.i]));
+        return {...p,distance,evidenceDistance:distance,sortDistance,axisDistances};
+      }).sort((a,b)=>a.sortDistance-b.sortDistance||b.coverage-a.coverage||a.name.localeCompare(b.name,'zh-CN'));
+      const usedAxes=new Set();
+      return candidates.slice(0,3).map(p=>{
+        const closest=p.axisDistances[0],alternative=p.axisDistances.find(a=>!usedAxes.has(a.i)&&a.distance<=closest.distance+.12),axis=(alternative||closest).i;
+        usedAxes.add(axis);
+        const sameSide=Math.abs(vector[axis])>.2&&Math.abs(p.v[axis])>.2&&Math.sign(vector[axis])===Math.sign(p.v[axis]);
+        const bothHigh=evidence[axis].kind==='both-high'&&p.referenceEvidence[axis].kind==='both-high';
+        return {...p,recommendationAxis:axis,axis:axis,axisDistance:p.axisDistances.find(a=>a.i===axis).distance,neighborKind:sameSide||bothHigh?'resonance':'perspective'};
+      });
+    }
+    return {version,dimensions,questionCount,questionsPerDimension,questions,coverage,maxima,chapterSize,chapters,profiles,philosophers:profiles,readingEchoes,allPeople,scoreResponses,scoreEvidence,rank,forAxis,neighbors,getAxisCandidates:forAxis};
   }
   return {version,dimensions,createModel};
 });
