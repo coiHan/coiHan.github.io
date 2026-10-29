@@ -89,9 +89,50 @@ export function mountDesktop(root, {onExit=()=>{}, onSound=()=>{}} = {}) {
   const start = root.querySelector('.os-start-button');
   const menu = root.querySelector('.os-start-menu');
   const lightbox = root.querySelector('.os-lightbox');
+  const taskbar = root.querySelector('.os-taskbar');
+  let measuredTaskbarHeight = 0;
 
   function emit(type) { if (typeof onSound==='function') onSound(type); }
-  function dimensions() { return {w:root.clientWidth || window.innerWidth,h:root.clientHeight || window.innerHeight}; }
+  function dimensions() {
+    const w=root.clientWidth || window.innerWidth;
+    const fullHeight=root.clientHeight || window.innerHeight;
+    const taskbarHeight=parseFloat(getComputedStyle(taskbar).height) || taskbar.offsetHeight || (w<680?51:48);
+    if(taskbarHeight!==measuredTaskbarHeight){
+      measuredTaskbarHeight=taskbarHeight;
+      root.style.setProperty('--os-taskbar-height',`${taskbarHeight}px`);
+    }
+    return {w,h:Math.max(0,fullHeight-taskbarHeight),fullHeight,taskbarHeight};
+  }
+  function clamp(value,min,max) { return Math.max(min,Math.min(Math.max(min,max),value)); }
+  function windowSize(win) {
+    const rect=win.el.getBoundingClientRect(),rootRect=root.getBoundingClientRect();
+    const sx=rootRect.width/(root.clientWidth||rootRect.width)||1;
+    const sy=rootRect.height/(root.clientHeight||rootRect.height)||1;
+    return {w:Math.ceil(rect.width/sx),h:Math.ceil(rect.height/sy)};
+  }
+  function fitWindow(win,{initial=false}={}) {
+    const {w,h,fullHeight}=dimensions();
+    const mobile=w<680;
+    const margin=mobile?10:12;
+    const availableHeight=Math.max(0,h-margin*2);
+    win.el.style.minHeight=`${Math.min(mobile?200:300,availableHeight)}px`;
+    if(win.maximized&&!mobile){
+      win.el.style.maxHeight='none';
+      return;
+    }
+    win.el.style.maxHeight=`${availableHeight}px`;
+    if(mobile)return;
+    const width=Math.min(win.id==='photos'?900:850,Math.max(0,w-40));
+    win.el.style.width=`${width}px`;
+    const cascade=win.order%3;
+    const oldLeft=parseFloat(win.el.style.left),oldTop=parseFloat(win.el.style.top);
+    const left=initial?(w-width)/2+48+cascade*24:Number.isFinite(oldLeft)?oldLeft:margin;
+    const top=initial?Math.round(fullHeight*.095)+cascade*24:Number.isFinite(oldTop)?oldTop:margin;
+    const positionMargin=initial?margin:0;
+    const size=windowSize(win);
+    win.el.style.left=`${clamp(left,positionMargin,w-size.w-positionMargin)}px`;
+    win.el.style.top=`${clamp(top,positionMargin,h-size.h-positionMargin)}px`;
+  }
   function setMenu(value, focus=false) {
     menuOpen = value;
     menu.hidden = !value;
@@ -111,6 +152,7 @@ export function mountDesktop(root, {onExit=()=>{}, onSound=()=>{}} = {}) {
   function activate(id, focus=true) {
     const win=windows.get(id); if(!win) return;
     activeId=id;win.minimized=false;win.el.hidden=false;win.el.style.zIndex=String(++topZ);
+    fitWindow(win);
     updateActive();
     if(focus) win.el.focus({preventScroll:true});
   }
@@ -127,10 +169,12 @@ export function mountDesktop(root, {onExit=()=>{}, onSound=()=>{}} = {}) {
     const button=win.el.querySelector('[data-window-action="maximize"]');
     button.setAttribute('aria-label',win.maximized?'还原窗口':'最大化窗口');
     button.title=win.maximized?'还原':'最大化';button.classList.toggle('os-restore-control',win.maximized);
+    fitWindow(win);
     activate(id,false);emit('maximize');
   }
   function closeWindow(id) {
     const win=windows.get(id);if(!win) return;
+    sizeObserver.unobserve(win.el);
     win.el.remove();win.task.remove();windows.delete(id);emit('close');
     const next=highestWindow();activeId=next?.id || null;updateActive();
     if(next) next.el.focus({preventScroll:true});else root.querySelector(`[data-open="${id}"]`)?.focus();
@@ -144,16 +188,12 @@ export function mountDesktop(root, {onExit=()=>{}, onSound=()=>{}} = {}) {
     const el=document.createElement('section');
     el.className=`os-window os-window-${id}`;el.dataset.app=id;el.tabIndex=-1;
     el.setAttribute('role','region');el.setAttribute('aria-labelledby',`os-title-${id}`);
-    const {w,h}=dimensions();const mobile=w<680;
-    const width=Math.min(id==='photos'?900:850,w-40);
-    const left=Math.max(12,Math.min(w-width-16,(w-width)/2+48+(openCount%3)*24));
-    const top=Math.max(16,Math.min(h-360,Math.round(h*.095)+(openCount%3)*24));
-    if(!mobile){el.style.width=`${width}px`;el.style.left=`${left}px`;el.style.top=`${top}px`;}
     el.innerHTML=`<header class="os-titlebar"><span class="os-titlebar-label">${icon(appIcon(id),17)}<span id="os-title-${id}">${appTitle(id)}</span></span><div class="os-window-controls"><button type="button" data-window-action="minimize" aria-label="最小化窗口" title="最小化"><span class="os-control-min" aria-hidden="true"></span></button><button type="button" data-window-action="maximize" aria-label="最大化窗口" title="最大化"><span class="os-control-max" aria-hidden="true"></span></button><button type="button" data-window-action="close" aria-label="关闭${appTitle(id)}" title="关闭"><span class="os-control-close" aria-hidden="true">×</span></button></div></header><div class="os-window-toolbar"><span>${id==='notebook'?'记事本':'个人电脑'}</span><span class="os-toolbar-path">${id==='about'?'C:\\JACK\\README.TXT':id==='photos'?'C:\\JACK\\PHOTOS':`C:\\JACK\\${id.toUpperCase()}`}</span><button type="button" data-window-action="menu" class="os-toolbar-home" aria-label="打开应用菜单" title="应用菜单">⋮</button></div><div class="os-window-body">${APP_CONTENT[id]()}</div><div class="os-window-status"><span>${id==='photos'?`${PHOTOS.length} 张照片`:id==='projects'?'1 个正在探索的项目':'coiHan · personal computer'}</span><span class="os-status-right">${id==='notebook'?'保持好奇。':'就绪'}</span><span class="os-resize-grip" aria-hidden="true"></span></div>`;
     const task=document.createElement('button');task.type='button';task.className='os-task-button';task.dataset.task=id;
     task.innerHTML=`${icon(appIcon(id),18)}<span>${appTitle(id)}</span>`;
     layer.append(el);taskList.append(task);
-    const win={id,el,task,minimized:false,maximized:false};windows.set(id,win);openCount++;
+    const win={id,el,task,minimized:false,maximized:false,order:openCount};windows.set(id,win);openCount++;
+    fitWindow(win,{initial:true});sizeObserver.observe(el);
     installDrag(win);activate(id,!silent);if(!silent) emit('open');
   }
 
@@ -164,9 +204,11 @@ export function mountDesktop(root, {onExit=()=>{}, onSound=()=>{}} = {}) {
       if(event.button!==0||event.target.closest('button')||win.maximized||dimensions().w<680) return;
       const rect=win.el.getBoundingClientRect();const rootRect=root.getBoundingClientRect();
       const startX=event.clientX;const startY=event.clientY;
-      const left=rect.left-rootRect.left;const top=rect.top-rootRect.top;
+      const sx=rootRect.width/(root.clientWidth||rootRect.width)||1;
+      const sy=rootRect.height/(root.clientHeight||rootRect.height)||1;
+      const left=(rect.left-rootRect.left)/sx;const top=(rect.top-rootRect.top)/sy;
       activate(win.id,false);bar.setPointerCapture(event.pointerId);win.el.classList.add('os-dragging');event.preventDefault();
-      const move=e=>{const {w,h}=dimensions();win.el.style.left=`${Math.max(0,Math.min(w-rect.width,left+e.clientX-startX))}px`;win.el.style.top=`${Math.max(0,Math.min(h-112,top+e.clientY-startY))}px`;};
+      const move=e=>{const {w,h}=dimensions(),size=windowSize(win);win.el.style.left=`${clamp(left+(e.clientX-startX)/sx,0,w-size.w)}px`;win.el.style.top=`${clamp(top+(e.clientY-startY)/sy,0,h-size.h)}px`;};
       const finish=()=>{win.el.classList.remove('os-dragging');bar.removeEventListener('pointermove',move);bar.removeEventListener('pointerup',finish);bar.removeEventListener('pointercancel',finish);};
       bar.addEventListener('pointermove',move);bar.addEventListener('pointerup',finish);bar.addEventListener('pointercancel',finish);
     },{signal:abort.signal});
@@ -250,20 +292,15 @@ export function mountDesktop(root, {onExit=()=>{}, onSound=()=>{}} = {}) {
   clock();const clockTimer=window.setInterval(clock,15000);
   function resize() {
     cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(()=>{
-      const {w,h}=dimensions();if(w<680)return;
-      for(const win of windows.values()){
-        if(win.maximized)continue;
-        win.el.style.width=`${Math.min(win.id==='photos'?900:850,w-40)}px`;
-        const left=parseFloat(win.el.style.left)||24;const top=parseFloat(win.el.style.top)||32;
-        win.el.style.left=`${Math.max(0,Math.min(w-win.el.offsetWidth,left))}px`;
-        win.el.style.top=`${Math.max(0,Math.min(h-112,top))}px`;
-      }
+      dimensions();
+      for(const win of windows.values())if(!win.minimized)fitWindow(win);
     });
   }
+  const sizeObserver=new ResizeObserver(resize);sizeObserver.observe(root);sizeObserver.observe(taskbar);
   window.addEventListener('resize',resize,{signal:abort.signal});
 
   function focus() { const active=windows.get(activeId)||highestWindow();if(active)activate(active.id);else root.querySelector('.os-desktop-icon')?.focus(); }
   function closeAll() {dismissOverlays();for(const id of [...windows.keys()])closeWindow(id);}
   openApp('about',true);
-  return {openApp,focus,closeAll,dismissOverlays,resize,destroy(){abort.abort();clearInterval(clockTimer);cancelAnimationFrame(resizeFrame);root.innerHTML='';}};
+  return {openApp,focus,closeAll,dismissOverlays,resize,destroy(){abort.abort();sizeObserver.disconnect();clearInterval(clockTimer);cancelAnimationFrame(resizeFrame);root.innerHTML='';}};
 }

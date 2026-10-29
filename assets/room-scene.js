@@ -503,7 +503,15 @@ export async function createRoom({ canvas, onReady = () => {}, onOpen = () => {}
   const homePosition = new THREE.Vector3();
   const homeTarget = new THREE.Vector3(0,2.15,.35);
   const enterPosition = new THREE.Vector3();
-  const enterTarget = new THREE.Vector3(-.55,4.57,.137);
+  // The fullscreen handoff starts from a complete computer, including the keys.
+  // Fit all world-space corners, accounting for the keyboard's nearer depth.
+  scene.updateMatrixWorld(true);
+  const computerBounds = new THREE.Box3().setFromObject(monitor).union(new THREE.Box3().setFromObject(keyboard));
+  const enterTarget = computerBounds.getCenter(new THREE.Vector3());
+  const computerCorners = [];
+  for(const x of [computerBounds.min.x,computerBounds.max.x])
+    for(const y of [computerBounds.min.y,computerBounds.max.y])
+      for(const z of [computerBounds.min.z,computerBounds.max.z]) computerCorners.push(new THREE.Vector3(x,y,z));
   function setCameraPresets(){
     const aspect=innerWidth/innerHeight;
     if(aspect<.8){
@@ -519,9 +527,11 @@ export async function createRoom({ canvas, onReady = () => {}, onOpen = () => {}
     framingOffset.normalize().multiplyScalar(aspect<.8?.14:aspect<1.2?.25:.4);
     homePosition.add(framingOffset);homeTarget.add(framingOffset);
     const tangent=Math.tan(THREE.MathUtils.degToRad(camera.fov/2));
-    const widthFraction=innerWidth<600?.80:.84;
-    const distance=Math.max(screenHeight/(2*tangent*.79),screenWidth/(2*tangent*aspect*widthFraction));
-    enterPosition.set(enterTarget.x,enterTarget.y,enterTarget.z+distance);
+    const cameraZ = Math.max(...computerCorners.map(corner => corner.z + Math.max(
+      Math.abs(corner.y-enterTarget.y)/(tangent*.84),
+      Math.abs(corner.x-enterTarget.x)/(tangent*aspect*.88)
+    )));
+    enterPosition.set(enterTarget.x,enterTarget.y,cameraZ);
   }
   function resize(){
     if(disposed.value)return;

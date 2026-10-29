@@ -1,4 +1,4 @@
-import { mountDesktop } from './desktop.js?v=room-4';
+import { mountDesktop } from './desktop.js?v=room-5';
 
 // Visitor-facing URLs stay clean; cache versions are kept on static resources only.
 function normalizeAddress() {
@@ -76,20 +76,24 @@ async function openComputer(app = 'desktop', { historyMode = 'push' } = {}) {
   enterSource = document.activeElement;
   playSound('enter');
   document.body.classList.add('in-computer');
-  try { await room?.enter?.(); } catch {}
   for (const property of ['left','top','width','height']) shell.style.removeProperty(property);
   shell.classList.remove('desktop-entering', 'desktop-exiting');
-  shell.style.transform = screenTransform(); shell.style.opacity = '0'; shell.style.borderRadius = '20px';
+  shell.style.transform = 'none'; shell.style.opacity = '0'; shell.style.borderRadius = '20px';
   shell.hidden = false;
+  shell.inert = true;
+  $('#room').inert = true;
+  const approach = room?.enter?.();
   if (!desktop) desktop = mountDesktop(shell, { onExit: requestExit, onSound: () => playSound() });
   desktop.openApp(app);
-  $('#room').inert = true;
+  try { await approach; } catch {}
+  shell.style.transform = screenTransform();
   shell.getBoundingClientRect();
   await new Promise(requestAnimationFrame);
   shell.classList.add('desktop-entering');
   shell.style.transform = 'translate(0px,0px) scale(1)'; shell.style.opacity = '1'; shell.style.borderRadius = '0';
   await wait(760);
   room?.setActive?.(false);
+  shell.inert = false;
   inside = true; busy = false;
   desktop.focus?.();
   if (historyMode !== 'none' && !pendingNavigation) history[historyMode === 'replace' ? 'replaceState' : 'pushState']({ app, roomEntry: historyMode === 'push' }, '', `${location.pathname}${location.search}#computer`);
@@ -105,9 +109,10 @@ function requestExit() {
 async function leaveComputer({ updateHistory = false } = {}) {
   if (busy || !inside) return;
   busy = true; playSound();
+  shell.inert = true;
   desktop?.dismissOverlays?.();
   shell.classList.remove('desktop-entering'); shell.classList.add('desktop-exiting');
-  shell.style.transform = screenTransform(); shell.style.opacity = '0'; shell.style.borderRadius = '18px';
+  shell.style.transform = screenTransform(); shell.style.opacity = '1'; shell.style.borderRadius = '18px';
   await wait(520);
   shell.hidden = true; inside = false;
   try { await room?.exit?.(); } catch {}
@@ -153,7 +158,7 @@ function showLightweight() {
 
 const startAt = performance.now();
 try {
-  const { createRoom } = await import('./room-scene.js?v=room-4');
+  const { createRoom } = await import('./room-scene.js?v=room-5');
   room = await createRoom({
     canvas,
     furniture,
