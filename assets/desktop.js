@@ -74,7 +74,6 @@ export function mountDesktop(root, {onExit=()=>{}, onSound=()=>{}} = {}) {
   let menuOpen = false;
   let openCount = 0;
   let resizeFrame = 0;
-  let lastSize = {w:800,h:600};
 
   root.classList.add('os-desktop');
   root.setAttribute('aria-label','coiHan 的个人电脑桌面');
@@ -92,38 +91,7 @@ export function mountDesktop(root, {onExit=()=>{}, onSound=()=>{}} = {}) {
   const lightbox = root.querySelector('.os-lightbox');
 
   function emit(type) { if (typeof onSound==='function') onSound(type); }
-  function dimensions() {
-    const w=root.clientWidth || lastSize.w;
-    const h=root.clientHeight || lastSize.h;
-    lastSize={w,h};
-    return lastSize;
-  }
-  function compactScreen() {const {w,h}=dimensions();return w<620||h<360;}
-  function taskHeight() {const {w,h}=dimensions();return w<420||h<340?32:w<620?36:40;}
-  function fitWindow(win,initial=false) {
-    const {w,h}=dimensions(), compact=compactScreen(), margin=compact?5:12;
-    const availableH=h-taskHeight();
-    const side=w>=760?94:margin;
-    const width=compact?w-margin*2:Math.min(win.id==='photos'?790:750,w-side-margin);
-    const height=Math.max(160,availableH-(compact?10:32));
-    const changed=win.compact!==compact;
-    let left=initial||changed?(compact?margin:side+(openCount%2)*8):parseFloat(win.el.style.left)||margin;
-    let top=initial||changed?(compact?margin:16+(openCount%2)*8):parseFloat(win.el.style.top)||margin;
-    left=Math.max(margin,Math.min(w-width-margin,left));
-    top=Math.max(margin,Math.min(availableH-height-margin,top));
-    Object.assign(win.el.style,{width:`${width}px`,height:`${height}px`,left:`${left}px`,top:`${top}px`});
-    win.compact=compact;
-  }
-  function resize() {
-    cancelAnimationFrame(resizeFrame);
-    resizeFrame=requestAnimationFrame(()=>{
-      const {w,h}=dimensions();
-      root.classList.toggle('os-compact',w<620||h<360);
-      root.classList.toggle('os-small',w<420||h<340);
-      root.style.setProperty('--os-task-height',`${taskHeight()}px`);
-      for(const win of windows.values()) fitWindow(win);
-    });
-  }
+  function dimensions() { return {w:root.clientWidth || window.innerWidth,h:root.clientHeight || window.innerHeight}; }
   function setMenu(value, focus=false) {
     menuOpen = value;
     menu.hidden = !value;
@@ -176,25 +144,29 @@ export function mountDesktop(root, {onExit=()=>{}, onSound=()=>{}} = {}) {
     const el=document.createElement('section');
     el.className=`os-window os-window-${id}`;el.dataset.app=id;el.tabIndex=-1;
     el.setAttribute('role','region');el.setAttribute('aria-labelledby',`os-title-${id}`);
+    const {w,h}=dimensions();const mobile=w<680;
+    const width=Math.min(id==='photos'?900:850,w-40);
+    const left=Math.max(12,Math.min(w-width-16,(w-width)/2+48+(openCount%3)*24));
+    const top=Math.max(16,Math.min(h-360,Math.round(h*.095)+(openCount%3)*24));
+    if(!mobile){el.style.width=`${width}px`;el.style.left=`${left}px`;el.style.top=`${top}px`;}
     el.innerHTML=`<header class="os-titlebar"><span class="os-titlebar-label">${icon(appIcon(id),17)}<span id="os-title-${id}">${appTitle(id)}</span></span><div class="os-window-controls"><button type="button" data-window-action="minimize" aria-label="最小化窗口" title="最小化"><span class="os-control-min" aria-hidden="true"></span></button><button type="button" data-window-action="maximize" aria-label="最大化窗口" title="最大化"><span class="os-control-max" aria-hidden="true"></span></button><button type="button" data-window-action="close" aria-label="关闭${appTitle(id)}" title="关闭"><span class="os-control-close" aria-hidden="true">×</span></button></div></header><div class="os-window-toolbar"><span>${id==='notebook'?'记事本':'个人电脑'}</span><span class="os-toolbar-path">${id==='about'?'C:\\JACK\\README.TXT':id==='photos'?'C:\\JACK\\PHOTOS':`C:\\JACK\\${id.toUpperCase()}`}</span><button type="button" data-window-action="menu" class="os-toolbar-home" aria-label="打开应用菜单" title="应用菜单">⋮</button></div><div class="os-window-body">${APP_CONTENT[id]()}</div><div class="os-window-status"><span>${id==='photos'?`${PHOTOS.length} 张照片`:id==='projects'?'1 个正在探索的项目':'coiHan · personal computer'}</span><span class="os-status-right">${id==='notebook'?'保持好奇。':'就绪'}</span><span class="os-resize-grip" aria-hidden="true"></span></div>`;
     const task=document.createElement('button');task.type='button';task.className='os-task-button';task.dataset.task=id;
     task.innerHTML=`${icon(appIcon(id),18)}<span>${appTitle(id)}</span>`;
     layer.append(el);taskList.append(task);
-    const win={id,el,task,minimized:false,maximized:false,compact:compactScreen()};windows.set(id,win);fitWindow(win,true);openCount++;
+    const win={id,el,task,minimized:false,maximized:false};windows.set(id,win);openCount++;
     installDrag(win);activate(id,!silent);if(!silent) emit('open');
   }
 
   function installDrag(win) {
     const bar=win.el.querySelector('.os-titlebar');
-    bar.addEventListener('dblclick',event=>{if(!event.target.closest('button')&&!compactScreen()) maximize(win.id);},{signal:abort.signal});
+    bar.addEventListener('dblclick',event=>{if(!event.target.closest('button')&&dimensions().w>=680) maximize(win.id);},{signal:abort.signal});
     bar.addEventListener('pointerdown',event=>{
-      if(event.button!==0||event.target.closest('button')||win.maximized||compactScreen()) return;
+      if(event.button!==0||event.target.closest('button')||win.maximized||dimensions().w<680) return;
       const rect=win.el.getBoundingClientRect();const rootRect=root.getBoundingClientRect();
       const startX=event.clientX;const startY=event.clientY;
-      const sx=rootRect.width/root.clientWidth||1,sy=rootRect.height/root.clientHeight||1;
-      const left=(rect.left-rootRect.left)/sx;const top=(rect.top-rootRect.top)/sy;
+      const left=rect.left-rootRect.left;const top=rect.top-rootRect.top;
       activate(win.id,false);bar.setPointerCapture(event.pointerId);win.el.classList.add('os-dragging');event.preventDefault();
-      const move=e=>{const {w,h}=dimensions();win.el.style.left=`${Math.max(0,Math.min(w-win.el.offsetWidth,left+(e.clientX-startX)/sx))}px`;win.el.style.top=`${Math.max(0,Math.min(h-taskHeight()-30,top+(e.clientY-startY)/sy))}px`;};
+      const move=e=>{const {w,h}=dimensions();win.el.style.left=`${Math.max(0,Math.min(w-rect.width,left+e.clientX-startX))}px`;win.el.style.top=`${Math.max(0,Math.min(h-112,top+e.clientY-startY))}px`;};
       const finish=()=>{win.el.classList.remove('os-dragging');bar.removeEventListener('pointermove',move);bar.removeEventListener('pointerup',finish);bar.removeEventListener('pointercancel',finish);};
       bar.addEventListener('pointermove',move);bar.addEventListener('pointerup',finish);bar.addEventListener('pointercancel',finish);
     },{signal:abort.signal});
@@ -276,12 +248,22 @@ export function mountDesktop(root, {onExit=()=>{}, onSound=()=>{}} = {}) {
 
   function clock() { root.querySelector('time').textContent=new Intl.DateTimeFormat('zh-CN',{timeZone:'Asia/Shanghai',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date()); }
   clock();const clockTimer=window.setInterval(clock,15000);
+  function resize() {
+    cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(()=>{
+      const {w,h}=dimensions();if(w<680)return;
+      for(const win of windows.values()){
+        if(win.maximized)continue;
+        win.el.style.width=`${Math.min(win.id==='photos'?900:850,w-40)}px`;
+        const left=parseFloat(win.el.style.left)||24;const top=parseFloat(win.el.style.top)||32;
+        win.el.style.left=`${Math.max(0,Math.min(w-win.el.offsetWidth,left))}px`;
+        win.el.style.top=`${Math.max(0,Math.min(h-112,top))}px`;
+      }
+    });
+  }
   window.addEventListener('resize',resize,{signal:abort.signal});
-  const sizeObserver=new ResizeObserver(resize);sizeObserver.observe(root);
 
   function focus() { const active=windows.get(activeId)||highestWindow();if(active)activate(active.id);else root.querySelector('.os-desktop-icon')?.focus(); }
   function closeAll() {dismissOverlays();for(const id of [...windows.keys()])closeWindow(id);}
   openApp('about',true);
-  resize();
-  return {openApp,focus,closeAll,dismissOverlays,resize,destroy(){abort.abort();sizeObserver.disconnect();clearInterval(clockTimer);cancelAnimationFrame(resizeFrame);root.innerHTML='';}};
+  return {openApp,focus,closeAll,dismissOverlays,resize,destroy(){abort.abort();clearInterval(clockTimer);cancelAnimationFrame(resizeFrame);root.innerHTML='';}};
 }

@@ -1,9 +1,17 @@
-import { mountDesktop } from './desktop.js?v=room-2';
+import { mountDesktop } from './desktop.js?v=room-3';
+
+// Visitor-facing URLs stay clean; cache versions are kept on static resources only.
+function normalizeAddress() {
+  const cleanUrl = new URL(location.href);
+  if (!cleanUrl.searchParams.has('v')) return;
+  cleanUrl.searchParams.delete('v');
+  history.replaceState(history.state, '', cleanUrl.pathname + cleanUrl.search + cleanUrl.hash);
+}
+normalizeAddress();
 
 const $ = (q) => document.querySelector(q);
 const shell = $('#desktop-shell');
 const canvas = $('#room-canvas');
-const controls = $('#computer-controls');
 const furniture = ['walnut','atelier','bauhaus'].includes(new URLSearchParams(location.search).get('furniture')) ? new URLSearchParams(location.search).get('furniture') : 'walnut';
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 let room = null, desktop = null, inside = false, busy = false, sound = false, night = false, audio = null;
@@ -44,14 +52,10 @@ function updateLight() {
 }
 updateLight();
 
-function placeScreen() {
+function screenTransform() {
   const rect = room?.getScreenRect?.();
-  const width = rect?.width > 10 ? rect.width - 3 : Math.min(920, innerWidth - 32);
-  const height = rect?.height > 10 ? rect.height - 3 : Math.min(640, innerHeight - 144);
-  shell.style.left = `${rect?.width > 10 ? rect.x + 1.5 : (innerWidth - width) / 2}px`;
-  shell.style.top = `${rect?.height > 10 ? rect.y + 1.5 : (innerHeight - height) / 2 + 12}px`;
-  shell.style.width = `${width}px`; shell.style.height = `${height}px`;
-  desktop?.resize?.();
+  if (!rect || rect.width < 10 || rect.height < 10) return 'translate(0px,0px) scale(.96)';
+  return `translate(${rect.x}px,${rect.y}px) scale(${rect.width / innerWidth},${rect.height / innerHeight})`;
 }
 
 async function openComputer(app = 'desktop', { historyMode = 'push' } = {}) {
@@ -59,25 +63,25 @@ async function openComputer(app = 'desktop', { historyMode = 'push' } = {}) {
   if (inside) { desktop.openApp(app); return; }
   busy = true;
   enterSource = document.activeElement;
-  $('#enter-computer').disabled = true;
   playSound('enter');
   document.body.classList.add('in-computer');
   try { await room?.enter?.(); } catch {}
-  placeScreen();
+  for (const property of ['left','top','width','height']) shell.style.removeProperty(property);
+  shell.classList.remove('desktop-entering', 'desktop-exiting');
+  shell.style.transform = screenTransform(); shell.style.opacity = '0'; shell.style.borderRadius = '20px';
   shell.hidden = false;
   if (!desktop) desktop = mountDesktop(shell, { onExit: requestExit, onSound: () => playSound() });
   desktop.openApp(app);
   $('#room').inert = true;
-  controls.hidden = false;
+  shell.getBoundingClientRect();
   await new Promise(requestAnimationFrame);
-  shell.classList.add('screen-ready');
-  desktop.resize?.();
-  await wait(320);
+  shell.classList.add('desktop-entering');
+  shell.style.transform = 'translate(0px,0px) scale(1)'; shell.style.opacity = '1'; shell.style.borderRadius = '0';
+  await wait(760);
   room?.setActive?.(false);
   inside = true; busy = false;
   desktop.focus?.();
   if (historyMode !== 'none' && !pendingNavigation) history[historyMode === 'replace' ? 'replaceState' : 'pushState']({ app, roomEntry: historyMode === 'push' }, '', `${location.pathname}${location.search}#computer`);
-  $('#enter-computer').disabled = false;
   reconcileNavigation();
 }
 
@@ -91,9 +95,9 @@ async function leaveComputer({ updateHistory = false } = {}) {
   if (busy || !inside) return;
   busy = true; playSound();
   desktop?.dismissOverlays?.();
-  shell.classList.remove('screen-ready');
-  controls.hidden = true;
-  await wait(300);
+  shell.classList.remove('desktop-entering'); shell.classList.add('desktop-exiting');
+  shell.style.transform = screenTransform(); shell.style.opacity = '0'; shell.style.borderRadius = '18px';
+  await wait(520);
   shell.hidden = true; inside = false;
   try { await room?.exit?.(); } catch {}
   document.body.classList.remove('in-computer');
@@ -103,14 +107,13 @@ async function leaveComputer({ updateHistory = false } = {}) {
     history.replaceState(null, '', roomUrl.pathname + roomUrl.search);
   }
   busy = false;
-  const target = enterSource && document.contains(enterSource) ? enterSource : $('#enter-computer');
+  const target = enterSource && document.contains(enterSource) && !shell.contains(enterSource) ? enterSource : canvas;
   target.focus({ preventScroll: true });
   reconcileNavigation();
 }
 
-$('#enter-computer').addEventListener('click', () => openComputer());
-$('#leave-computer').addEventListener('click', requestExit);
 document.querySelectorAll('[data-app]').forEach(el => el.addEventListener('click', () => openComputer(el.dataset.app)));
+$('.skip-link').addEventListener('click', event => { event.preventDefault(); canvas.focus({ preventScroll: true }); });
 canvas.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openComputer(); } });
 $('#sound-toggle').addEventListener('click', () => {
   sound = !sound; document.body.classList.toggle('has-sound', sound);
@@ -122,7 +125,12 @@ $('#light-toggle').addEventListener('click', () => { night = !night; updateLight
 $('#info-toggle').addEventListener('click', () => $('#space-info').showModal());
 $('#space-info').addEventListener('click', event => { if (event.target === $('#space-info')) $('#space-info').close(); });
 
-function clock() { $('#local-time').textContent = new Intl.DateTimeFormat('en-GB', {timeZone:'Asia/Shanghai',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date()) + ' / CST'; }
+function clock() {
+  const now = new Date();
+  const parts = Object.fromEntries(new Intl.DateTimeFormat('en-GB', {timeZone:'Asia/Shanghai',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(now).map(part => [part.type,part.value]));
+  $('#local-time').textContent = `${parts.year}-${parts.month}-${parts.day} ${parts.hour}:${parts.minute}`;
+  $('#local-time').dateTime = `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}:00+08:00`;
+}
 clock(); setInterval(clock, 30000);
 
 let ready = false;
@@ -137,12 +145,11 @@ function showLightweight() {
 
 const startAt = performance.now();
 try {
-  const { createRoom } = await import('./room-scene.js?v=room-2');
+  const { createRoom } = await import('./room-scene.js?v=room-3');
   room = await createRoom({
     canvas,
     furniture,
     onOpen: app => openComputer(app || 'desktop'),
-    onHover: label => { $('#object-hint').textContent = label || '点击电脑，或看看桌上的小东西。'; },
     onProgress: value => { $('#boot-progress').style.width = `${Math.max(8,Math.min(94,value * 100))}%`; },
     onReady: () => {}
   });
@@ -159,15 +166,10 @@ if (initialApp && ['about','projects','photos','contact','notebook','philome','d
 window.addEventListener('pagehide', () => { if (audio?.state === 'running') audio.suspend(); });
 document.addEventListener('visibilitychange', () => { if (document.hidden && audio?.state === 'running') audio.suspend(); });
 window.addEventListener('popstate', () => {
+  normalizeAddress();
   pendingNavigation = { inside: location.hash === '#computer', app: history.state?.app || 'desktop' };
   reconcileNavigation();
 });
 document.addEventListener('keydown', event => {
   if (event.key === 'Escape' && inside && !shell.contains(event.target)) { event.preventDefault(); requestExit(); }
-});
-let screenResizeFrame = 0;
-window.addEventListener('resize', () => {
-  if (shell.hidden) return;
-  cancelAnimationFrame(screenResizeFrame);
-  screenResizeFrame = requestAnimationFrame(placeScreen);
 });

@@ -1,4 +1,4 @@
-#desktop-shell{container-type:size;container-name:coihan-screen;--os-task-height:40px;--os-ink:#273c35;--os-paper:#f8f5eb;--os-chrome:#d7d6ca;--os-line:#5a6357;--os-highlight:#fffff5;--os-shadow:#858a7b;--os-title:#3e5547;--os-teal:#587c78;color:var(--os-ink);font:15px/1.7 ui-sans-serif,system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;isolation:isolate;overflow:hidden;background:#62837d}
+#desktop-shell{--os-ink:#273c35;--os-paper:#f8f5eb;--os-chrome:#d7d6ca;--os-line:#5a6357;--os-highlight:#fffff5;--os-shadow:#858a7b;--os-title:#3e5547;--os-teal:#587c78;color:var(--os-ink);font:14px/1.65 ui-sans-serif,system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;isolation:isolate;overflow:hidden;background:#62837d}
 #desktop-shell[hidden],#desktop-shell [hidden]{display:none!important}
 #desktop-shell *{box-sizing:border-box}
 #desktop-shell button,#desktop-shell a{-webkit-tap-highlight-color:transparent}
@@ -8,19 +8,19 @@
 #desktop-shell button:disabled{cursor:default;opacity:.5}
 #desktop-shell .os-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 #desktop-shell .os-icon{width:var(--os-icon-size,32px);height:var(--os-icon-size,32px);flex-shrink:0;image-rendering:pixelated;display:block;overflow:visible;fill:none;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter}
-#desktop-shell .os-wallpaper{position:absolute;inset:0 0 var(--os-task-height);background:radial-gradient(ellipse at 75% 25%,#94aaa02b,transparent 65%),linear-gradient(140deg,#78938a 0,#65847c 45%,#52746f 100%);pointer-events:none}
+#desktop-shell .os-wallpaper{position:absolute;inset:0 0 48px;background:radial-gradient(ellipse at 75% 25%,#94aaa02b,transparent 65%),linear-gradient(140deg,#78938a 0,#65847c 45%,#52746f 100%);pointer-events:none}
 #desktop-shell .os-wallpaper::after{content:"";position:absolute;inset:0;opacity:.13;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' opacity='.3' filter='url(%23n)' d='M0 0h180v180H0z'/%3E%3C/svg%3E")}
-#desktop-shell .os-wallpaper-mark{position:absolute;right:5.5%;top:6%;color:#dbe6da8a;font-family:Georgia,"Songti SC",serif;font-style:italic;font-size:clamp(34px,8cqw,72px);line-height:1;letter-spacing:-3px}
+#desktop-shell .os-wallpaper-mark{position:absolute;right:5.5%;top:6%;color:#dbe6da8a;font-family:Georgia,"Songti SC",serif;font-style:italic;font-size:clamp(34px,5vw,72px);line-height:1;letter-spacing:-3px}
 #desktop-shell .os-wallpaper-mark span{display:block;margin-top:13px;font:10px/1.4 ui-monospace,SFMono-Regular,monospace;letter-spacing:3px;text-align:right}
-#desktop-shell .os-wallpaper-note{position:absolute;right:5.5%;bottom:8%;font:italic clamp(24px,5cqw,40px)/1.5 Georgia,serif;color:#dae5d5a1}
+#desktop-shell .os-wallpaper-note{position:absolute;right:5.5%;bottom:8%;font:italic clamp(24px,3vw,40px)/1.5 Georgia,serif;color:#dae5d5a1}
 #desktop-shell .os-wallpaper-note span{display:block;font:12px/1.5 system-ui,sans-serif;letter-spacing:3px;margin-top:8px}
-#desktop-shell .os-desktop-icons{position:absolute;top:18px;left:10px;display:grid;grid-template-rows:repeat(6,65px);width:76px;gap:7px;z-index:2}
-#desktop-shell .os-desktop-icon{appearance:none;border:1px solid transparent;background:none;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:7px;min-height:60px;min-width:70px;padding:5px;text-align:center;text-decoration:none;color:#fffdec;text-shadow:1px 1px #344f48;font-size:12px;line-height:1.45}
+#desktop-shell .os-desktop-icons{position:absolute;top:32px;left:24px;display:grid;grid-template-rows:repeat(6,88px);width:92px;gap:9px;z-index:2}
+#desktop-shell .os-desktop-icon{appearance:none;border:1px solid transparent;background:none;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:7px;min-height:84px;min-width:80px;padding:5px;text-align:center;text-decoration:none;color:#fffdec;text-shadow:1px 1px #344f48;font-size:12px;line-height:1.45}
 #desktop-shell .os-desktop-icon:hover{background:#d5e1d117;border:1px dotted #dfe8d29c}
 #desktop-shell .os-desktop-icon:focus-visible{background:#284e4266;outline:1px dotted #fff8d6;outline-offset:-2px}
 #desktop-shell .os-desktop-icon .os-icon{filter:drop-shadow(2px 3px 0 #233d3738)}
-#desktop-shell .os-windows{position:absolute;inset:0 0 var(--os-task-height);pointer-events:none}
-#desktop-shell .os-window{position:absolute;display:flex;flex-direction:column;max-width:calc(100% - 8px);max-height:calc(100% - 8px);min-height:160px;background:var(--os-chrome);padding:3px;border:1px solid #273d34;box-shadow:inset 1px 1px var(--os-highlight),inset -1px -1px #8a8b7c,5px 7px 0 #263c342e,14px 20px 46px #26372e2b;pointer-events:auto;outline:none}
+#desktop-shell .os-windows{position:absolute;inset:0 0 48px;pointer-events:none}
+#desktop-shell .os-window{position:absolute;display:flex;flex-direction:column;max-width:calc(100% - 20px);max-height:calc(100% - 28px);min-height:300px;background:var(--os-chrome);padding:3px;border:1px solid #273d34;box-shadow:inset 1px 1px var(--os-highlight),inset -1px -1px #8a8b7c,5px 7px 0 #263c342e,14px 20px 46px #26372e2b;pointer-events:auto;outline:none}
 #desktop-shell .os-window.os-active{box-shadow:inset 1px 1px var(--os-highlight),inset -1px -1px #8a8b7c,5px 7px 0 #263c343d,14px 20px 46px #26372e38}
 #desktop-shell .os-window.os-maximized{inset:3px!important;width:calc(100% - 6px)!important;max-width:none;max-height:none;height:calc(100% - 6px)!important}
 #desktop-shell .os-window.os-maximized .os-window-body{flex:1;max-height:none}
@@ -42,29 +42,29 @@
 #desktop-shell .os-window-toolbar>span:first-child{color:#626e5e;white-space:nowrap}
 #desktop-shell .os-toolbar-path{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:10px/1.4 ui-monospace,SFMono-Regular,monospace;letter-spacing:.5px;color:#53614f}
 #desktop-shell .os-toolbar-home{padding:0 5px;margin-left:auto;background:transparent;border:0;font-size:20px;line-height:1}
-#desktop-shell .os-window-body{min-height:0;overflow:auto;overscroll-behavior:contain;background:var(--os-paper);border:1px solid #a2a38e;box-shadow:inset 1px 1px #8c9381;scrollbar-width:thin;scrollbar-color:#a3ad97 #e2e3d5;max-height:none;flex:1}
+#desktop-shell .os-window-body{min-height:0;overflow:auto;overscroll-behavior:contain;background:var(--os-paper);border:1px solid #a2a38e;box-shadow:inset 1px 1px #8c9381;scrollbar-width:thin;scrollbar-color:#a3ad97 #e2e3d5;max-height:calc(100dvh - 210px)}
 #desktop-shell .os-window-body::-webkit-scrollbar{width:12px;background:#e2e3d5}
 #desktop-shell .os-window-body::-webkit-scrollbar-thumb{background:#bac1ac;border:1px solid #7a846d;box-shadow:inset 1px 1px white}
 #desktop-shell .os-window-status{height:25px;min-height:25px;margin-top:3px;display:flex;align-items:center;gap:12px;padding:1px 7px;border:1px solid #a5ab96;box-shadow:inset 1px 1px #f5f2df;font-size:10px;letter-spacing:.3px;color:#56634f}
 #desktop-shell .os-status-right{margin-left:auto;padding-left:10px;border-left:1px solid #a2ab92}
 #desktop-shell .os-resize-grip{width:11px;height:11px;align-self:flex-end;background:repeating-linear-gradient(135deg,transparent 0 2px,#8a957b 2px 3px,transparent 3px 5px);clip-path:polygon(100% 0,100% 100%,0 100%)}
-#desktop-shell .os-taskbar{height:var(--os-task-height);position:absolute;bottom:0;left:0;right:0;z-index:10001;background:#d2d5c8;border-top:1px solid #fffceb;box-shadow:0 -1px #8e9c85,0 -5px 22px #233c3226;display:flex;align-items:center;gap:8px;padding:5px 7px}
+#desktop-shell .os-taskbar{height:48px;position:absolute;bottom:0;left:0;right:0;z-index:10001;background:#d2d5c8;border-top:1px solid #fffceb;box-shadow:0 -1px #8e9c85,0 -5px 22px #233c3226;display:flex;align-items:center;gap:8px;padding:5px 7px}
 #desktop-shell .os-raised-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid #4e5a48;background:#dedfce;box-shadow:inset 1px 1px #fffef2,inset -1px -1px #929d84;padding:8px 13px;min-height:37px;text-decoration:none;font-size:12px;font-weight:500}
 #desktop-shell .os-raised-button:hover{background:#eaebda}
 #desktop-shell .os-raised-button:active{box-shadow:inset 1px 1px #929d84;transform:translateY(1px)}
-#desktop-shell .os-start-button{min-height:30px;height:30px;padding:3px 11px 3px 8px;gap:7px;font-size:13px;font-weight:650}
+#desktop-shell .os-start-button{min-height:34px;height:34px;padding:3px 11px 3px 8px;gap:7px;font-size:13px;font-weight:650}
 #desktop-shell .os-start-button[aria-expanded=true]{background:#bdc6af;box-shadow:inset 1px 1px #758568}
 #desktop-shell .os-task-divider{height:31px;width:2px;border-left:1px solid #94a086;border-right:1px solid #f8fae9;flex-shrink:0}
 #desktop-shell .os-tasks{display:flex;gap:5px;min-width:0;flex:1;overflow:auto;scrollbar-width:none}
 #desktop-shell .os-tasks::-webkit-scrollbar{display:none}
-#desktop-shell .os-task-button{display:flex;align-items:center;gap:7px;flex:0 1 170px;min-width:45px;max-width:180px;height:29px;padding:4px 8px;border:1px solid #8e9981;background:#d7dbca;box-shadow:inset 1px 1px #f9fbe7,inset -1px -1px #a7b099;font-size:11px;white-space:nowrap;overflow:hidden}
+#desktop-shell .os-task-button{display:flex;align-items:center;gap:7px;flex:0 1 170px;min-width:45px;max-width:180px;height:33px;padding:4px 8px;border:1px solid #8e9981;background:#d7dbca;box-shadow:inset 1px 1px #f9fbe7,inset -1px -1px #a7b099;font-size:11px;white-space:nowrap;overflow:hidden}
 #desktop-shell .os-task-button span{overflow:hidden;text-overflow:ellipsis}
 #desktop-shell .os-task-button:hover{background:#e2e5d6}
 #desktop-shell .os-task-button.os-task-active{background:#edf0dd;border-color:#768366;box-shadow:inset 1px 1px #98a487;font-weight:650}
 #desktop-shell .os-room-button{display:flex;align-items:center;gap:6px;white-space:nowrap;border:0;background:transparent;padding:7px 8px;font-size:11px}
 #desktop-shell .os-room-button:hover{background:#bbc8b0}
 #desktop-shell .os-clock{min-width:64px;display:flex;align-items:center;justify-content:center;align-self:stretch;padding:3px 8px;border:1px solid #9caa8d;border-right-color:#f9fbea;border-bottom-color:#f9fbea;box-shadow:inset 1px 1px #849674;font:11px/1.2 ui-monospace,SFMono-Regular,monospace;font-variant-numeric:tabular-nums}
-#desktop-shell .os-start-menu{position:absolute;z-index:10002;bottom:calc(var(--os-task-height) + 2px);left:5px;width:min(262px,calc(100% - 10px));max-height:calc(100% - var(--os-task-height) - 8px);min-height:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scroll-padding-block:4px;background:#d8dacc;border:1px solid #53644c;box-shadow:inset 1px 1px #fffef0,inset -1px -1px #8c9b80,4px 5px 0 #283d332e;padding:4px;display:flex;gap:4px}
+#desktop-shell .os-start-menu{position:absolute;z-index:10002;bottom:50px;left:7px;width:262px;max-height:calc(100% - 64px);overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scroll-padding-block:6px;background:#d8dacc;border:1px solid #53644c;box-shadow:inset 1px 1px #fffef0,inset -1px -1px #8c9b80,4px 5px 0 #283d332e;padding:4px;display:flex;gap:4px}
 #desktop-shell .os-start-brand{writing-mode:vertical-rl;transform:rotate(180deg);font:italic 25px/1.6 Georgia,serif;letter-spacing:1px;padding:10px 3px;background:#73856c;color:#e7ead8;text-align:left}
 #desktop-shell .os-start-brand span{font-style:normal;font-family:ui-sans-serif,system-ui,sans-serif}
 #desktop-shell .os-start-menu nav{flex:1;min-width:0;padding:3px 0}
@@ -84,9 +84,9 @@
 #desktop-shell .os-profile-stamp>span{font:italic 61px/.9 Georgia,serif}
 #desktop-shell .os-profile-stamp>small{font:7px/1.5 ui-monospace,monospace;letter-spacing:1px;margin-top:9px}
 #desktop-shell .os-profile-intro{font-family:Georgia,"Songti SC",STSong,serif;font-size:30px;line-height:1.5;letter-spacing:1px;margin:34px 0 16px;color:#51614a}
-#desktop-shell .os-profile-copy{font-size:14px;line-height:1.95;max-width:570px;color:#687260;margin:0 0 25px}
+#desktop-shell .os-profile-copy{font-size:13px;line-height:1.95;max-width:570px;color:#687260;margin:0 0 25px}
 #desktop-shell .os-profile-facts{border-top:1px solid #d9decc;border-bottom:1px solid #d9decc;padding:7px 0}
-#desktop-shell .os-profile-facts>div{display:grid;grid-template-columns:85px 1fr;gap:15px;padding:10px 0;font-size:13px}
+#desktop-shell .os-profile-facts>div{display:grid;grid-template-columns:85px 1fr;gap:15px;padding:10px 0;font-size:12px}
 #desktop-shell .os-profile-facts span{color:#8b937e}
 #desktop-shell .os-profile-facts strong{font-weight:400;color:#4b5d46}
 #desktop-shell .os-profile-footer{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-top:22px}
@@ -104,7 +104,7 @@
 #desktop-shell .os-art-caption{position:absolute;bottom:21px;left:10px;right:10px;text-align:center;font:8px/1.5 ui-monospace,monospace;color:#7f9071;letter-spacing:.4px}
 #desktop-shell .os-project-description h1{font-size:48px;font-style:italic;margin-bottom:22px}
 #desktop-shell .os-project-description h1 span{display:block;font:13px/1.6 system-ui,sans-serif;letter-spacing:2px;color:#77866b;margin-top:6px}
-#desktop-shell .os-project-description>p:not(.os-small-label){font-size:14px;line-height:1.95;color:#6e7c62;margin:12px 0}
+#desktop-shell .os-project-description>p:not(.os-small-label){font-size:12px;line-height:1.95;color:#6e7c62;margin:12px 0}
 #desktop-shell .os-primary-button{margin-top:17px;background:#c5d0b4;color:#3d5634}
 #desktop-shell .os-project-note{display:block;margin-top:10px;font-size:10px;color:#89937e}
 #desktop-shell .os-project-tail{display:flex;gap:10px;align-items:center;flex-wrap:wrap;border-top:1px solid #d5dcc6;padding-top:20px;color:#879276;font-size:11px}
@@ -112,7 +112,7 @@
 #desktop-shell .os-project-tail a{margin-left:auto;font-size:10px;color:#6e805c}
 #desktop-shell .os-pixel-dot{width:5px;height:5px;background:#8d9f78;box-shadow:0 0 0 3px #e2e8d5}
 #desktop-shell .os-photos-page h1{font-size:35px;margin-bottom:13px}
-#desktop-shell .os-section-description{color:#7a8770;font-size:13px;line-height:1.9;margin:0 0 24px}
+#desktop-shell .os-section-description{color:#7a8770;font-size:12px;line-height:1.9;margin:0 0 24px}
 #desktop-shell .os-photo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px;margin:29px 0 20px;align-items:start}
 #desktop-shell .os-photo-card{border:1px solid #d4d9c6;background:#fffcf0;box-shadow:2px 3px 0 #53624714;padding:7px 7px 0;transform:rotate(-2deg);text-align:left;transition:transform .18s,box-shadow .18s}
 #desktop-shell .os-photo-card:nth-child(2){transform:rotate(2deg);margin-top:20px}
@@ -148,133 +148,84 @@
 #desktop-shell .os-lightbox-close{color:inherit;background:transparent;border:1px solid #768674;padding:6px 13px;font-size:12px}
 #desktop-shell .os-lightbox-close>span{font-size:22px;margin-left:12px}
 #desktop-shell .os-lightbox-stage{display:flex;align-items:center;justify-content:center;gap:20px;flex:1;min-height:0;padding:20px 0}
-#desktop-shell .os-lightbox-stage figure{margin:0;display:grid;grid-template-rows:minmax(0,1fr) auto;justify-items:center;min-width:0;min-height:0;height:100%;max-height:100%;flex:1}
-#desktop-shell .os-lightbox-stage figure img{object-fit:contain;width:100%;height:100%;max-width:100%;max-height:100%;min-height:0;display:block;box-shadow:0 6px 35px #0004}
+#desktop-shell .os-lightbox-stage figure{margin:0;display:flex;align-items:center;flex-direction:column;min-width:0;min-height:0;max-height:100%;flex:1}
+#desktop-shell .os-lightbox-stage figure img{object-fit:contain;max-width:100%;max-height:calc(100dvh - 160px);min-height:0;display:block;box-shadow:0 6px 35px #0004}
 #desktop-shell .os-lightbox-stage figcaption{padding-top:15px;color:#b7c2ab;font-size:12px;letter-spacing:2px}
 #desktop-shell .os-lightbox-prev,#desktop-shell .os-lightbox-next{flex-shrink:0;background:#ebf0d810;border:1px solid #6f7c66;color:inherit;width:42px;height:42px;font-size:23px}
 #desktop-shell .os-lightbox-prev:hover,#desktop-shell .os-lightbox-next:hover{background:#ebf0d825}
 #desktop-shell .os-dragging{user-select:none}
 @keyframes os-cursor-blink{0%,49%{opacity:1}50%,100%{opacity:0}}
-
-/* The computer is a real contained surface; its layout follows the CRT, not the browser. */
-#desktop-shell .os-titlebar{height:28px;min-height:28px}
-#desktop-shell .os-window-toolbar{height:27px;min-height:27px}
-#desktop-shell .os-window-status{height:22px;min-height:22px}
-#desktop-shell .os-task-divider{height:26px}
-#desktop-shell .os-menu-item{padding:8px 9px}
-#desktop-shell .os-profile,#desktop-shell .os-projects-page,#desktop-shell .os-photos-page,#desktop-shell .os-contact-page,#desktop-shell .os-notebook-page{padding:24px 28px 27px}
-#desktop-shell .os-profile h1,#desktop-shell .os-projects-page h1,#desktop-shell .os-photos-page h1,#desktop-shell .os-contact-page h1,#desktop-shell .os-notebook-page h1{font-family:Georgia,"Bodoni 72","Songti SC",STSong,serif;letter-spacing:.3px}
-#desktop-shell .os-page-kicker{margin-bottom:20px;padding-bottom:13px}
-#desktop-shell .os-profile-intro{margin-top:25px}
-#desktop-shell .os-lightbox{padding:14px 18px}
-#desktop-shell .os-lightbox-toolbar{min-height:34px}
-#desktop-shell .os-lightbox-stage{padding:12px 0}
-#desktop-shell.os-compact .os-window,#desktop-shell.os-compact .os-window.os-maximized{inset:5px!important;width:calc(100% - 10px)!important;height:calc(100% - 10px)!important;max-width:none;max-height:none;min-height:160px;box-shadow:2px 3px 0 #263c3433}
-#desktop-shell.os-small .os-window-toolbar,#desktop-shell.os-small .os-window-status{display:none}
-#desktop-shell.os-small .os-titlebar{height:26px;min-height:26px}
-#desktop-shell.os-small .os-titlebar-label{font-size:11px;letter-spacing:0}
-#desktop-shell.os-small .os-window-controls button{width:23px;height:21px}
-#desktop-shell.os-small .os-taskbar{gap:4px;padding:3px 4px}
-#desktop-shell.os-small .os-task-divider{display:none}
-#desktop-shell.os-small .os-start-button{height:25px;min-height:25px;min-width:55px;padding:2px 5px;gap:4px;font-size:11px}
-#desktop-shell.os-small .os-start-button>.os-icon{width:17px;height:17px}
-#desktop-shell.os-small .os-task-button{height:25px;min-width:28px;flex:1;padding:3px 4px;font-size:10px;gap:4px}
-#desktop-shell.os-small .os-task-button>.os-icon{width:13px;height:13px}
-#desktop-shell.os-small .os-room-button{padding:4px}
-#desktop-shell.os-small .os-room-button>span{display:none}
-#desktop-shell.os-small .os-clock{min-width:42px;padding:2px 4px;font-size:10px}
-#desktop-shell.os-small .os-menu-item{padding:5px 8px;font-size:11px}
-#desktop-shell.os-small .os-menu-item>.os-icon{width:20px;height:20px}
-#desktop-shell.os-small .os-start-brand{font-size:21px}
-
-@container coihan-screen (max-width: 760px) {
-  #desktop-shell .os-profile,#desktop-shell .os-projects-page,#desktop-shell .os-photos-page,#desktop-shell .os-contact-page,#desktop-shell .os-notebook-page{padding:20px 23px 24px}
-  #desktop-shell .os-project-feature{gap:22px}
-  #desktop-shell .os-profile-intro{font-size:28px}
-  #desktop-shell .os-profile-stamp{width:68px;height:85px;margin-right:7px}
-  #desktop-shell .os-profile-stamp>span{font-size:49px}
-  #desktop-shell .os-profile-stamp>small{font-size:6px;letter-spacing:.5px}
-  #desktop-shell .os-photo-grid{gap:12px}
-}
-@container coihan-screen (max-width: 619px) {
+@media(min-width:1600px){#desktop-shell .os-window{max-height:calc(100% - 60px)}#desktop-shell .os-window-body{max-height:760px}}
+@media(max-width:900px){#desktop-shell .os-desktop-icons{left:14px;top:24px;width:80px;gap:5px}#desktop-shell .os-window{max-width:calc(100% - 30px)}#desktop-shell .os-profile,#desktop-shell .os-projects-page,#desktop-shell .os-photos-page,#desktop-shell .os-contact-page,#desktop-shell .os-notebook-page{padding:24px 26px}#desktop-shell .os-profile-intro{font-size:27px}#desktop-shell .os-project-feature{gap:22px}}
+@media(max-width:679px){
+  #desktop-shell{font-size:13px}
+  #desktop-shell .os-wallpaper{bottom:51px}
+  #desktop-shell .os-wallpaper-mark{top:auto;bottom:18%;right:8%;font-size:53px}
   #desktop-shell .os-wallpaper-note{display:none}
-  #desktop-shell .os-wallpaper-mark{font-size:44px;right:6%;top:auto;bottom:13%;letter-spacing:-1px}
-  #desktop-shell .os-wallpaper-mark span{font-size:8px;letter-spacing:2px}
-  #desktop-shell .os-desktop-icons{inset:15px 14px auto;width:auto;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,70px);gap:10px}
-  #desktop-shell .os-desktop-icon{min-width:0;min-height:65px;padding:5px;font-size:11px;gap:5px}
-  #desktop-shell .os-desktop-icon>.os-icon{width:30px;height:30px}
-  #desktop-shell .os-profile h1,#desktop-shell .os-projects-page h1{font-size:36px}
-  #desktop-shell .os-profile h1 span{font-size:11px;margin-top:7px}
-  #desktop-shell .os-profile-copy{font-size:13px}
-  #desktop-shell .os-profile-facts>div{grid-template-columns:64px 1fr;gap:9px;padding:8px 0;font-size:12px}
-  #desktop-shell .os-profile-footer{align-items:flex-start;flex-direction:column;gap:12px}
-  #desktop-shell .os-page-kicker{font-size:9px;gap:8px;margin-bottom:19px;padding-bottom:10px}
-  #desktop-shell .os-page-kicker>span:last-child{font-size:9px;letter-spacing:0}
+  #desktop-shell .os-desktop-icons{left:14px;right:14px;top:25px;width:auto;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,105px);gap:14px}
+  #desktop-shell .os-desktop-icon{font-size:12px;min-height:95px;gap:10px;padding:10px 4px}
+  #desktop-shell .os-desktop-icon>.os-icon{width:42px;height:42px}
+  #desktop-shell .os-windows{bottom:51px}
+  #desktop-shell .os-window,#desktop-shell .os-window.os-maximized{inset:10px 9px!important;width:calc(100% - 18px)!important;height:calc(100% - 20px)!important;max-width:none;max-height:none;min-height:200px;box-shadow:3px 4px 0 #263c3433}
+  #desktop-shell .os-titlebar{height:35px;min-height:35px;padding-left:8px}
+  #desktop-shell .os-titlebar-label{font-size:12px}
+  #desktop-shell .os-window-controls button{width:29px;height:26px}
+  #desktop-shell .os-window-toolbar{height:33px;min-height:33px;gap:10px;font-size:10px}
+  #desktop-shell .os-window-body{flex:1;max-height:none}
+  #desktop-shell .os-window-status{font-size:9px;height:24px;min-height:24px}
+  #desktop-shell .os-profile,#desktop-shell .os-projects-page,#desktop-shell .os-photos-page,#desktop-shell .os-contact-page,#desktop-shell .os-notebook-page{padding:21px 20px 26px}
+  #desktop-shell .os-page-kicker{font-size:9px;gap:8px;margin-bottom:25px;padding-bottom:13px}
   #desktop-shell .os-page-kicker>span:first-child{letter-spacing:.7px}
-  #desktop-shell .os-project-feature{grid-template-columns:1fr;gap:20px}
-  #desktop-shell .os-project-art{aspect-ratio:1.8;margin:0}
-  #desktop-shell .os-orbit{width:45%;height:90%}
-  #desktop-shell .os-art-caption{bottom:11px}
-  #desktop-shell .os-project-description h1{margin-bottom:17px}
-  #desktop-shell .os-project-tail a{margin:2px 0 0 13px}
-  #desktop-shell .os-photo-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
-  #desktop-shell .os-photo-card:nth-child(3){margin-top:0}
-  #desktop-shell .os-contact-heading{gap:13px}
-  #desktop-shell .os-contact-heading h1{font-size:30px}
-  #desktop-shell .os-contact-heading>.os-icon{width:35px;height:35px}
-  #desktop-shell .os-email-address{font-size:14px;letter-spacing:-.7px}
-  #desktop-shell .os-raised-button{font-size:12px;padding:7px 10px}
-  #desktop-shell .os-lightbox{padding:8px 9px}
-  #desktop-shell .os-lightbox-toolbar{font-size:10px;gap:8px;letter-spacing:.3px}
-  #desktop-shell .os-lightbox-close{font-size:11px;padding:3px 7px}
-  #desktop-shell .os-lightbox-close>span{margin-left:5px;font-size:17px}
-  #desktop-shell .os-lightbox-stage{gap:5px;padding:8px 0}
-  #desktop-shell .os-lightbox-prev,#desktop-shell .os-lightbox-next{width:28px;height:34px;font-size:18px}
-  #desktop-shell .os-lightbox-stage figcaption{padding-top:8px;font-size:10px;letter-spacing:1px}
-}
-@container coihan-screen (max-width: 419px) {
-  #desktop-shell .os-profile,#desktop-shell .os-projects-page,#desktop-shell .os-photos-page,#desktop-shell .os-contact-page,#desktop-shell .os-notebook-page{padding:14px 16px 18px}
-  #desktop-shell .os-page-kicker{margin-bottom:15px;padding-bottom:8px}
-  #desktop-shell .os-page-kicker>span:last-child{display:none}
-  #desktop-shell .os-small-label{font-size:9px;letter-spacing:1px;margin-bottom:8px}
-  #desktop-shell .os-profile h1,#desktop-shell .os-projects-page h1{font-size:28px}
-  #desktop-shell .os-profile h1 span{font-size:10px;margin-top:6px}
-  #desktop-shell .os-profile-stamp{width:45px;height:57px;outline-offset:3px;margin-right:5px}
-  #desktop-shell .os-profile-stamp>span{font-size:33px}
-  #desktop-shell .os-profile-stamp>small{display:none}
-  #desktop-shell .os-profile-intro{font-size:23px;line-height:1.45;margin:20px 0 12px}
-  #desktop-shell .os-profile-copy{font-size:12px;line-height:1.85;margin-bottom:17px}
-  #desktop-shell .os-profile-facts>div{grid-template-columns:54px 1fr;font-size:11px;padding:7px 0}
+  #desktop-shell .os-page-kicker>span:last-child{font-size:9px;letter-spacing:0}
+  #desktop-shell .os-profile h1{font-size:37px}
+  #desktop-shell .os-profile h1 span{font-size:11px;margin-top:8px}
+  #desktop-shell .os-profile-stamp{width:63px;height:77px;flex-shrink:0;margin:0 5px 0 0;outline-offset:3px}
+  #desktop-shell .os-profile-stamp>span{font-size:45px}
+  #desktop-shell .os-profile-stamp>small{font-size:5px;letter-spacing:.5px}
+  #desktop-shell .os-small-label{font-size:9px;letter-spacing:1px}
+  #desktop-shell .os-profile-intro{font-size:26px;margin-top:31px;line-height:1.6}
+  #desktop-shell .os-profile-copy{font-size:12px;margin-bottom:24px}
+  #desktop-shell .os-profile-facts>div{grid-template-columns:66px 1fr;gap:9px;font-size:11px;line-height:1.9;padding:9px 0}
+  #desktop-shell .os-profile-footer{align-items:flex-start;flex-direction:column;gap:15px}
   #desktop-shell .os-profile-footer p{font-size:10px}
-  #desktop-shell .os-project-art{display:none}
+  #desktop-shell .os-taskbar{height:51px;gap:5px;padding:6px 5px;bottom:0}
+  #desktop-shell .os-start-button{padding:3px 7px;gap:5px;min-width:68px;height:35px}
+  #desktop-shell .os-task-divider{margin-right:1px}
+  #desktop-shell .os-room-button{padding:8px 6px}
+  #desktop-shell .os-room-button>span{display:none}
+  #desktop-shell .os-room-button .os-icon{width:18px;height:18px}
+  #desktop-shell .os-clock{min-width:47px;padding:3px 5px;font-size:10px}
+  #desktop-shell .os-task-button{flex:0 0 98px;height:35px;padding:5px;font-size:10px;gap:5px}
+  #desktop-shell .os-tasks{gap:4px}
+  #desktop-shell .os-start-menu{bottom:54px;left:5px;width:252px}
+  #desktop-shell .os-menu-item{padding:13px 10px}
+  #desktop-shell .os-project-feature{grid-template-columns:1fr;gap:22px;padding-bottom:25px}
+  #desktop-shell .os-project-art{aspect-ratio:1.55;margin:0 0 3px}
+  #desktop-shell .os-orbit{width:48%;height:82%}
+  #desktop-shell .os-art-caption{bottom:12px;font-size:7px}
+  #desktop-shell .os-project-description h1{font-size:44px;margin-bottom:16px}
   #desktop-shell .os-project-description>p:not(.os-small-label){font-size:12px}
-  #desktop-shell .os-project-description h1 span{font-size:12px;letter-spacing:1px}
-  #desktop-shell .os-project-feature{padding-bottom:16px}
-  #desktop-shell .os-primary-button{margin-top:10px}
-  #desktop-shell .os-project-tail{padding-top:13px;font-size:10px}
-  #desktop-shell .os-photos-page h1{font-size:26px;margin-bottom:9px}
-  #desktop-shell .os-section-description{font-size:12px;margin-bottom:16px}
-  #desktop-shell .os-photo-grid{grid-template-columns:1fr;margin:15px 0;padding:0 12px}
-  #desktop-shell .os-photo-image{aspect-ratio:1.15}
-  #desktop-shell .os-photo-card:nth-child(2){margin-top:0}
-  #desktop-shell .os-photo-caption{padding:10px 4px;font-size:11px}
-  #desktop-shell .os-contact-heading h1{font-size:26px}
-  #desktop-shell .os-contact-record{padding:17px 0 13px}
-  #desktop-shell .os-email-address{font-size:13px}
-  #desktop-shell .os-contact-actions{gap:6px;margin-top:13px}
-  #desktop-shell .os-contact-signoff{margin-top:8px}
-  #desktop-shell .os-notebook-sheet{padding:5px 0 4px 12px}
-  #desktop-shell .os-notebook-page h1{font-size:24px;line-height:1.7;letter-spacing:0}
-  #desktop-shell .os-notebook-sheet ul{font-size:12px;line-height:2.1;padding-left:16px}
-}
-@container coihan-screen (max-height: 360px) {
-  #desktop-shell .os-wallpaper-note{display:none}
-  #desktop-shell .os-desktop-icons{top:12px;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,64px);left:12px;right:12px;width:auto;gap:8px}
-  #desktop-shell .os-desktop-icon{min-height:60px;font-size:10px;gap:4px}
-  #desktop-shell .os-desktop-icon>.os-icon{width:27px;height:27px}
-  #desktop-shell .os-project-art{display:none}
-  #desktop-shell .os-project-feature{grid-template-columns:1fr}
-  #desktop-shell .os-page-kicker{margin-bottom:13px}
-  #desktop-shell .os-profile-intro{margin-top:18px}
+  #desktop-shell .os-project-tail{font-size:10px;gap:9px;align-items:center}
+  #desktop-shell .os-project-tail a{margin:2px 0 0 14px}
+  #desktop-shell .os-photo-grid{grid-template-columns:1fr;gap:25px;padding:0 18px;margin-top:23px}
+  #desktop-shell .os-photo-card:nth-child(2),#desktop-shell .os-photo-card:nth-child(3){margin:0}
+  #desktop-shell .os-photo-image{aspect-ratio:1.05}
+  #desktop-shell .os-photo-caption{padding:15px 7px;font-size:11px}
+  #desktop-shell .os-contact-heading{gap:14px}
+  #desktop-shell .os-contact-heading>.os-icon{width:38px;height:38px}
+  #desktop-shell .os-contact-heading h1{font-size:29px}
+  #desktop-shell .os-email-address{font-size:14px;letter-spacing:-.7px}
+  #desktop-shell .os-contact-actions{gap:7px}
+  #desktop-shell .os-raised-button{padding:8px 11px;font-size:11px}
+  #desktop-shell .os-notebook-sheet{padding:8px 0 4px 14px}
+  #desktop-shell .os-notebook-page h1{font-size:25px;letter-spacing:0;line-height:1.8}
+  #desktop-shell .os-notebook-sheet ul{font-size:11px;line-height:2.5;padding-left:15px}
+  #desktop-shell .os-lightbox{padding:10px 10px 16px}
+  #desktop-shell .os-lightbox-toolbar{font-size:10px;gap:10px;letter-spacing:.5px}
+  #desktop-shell .os-lightbox-close{font-size:11px;padding:5px 9px}
+  #desktop-shell .os-lightbox-close>span{margin-left:5px}
+  #desktop-shell .os-lightbox-stage{gap:5px;padding:12px 0}
+  #desktop-shell .os-lightbox-prev,#desktop-shell .os-lightbox-next{width:30px;height:39px;font-size:18px}
+  #desktop-shell .os-lightbox-stage figure img{max-height:calc(100dvh - 150px)}
 }
 @media(prefers-reduced-motion:reduce){#desktop-shell *,#desktop-shell *::before,#desktop-shell *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
