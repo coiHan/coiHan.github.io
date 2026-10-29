@@ -39,9 +39,27 @@ function aboutContent() {
   return `<div class="os-profile">
     <div class="os-page-kicker"><span>README.TXT</span><span>很高兴你来这里。</span></div>
     <div class="os-profile-heading"><div><p class="os-small-label">HELLO, WORLD.</p><h1>韩广路<span>Jack / coiHan</span></h1></div><div class="os-profile-avatar"><img src="./assets/profile/avatar-chair.webp" alt="个人头像" width="400" height="399" decoding="async"></div></div>
-    <p class="os-profile-intro">一点好奇，<br>也想把想法做出来。</p>
-    <p class="os-profile-copy">我目前在山东大学读人工智能研一，研究兴趣是具身智能。欢迎来我的小小工作台坐坐。</p>
-    <div class="os-profile-facts"><div><span>现在</span><strong>山东大学 · 人工智能研一</strong></div><div><span>关注</span><strong>具身智能</strong></div><div><span>也在探索</span><strong>交互、思想与生活里的好奇心</strong></div></div>
+    <section class="os-profile-section" aria-labelledby="os-profile-summary-title">
+      <div class="os-profile-section-heading"><span>01</span><h2 id="os-profile-summary-title">个人简介</h2></div>
+      <p class="os-profile-intro">一点好奇，也想把想法做出来。</p>
+      <p class="os-profile-copy">我目前在山东大学读人工智能研一，研究兴趣是具身智能。欢迎来我的小小工作台坐坐。</p>
+    </section>
+    <section class="os-profile-section" aria-labelledby="os-profile-education-title">
+      <div class="os-profile-section-heading"><span>02</span><h2 id="os-profile-education-title">教育经历</h2></div>
+      <ol class="os-education-list">
+        <li><span class="os-education-years">2022 — 2026</span><div class="os-education-detail"><div class="os-education-school"><h3>青岛大学</h3></div><p>软件工程</p></div></li>
+        <li><span class="os-education-years">2026 — 2029</span><div class="os-education-detail"><div class="os-education-school"><h3>山东大学</h3><span class="os-education-status">在读</span></div><p>人工智能</p></div></li>
+      </ol>
+    </section>
+    <section class="os-profile-section" aria-labelledby="os-profile-interests-title">
+      <div class="os-profile-section-heading"><span>03</span><h2 id="os-profile-interests-title">兴趣爱好</h2></div>
+      <div class="os-interest-grid">
+        <article class="os-interest-card"><h3>影像与音乐</h3><p>喜欢看纪录片，也常听中文 R&amp;B。</p><p class="os-interest-artists">陶喆、王力宏、周杰伦、方大同等</p></article>
+        <article class="os-interest-card"><h3>技术</h3><p>关注 AI 等新技术，喜欢了解，也喜欢动手尝试。</p></article>
+        <article class="os-interest-card"><h3>游戏</h3><p>平时玩 Steam 游戏，手机上玩金铲铲之战、王者荣耀。</p></article>
+        <article class="os-interest-card"><h3>日常</h3><p>喜欢吃、逛、玩，随处走走，探索生活里的新鲜事。</p></article>
+      </div>
+    </section>
     <div class="os-profile-footer"><p>把问题想清楚，也把想法做出来。</p><button type="button" class="os-link-button" data-open="projects">看看我的项目 <span aria-hidden="true">↗</span></button></div>
   </div>`;
 }
