@@ -83,11 +83,11 @@
 #desktop-shell .os-page-kicker>span:last-child{text-align:right}
 #desktop-shell .os-small-label{font:10px/1.5 ui-monospace,SFMono-Regular,monospace;letter-spacing:1.8px;color:#829075;margin:0 0 14px}
 #desktop-shell .os-profile-heading{display:flex;align-items:center;justify-content:space-between;gap:20px}
+#desktop-shell .os-profile-heading>div:first-child{min-width:0}
 #desktop-shell .os-profile h1,#desktop-shell .os-projects-page h1,#desktop-shell .os-photos-page h1,#desktop-shell .os-contact-page h1,#desktop-shell .os-notebook-page h1{font-family:Georgia,"Songti SC",STSong,serif;font-weight:400;line-height:1.2;letter-spacing:-1px;margin:0;font-size:44px;color:#2e4439}
 #desktop-shell .os-profile h1 span{display:block;font:13px/1.5 ui-monospace,SFMono-Regular,monospace;letter-spacing:.6px;margin-top:11px;color:#737e69}
-#desktop-shell .os-profile-stamp{width:88px;height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid #a7b19a;outline:1px solid #c3cbb5;outline-offset:5px;transform:rotate(5deg);margin:0 13px 0 0;color:#708367;background:#e9ecdb}
-#desktop-shell .os-profile-stamp>span{font:italic 61px/.9 Georgia,serif}
-#desktop-shell .os-profile-stamp>small{font:7px/1.5 ui-monospace,monospace;letter-spacing:1px;margin-top:9px}
+#desktop-shell .os-profile-avatar{width:112px;height:112px;flex:0 0 112px;padding:7px;border:1px solid #d4d9c6;background:#fff;box-shadow:2px 3px 0 #53624714;transform:rotate(3deg);margin-right:5px}
+#desktop-shell .os-profile-avatar img{width:100%;height:100%;display:block;object-fit:contain;background:#fff}
 #desktop-shell .os-profile-intro{font-family:Georgia,"Songti SC",STSong,serif;font-size:30px;line-height:1.5;letter-spacing:1px;margin:34px 0 16px;color:#51614a}
 #desktop-shell .os-profile-copy{font-size:13px;line-height:1.95;max-width:570px;color:#687260;margin:0 0 25px}
 #desktop-shell .os-profile-facts{border-top:1px solid #d9decc;border-bottom:1px solid #d9decc;padding:7px 0}
@@ -119,15 +119,15 @@
 #desktop-shell .os-photos-page h1{font-size:35px;margin-bottom:13px}
 #desktop-shell .os-section-description{color:#7a8770;font-size:12px;line-height:1.9;margin:0 0 24px}
 #desktop-shell .os-photo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px;margin:29px 0 20px;align-items:start}
-#desktop-shell .os-photo-card{border:1px solid #d4d9c6;background:#fffcf0;box-shadow:2px 3px 0 #53624714;padding:7px 7px 0;transform:rotate(-2deg);text-align:left;transition:transform .18s,box-shadow .18s}
-#desktop-shell .os-photo-card:nth-child(2){transform:rotate(2deg);margin-top:20px}
-#desktop-shell .os-photo-card:nth-child(3){transform:rotate(-1deg);margin-top:6px}
+#desktop-shell .os-photo-card{min-width:0;width:100%;border:1px solid #d4d9c6;background:#fffcf0;box-shadow:2px 3px 0 #53624714;padding:7px 7px 0;transform:rotate(-2deg);text-align:left;transition:transform .18s,box-shadow .18s}
+#desktop-shell .os-photo-card:nth-child(3n+2){transform:rotate(2deg);margin-top:20px}
+#desktop-shell .os-photo-card:nth-child(3n){transform:rotate(-1deg);margin-top:6px}
 #desktop-shell .os-photo-card:hover,#desktop-shell .os-photo-card:focus-visible{transform:translateY(-5px) rotate(0);box-shadow:3px 6px 0 #53624721}
 #desktop-shell .os-photo-image{display:block;aspect-ratio:3/4;overflow:hidden;background:#d1d8c6}
 #desktop-shell .os-photo-image img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.82)}
 #desktop-shell .os-photo-caption{display:flex;align-items:center;justify-content:space-between;padding:12px 4px;font-size:10px;color:#738364;gap:5px}
-#desktop-shell .os-photo-caption strong{font-weight:400;letter-spacing:1px}
-#desktop-shell .os-photo-caption>span{font:9px/1 ui-monospace,monospace;color:#a0ab90}
+#desktop-shell .os-photo-caption strong{min-width:0;font-weight:400;letter-spacing:1px;overflow-wrap:anywhere}
+#desktop-shell .os-photo-caption>span{flex-shrink:0;font:9px/1 ui-monospace,monospace;color:#a0ab90}
 #desktop-shell .os-photo-hint{font-size:10px;color:#97a088;margin:25px 0 0}
 #desktop-shell .os-contact-heading{display:flex;align-items:center;gap:21px;margin-bottom:15px}
 #desktop-shell .os-contact-heading h1{font-size:36px}
@@ -154,7 +154,7 @@
 #desktop-shell .os-lightbox-close>span{font-size:22px;margin-left:12px}
 #desktop-shell .os-lightbox-stage{display:flex;align-items:center;justify-content:center;gap:20px;flex:1;min-height:0;padding:20px 0}
 #desktop-shell .os-lightbox-stage figure{margin:0;display:flex;align-items:center;flex-direction:column;min-width:0;min-height:0;max-height:100%;flex:1}
-#desktop-shell .os-lightbox-stage figure img{object-fit:contain;max-width:100%;max-height:calc(100dvh - 160px);min-height:0;display:block;box-shadow:0 6px 35px #0004}
+#desktop-shell .os-lightbox-stage figure img{width:auto;height:auto;object-fit:contain;max-width:100%;max-height:calc(100dvh - 160px);min-height:0;display:block;box-shadow:0 6px 35px #0004}
 #desktop-shell .os-lightbox-stage figcaption{padding-top:15px;color:#b7c2ab;font-size:12px;letter-spacing:2px}
 #desktop-shell .os-lightbox-prev,#desktop-shell .os-lightbox-next{flex-shrink:0;background:#ebf0d810;border:1px solid #6f7c66;color:inherit;width:42px;height:42px;font-size:23px}
 #desktop-shell .os-lightbox-prev:hover,#desktop-shell .os-lightbox-next:hover{background:#ebf0d825}
@@ -182,9 +182,8 @@
   #desktop-shell .os-page-kicker>span:last-child{font-size:9px;letter-spacing:0}
   #desktop-shell .os-profile h1{font-size:37px}
   #desktop-shell .os-profile h1 span{font-size:11px;margin-top:8px}
-  #desktop-shell .os-profile-stamp{width:63px;height:77px;flex-shrink:0;margin:0 5px 0 0;outline-offset:3px}
-  #desktop-shell .os-profile-stamp>span{font-size:45px}
-  #desktop-shell .os-profile-stamp>small{font-size:5px;letter-spacing:.5px}
+  #desktop-shell .os-profile-heading{gap:14px}
+  #desktop-shell .os-profile-avatar{width:80px;height:80px;flex-basis:80px;padding:5px;margin-right:2px}
   #desktop-shell .os-small-label{font-size:9px;letter-spacing:1px}
   #desktop-shell .os-profile-intro{font-size:26px;margin-top:31px;line-height:1.6}
   #desktop-shell .os-profile-copy{font-size:12px;margin-bottom:24px}
@@ -211,7 +210,7 @@
   #desktop-shell .os-project-tail{font-size:10px;gap:9px;align-items:center}
   #desktop-shell .os-project-tail a{margin:2px 0 0 14px}
   #desktop-shell .os-photo-grid{grid-template-columns:1fr;gap:25px;padding:0 18px;margin-top:23px}
-  #desktop-shell .os-photo-card:nth-child(2),#desktop-shell .os-photo-card:nth-child(3){margin:0}
+  #desktop-shell .os-photo-card:nth-child(3n+2),#desktop-shell .os-photo-card:nth-child(3n){margin:0}
   #desktop-shell .os-photo-image{aspect-ratio:1.05}
   #desktop-shell .os-photo-caption{padding:15px 7px;font-size:11px}
   #desktop-shell .os-contact-heading{gap:14px}

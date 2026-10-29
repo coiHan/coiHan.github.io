@@ -7,9 +7,14 @@ const APP_LIST = [
 ];
 
 const PHOTOS = [
-  {src:'./assets/photos/city-view.webp', title:'城市一角', alt:'从高处望向城市的生活照片'},
-  {src:'./assets/photos/green-path.webp', title:'沿着绿意', alt:'绿意环绕的小路'},
-  {src:'./assets/photos/night-walk.webp', title:'夜色里', alt:'夜间散步时的街景'},
+  {src:'./assets/photos/city-view.webp', thumb:'./assets/photos/city-view-thumb.webp', width:1400, height:1050, thumbWidth:480, thumbHeight:360, title:'城市一角', alt:'从高处望向城市的生活照片'},
+  {src:'./assets/photos/green-path.webp', thumb:'./assets/photos/green-path-thumb.webp', width:1200, height:900, thumbWidth:480, thumbHeight:360, title:'沿着绿意', alt:'绿意环绕的小路'},
+  {src:'./assets/photos/night-walk.webp', thumb:'./assets/photos/night-walk-thumb.webp', width:1400, height:1049, thumbWidth:480, thumbHeight:360, title:'夜色里', alt:'夜间散步时的街景'},
+  {src:'./assets/photos/night-market-redacted.webp', thumb:'./assets/photos/night-market-redacted-thumb.webp', width:1080, height:1440, thumbWidth:360, thumbHeight:480, title:'灯火人间', alt:'热闹的夜间街景'},
+  {src:'./assets/photos/music-moment.webp', thumb:'./assets/photos/music-moment-thumb.webp', width:635, height:671, thumbWidth:454, thumbHeight:480, title:'一首老歌', alt:'屏幕上的音乐画面'},
+  {src:'./assets/photos/museum-statue.webp', thumb:'./assets/photos/museum-statue-thumb.webp', width:1080, height:1440, thumbWidth:360, thumbHeight:480, title:'博物馆里', alt:'展厅中的人物雕像'},
+  {src:'./assets/photos/late-night-table.webp', thumb:'./assets/photos/late-night-table-thumb.webp', width:1440, height:1080, thumbWidth:480, thumbHeight:360, title:'宵夜时分', alt:'餐桌上的烧烤与小菜'},
+  {src:'./assets/photos/museum-objects.webp', thumb:'./assets/photos/museum-objects-thumb.webp', width:1440, height:1080, thumbWidth:480, thumbHeight:360, title:'展柜一角', alt:'展柜中的马和牛造型文物'},
 ];
 
 function icon(type, size=32) {
@@ -33,7 +38,7 @@ const appIcon = id => APP_LIST.find(app => app.id === id)?.icon || 'document';
 function aboutContent() {
   return `<div class="os-profile">
     <div class="os-page-kicker"><span>README.TXT</span><span>很高兴你来这里。</span></div>
-    <div class="os-profile-heading"><div><p class="os-small-label">HELLO, WORLD.</p><h1>韩广路<span>Jack / coiHan</span></h1></div><div class="os-profile-stamp" aria-hidden="true"><span>J</span><small>STAY CURIOUS</small></div></div>
+    <div class="os-profile-heading"><div><p class="os-small-label">HELLO, WORLD.</p><h1>韩广路<span>Jack / coiHan</span></h1></div><div class="os-profile-avatar"><img src="./assets/profile/avatar-chair.webp" alt="个人头像" width="400" height="399" decoding="async"></div></div>
     <p class="os-profile-intro">一点好奇，<br>也想把想法做出来。</p>
     <p class="os-profile-copy">我目前在山东大学读人工智能研一，研究兴趣是具身智能。欢迎来我的小小工作台坐坐。</p>
     <div class="os-profile-facts"><div><span>现在</span><strong>山东大学 · 人工智能研一</strong></div><div><span>关注</span><strong>具身智能</strong></div><div><span>也在探索</span><strong>交互、思想与生活里的好奇心</strong></div></div>
@@ -51,7 +56,7 @@ function projectsContent() {
 }
 
 function photosContent() {
-  return `<div class="os-photos-page"><div class="os-page-kicker"><span>PHOTO ALBUM</span><span>走走，看看。</span></div><h1>生活的几帧</h1><p class="os-section-description">留下一些路过时看见的画面。</p><div class="os-photo-grid">${PHOTOS.map((photo,index)=>`<button type="button" class="os-photo-card" data-photo="${index}" aria-label="放大照片：${photo.title}"><span class="os-photo-image"><img src="${photo.src}" alt="${photo.alt}" loading="lazy" decoding="async"></span><span class="os-photo-caption"><strong>${photo.title}</strong><span>0${index+1}</span></span></button>`).join('')}</div><p class="os-photo-hint">点击照片放大浏览。</p></div>`;
+  return `<div class="os-photos-page"><div class="os-page-kicker"><span>PHOTO ALBUM</span><span>走走，看看。</span></div><h1>生活的几帧</h1><p class="os-section-description">留下一些路过时看见的画面。</p><div class="os-photo-grid">${PHOTOS.map((photo,index)=>`<button type="button" class="os-photo-card" data-photo="${index}" aria-label="放大照片：${photo.title}"><span class="os-photo-image"><img src="${photo.thumb}" alt="${photo.alt}" width="${photo.thumbWidth}" height="${photo.thumbHeight}" loading="lazy" decoding="async"></span><span class="os-photo-caption"><strong>${photo.title}</strong><span>${String(index+1).padStart(2,'0')}</span></span></button>`).join('')}</div><p class="os-photo-hint">点击照片放大浏览。</p></div>`;
 }
 
 function contactContent() {
@@ -223,7 +228,7 @@ export function mountDesktop(root, {onExit=()=>{}, onSound=()=>{}} = {}) {
   }
 
   function updatePhoto() {
-    const photo=PHOTOS[photoIndex];const img=lightbox.querySelector('figure img');img.src=photo.src;img.alt=photo.alt;
+    const photo=PHOTOS[photoIndex];const img=lightbox.querySelector('figure img');img.src=photo.src;img.alt=photo.alt;img.width=photo.width;img.height=photo.height;img.decoding='async';
     lightbox.querySelector('figcaption').textContent=photo.title;
     lightbox.querySelector('.os-lightbox-counter').textContent=`生活相册 · ${photoIndex+1} / ${PHOTOS.length}`;
   }
