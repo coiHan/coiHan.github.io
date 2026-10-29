@@ -1,12 +1,52 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#121629"><meta name="description" content="coiHan 的手绘个人星系。走近一颗星球，认识我的兴趣、项目和正在探索的方向。"><title>coiHan · 一点好奇，一个宇宙</title><link rel="icon" type="image/png" href="/assets/site-icon-v2.png?v=20261029-orbits"><link rel="preload" as="image" href="/assets/illustrations/solar-atlas-handdrawn.webp"><link rel="preload" as="image" href="/assets/illustrations/earth-asia-handdrawn.webp"><link rel="preload" as="image" href="/assets/illustrations/sun-handdrawn-broad.webp"><link rel="stylesheet" href="/assets/solar.css?v=20261029-orbits"><script src="/assets/orbital-model.js?v=20261029-orbits" defer></script><script src="/assets/solar.js?v=20261029-orbits" defer></script></head>
-<body><div class="cosmos" aria-hidden="true"><div class="nebula nebula-violet"></div><div class="nebula nebula-blue"></div><div class="galaxy-dust"></div><canvas id="starfield"></canvas><div class="twinkle-field"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><header class="universe-header"><a class="brand" href="/" aria-label="coiHan 首页">coiHan<span>.</span></a><button id="orbit-pause" class="motion-button" type="button" aria-pressed="false"><span class="motion-icon" aria-hidden="true">Ⅱ</span><span id="pause-copy">暂停动效</span></button></header>
-<main id="universe" aria-label="探索 coiHan 的个人星系"><h1 class="sr-only">一点好奇，一个宇宙</h1><div class="scene-heading" aria-hidden="true"><span>A LITTLE CURIOSITY.</span><span>A WHOLE UNIVERSE.</span></div><div id="space-stage" class="space-stage"><svg class="orbit-lines" id="orbit-lines" aria-hidden="true"></svg><div class="sun-window" aria-hidden="true"><div class="sun-glow"></div><span class="celestial-sprite sprite-sun sun-art"></span></div><div id="planet-links" class="planet-links"><a class="planet-link" data-world="about" href="/worlds/about.html?v=20261029-orbits" style="--accent:#c6c0ba;--size:84px"><span class="planet-window" aria-hidden="true"><span class="planet-motion"><span class="planet-art celestial-sprite sprite-mercury"></span></span></span><span class="planet-label">关于我的<span aria-hidden="true">↗</span></span></a>
-<a class="planet-link" data-world="interests" href="/worlds/interests.html?v=20261029-orbits" style="--accent:#ecd09a;--size:108px"><span class="planet-window" aria-hidden="true"><span class="planet-motion"><span class="planet-art celestial-sprite sprite-venus"></span></span></span><span class="planet-label">日常生活<span aria-hidden="true">↗</span></span></a>
-<a class="planet-link" data-world="projects" href="/worlds/projects.html?v=20261029-orbits" style="--accent:#8cc4cb;--size:126px"><span class="planet-window" aria-hidden="true"><span class="planet-motion"><span class="planet-art celestial-sprite sprite-earth"></span></span></span><span class="planet-label">一些项目<span aria-hidden="true">↗</span></span></a>
-<a class="planet-link" data-world="contact" href="/worlds/contact.html?v=20261029-orbits" style="--accent:#d99c82;--size:104px"><span class="planet-window" aria-hidden="true"><span class="planet-motion"><span class="planet-art celestial-sprite sprite-mars"></span></span></span><span class="planet-label">取得联系<span aria-hidden="true">↗</span></span></a>
-<a class="planet-link is-unassigned" aria-label="待扩展的星球" data-world="jupiter" href="/#jupiter" style="--accent:#d7bd99;--size:162px"><span class="planet-window" aria-hidden="true"><span class="planet-motion"><span class="planet-art celestial-sprite sprite-jupiter"></span></span></span><span class="planet-label"><span aria-hidden="true">↗</span></span></a>
-<a class="planet-link is-unassigned" aria-label="待扩展的星球" data-world="saturn" href="/#saturn" style="--accent:#dcc9a5;--size:224px"><span class="planet-window" aria-hidden="true"><span class="planet-motion"><span class="planet-art celestial-sprite sprite-saturn"></span></span></span><span class="planet-label"><span aria-hidden="true">↗</span></span></a>
-<a class="planet-link is-unassigned" aria-label="待扩展的星球" data-world="uranus" href="/#uranus" style="--accent:#a8d8d6;--size:140px"><span class="planet-window" aria-hidden="true"><span class="planet-motion"><span class="planet-art celestial-sprite sprite-uranus"></span></span></span><span class="planet-label"><span aria-hidden="true">↗</span></span></a>
-<a class="planet-link is-unassigned" aria-label="待扩展的星球" data-world="neptune" href="/#neptune" style="--accent:#85acd8;--size:136px"><span class="planet-window" aria-hidden="true"><span class="planet-motion"><span class="planet-art celestial-sprite sprite-neptune"></span></span></span><span class="planet-label"><span aria-hidden="true">↗</span></span></a></div><div class="mobile-controls"><button id="previous-world" type="button" aria-label="上一个维度">←</button><button id="next-world" type="button" aria-label="下一个维度">→</button></div></div><a id="mobile-destination" class="mobile-destination" href="/worlds/about.html?v=20261029-orbits" data-world="about"><span class="mobile-index" id="mobile-index">01 / 08</span><strong id="mobile-title">关于我的</strong><span class="mobile-description" id="mobile-description">认识这个正在学习的人</span><span class="mobile-enter">进入这个世界 <i aria-hidden="true">↗</i></span></a></main>
-<section id="empty-world" class="empty-world" hidden><a class="empty-back" href="/">← 返回星系</a></section><footer class="universe-footer"><p class="explore-hint"><span class="desktop-only">一点好奇，一个宇宙。选择一颗星球，走近一点。</span><span class="mobile-only">轻扫切换星球，点选走近。</span></p><nav class="category-nav" aria-label="个人维度"><a data-world="about" href="/worlds/about.html?v=20261029-orbits">关于我的</a><a data-world="interests" href="/worlds/interests.html?v=20261029-orbits">日常生活</a><a data-world="projects" href="/worlds/projects.html?v=20261029-orbits">一些项目</a><a data-world="contact" href="/worlds/contact.html?v=20261029-orbits">取得联系</a></nav><a class="material-credit" href="/credits.html">素材与致谢</a></footer><div id="travel-veil" class="travel-veil" aria-hidden="true"><span id="travel-name"></span></div></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#e8e6e0">
+  <meta name="description" content="韩广路 / coiHan 的个人工作台。走近一张书桌，打开电脑，看看项目、生活与正在探索的想法。">
+  <meta property="og:title" content="coiHan — 一点好奇，一张书桌。">
+  <meta property="og:description" content="欢迎坐一会儿。这是我的个人工作台。">
+  <title>coiHan — 私人工作台</title>
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./assets/room.css?v=room-1">
+  <link rel="stylesheet" href="./assets/desktop.css?v=room-1">
+  <link rel="modulepreload" href="./assets/vendor/three.module.js" crossorigin>
+  <script type="module" src="./assets/app.js?v=room-1"></script>
+</head>
+<body>
+  <a class="skip-link" href="#room-nav">跳到内容入口</a>
+  <div class="boot" id="boot" aria-live="polite">
+    <div class="boot-inner"><span class="boot-mark" aria-hidden="true">c<span>h</span>_</span><p>PERSONAL COMPUTER</p><div class="boot-rule"><span id="boot-progress"></span></div><small id="boot-copy">正在整理工作台…</small></div>
+  </div>
+  <main id="room" aria-label="coiHan 的个人工作台">
+    <canvas id="room-canvas" tabindex="0" aria-label="三维书桌。按回车打开电脑，或使用下方的内容入口。"></canvas>
+    <div class="room-grain" aria-hidden="true"></div>
+    <header class="room-header room-chrome">
+      <a class="wordmark" href="./" aria-label="coiHan 工作台首页">coiHan<span class="wordmark-dot">.</span></a>
+      <div class="room-tools">
+        <button id="sound-toggle" type="button" aria-label="开启声音" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path class="sound-waves" d="M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/><path class="sound-slash" d="m16 9 6 6m0-6-6 6"/></svg><span id="sound-label">静音</span></button>
+        <button id="light-toggle" type="button" aria-label="切换为夜晚" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg><span id="light-label">日光</span></button>
+        <button id="info-toggle" class="info-toggle" type="button" aria-label="关于这个空间"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v1"/></svg></button>
+      </div>
+    </header>
+    <section class="room-caption room-chrome" aria-label="欢迎">
+      <span class="eyebrow">A SMALL CORNER OF THE INTERNET</span>
+      <h1>一点好奇，<br>一张书桌。</h1>
+      <p>你好，我是韩广路。<br>欢迎来我的角落坐一会儿。</p>
+    </section>
+    <div class="room-footer room-chrome">
+      <div class="room-invitation"><span class="status-dot" aria-hidden="true"></span><p id="object-hint">点击电脑，或看看桌上的小东西。</p></div>
+      <button id="enter-computer" class="enter-computer" type="button"><span>打开电脑</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5"/></svg></button>
+      <nav class="room-nav" id="room-nav" aria-label="直接打开内容">
+        <button type="button" data-app="about">个人档案</button><span aria-hidden="true">/</span><button type="button" data-app="projects">一些项目</button><span aria-hidden="true">/</span><button type="button" data-app="photos">生活相册</button><span aria-hidden="true">/</span><button type="button" data-app="contact">取得联系</button>
+      </nav>
+      <div class="room-corner"><span>COIHAN'S ROOM</span><span id="local-time">—</span></div>
+    </div>
+    <section class="lite-card" id="lite-card" hidden><div class="lite-computer" aria-hidden="true"><svg viewBox="0 0 160 140"><rect x="20" y="10" width="120" height="92" rx="12"/><rect x="31" y="23" width="98" height="64" rx="5"/><path d="M65 102v18h30v-18M45 127h70"/><path d="m51 45 14 12-14 12m30 0h25"/></svg></div><h2>欢迎来到我的工作台</h2><p>这里收着我的项目、生活，和一点好奇心。</p><button type="button" data-app="desktop">打开个人电脑 ↗</button></section>
+  </main>
+  <section id="desktop-shell" aria-label="coiHan 个人电脑" hidden></section>
+  <dialog id="space-info" class="space-info"><form method="dialog"><button class="info-close" aria-label="关闭" type="submit">×</button></form><span class="eyebrow">ABOUT THIS LITTLE SPACE</span><h2>欢迎来坐坐。</h2><p>这是 coiHan 的个人工作台。桌上的物件通向一些关于我、我的项目和日常生活的内容。</p><p>可以点击电脑进入桌面，也可以直接使用下方导航。桌面里的窗口可以拖动、收起和再次打开。</p><div class="info-keys"><kbd>Enter</kbd><span>打开电脑</span><kbd>Esc</kbd><span>关闭窗口</span></div><p class="info-credit">空间体验参考 <a href="https://henryheffernan.com/" target="_blank" rel="noopener noreferrer">Henry Heffernan</a>。书桌场景、物件与界面为本站重新创作。<br>三维渲染使用 <a href="./assets/vendor/three.LICENSE.txt" target="_blank" rel="noopener">Three.js · MIT</a>。</p></dialog>
+  <noscript><section class="noscript"><h1>韩广路 / coiHan</h1><p>山东大学 · 人工智能研一，研究兴趣为具身智能。</p><p><a href="./philome/">打开 philome</a> · <a href="https://github.com/coiHan">GitHub</a> · <a href="mailto:guangluhan686@gmail.com">联系我</a></p><p>启用 JavaScript 可以探索完整的个人工作台。</p></section></noscript>
+</body>
+</html>
